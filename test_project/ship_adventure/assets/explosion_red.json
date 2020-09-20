@@ -1,0 +1,10 @@
+{
+    "assetPath" : "assets/explosion_red.png",
+    "id": "explosion-fx-red",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 10, "y": 10 },
+    "keyFrames" : [
+        { "key" : "explosion_once",  "start": 0, "len": 6, "rate": 20, "repeat": 1},
+        { "key" : "explosion_repeating",  "start": 0, "len": 6, "rate": 20, "repeat": -1}
+    ]
+}

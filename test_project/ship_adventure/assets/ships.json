@@ -1,0 +1,16 @@
+{
+    "assetPath" : "assets/ships.png",
+    "id": "ship",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 10, "y": 10 },
+    "keyFrames" : [
+        { "key" : "dir:l",  "start": 0, "len": 1, "rate": 20 },
+        { "key" : "dir:ul", "start": 1, "len": 1, "rate": 20 },
+        { "key" : "dir:u",  "start": 2, "len": 1, "rate": 20 },
+        { "key" : "dir:ur", "start": 3, "len": 1, "rate": 20 },
+        { "key" : "dir:r",  "start": 4, "len": 1, "rate": 20 },
+        { "key" : "dir:dl", "start": 5, "len": 1, "rate": 20 },
+        { "key" : "dir:d",  "start": 6, "len": 1, "rate": 20 },
+        { "key" : "dir:dr", "start": 7, "len": 1, "rate": 20 }
+    ]
+}

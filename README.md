@@ -15,3 +15,4 @@ A few quick tests to run:
  -  (macOS) Run `http-server` in that directory and then copy-paste the address in your browser. 
  -  Click on "**Phaser "Getting Started" Tutorial**". You should see this bouncing around: ![](https://phaser.io/images/github/300/sample1.png)
 
+ -  This project includes all of the [Phaser tutorials](https://phaser.io/tutorials/making-your-first-phaser-3-game/part1) as well. Click on the sub-links of the "Phaser Tutorials" header.

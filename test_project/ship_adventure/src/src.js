@@ -25,7 +25,9 @@ var player;
 var explosion;
 var exampleBullet;
 var cursors;
+var spaceBar;
 var gScale = 5;
+var engine;
 
 var entities = []
 
@@ -36,6 +38,8 @@ var game = new Phaser.Game(config);
 
 function preload ()
 {
+    engine = this
+
     this.load.json('ship-desc', 'assets/ships.json');
     this.load.spritesheet('ship', 'assets/ships.png', { frameWidth: 10, frameHeight: 10 });
 
@@ -92,12 +96,19 @@ function create ()
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
+    spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+    new Bullet(300, 300, 0, 20, fx.data.bullet);
 }
 
 function update ()
 {
     explosion.anims.play('explosion_repeating', true);
     exampleBullet.anims.play('spiral', true);
+
+    for (var entity of entities) {
+        entity.update();
+    }
 
     var velocity = 160;
     var direction = new Phaser.Math.Vector2(0, 0);
@@ -118,6 +129,12 @@ function update ()
     else if (cursors.up.isDown)
     {
         direction.y = 1;
+    }
+
+    if (spaceBar.isDown)
+    {
+        new Bullet(player.x, player.y, (180 / Math.PI) * Math.atan2(-player.fakeDirection.y, 
+                player.fakeDirection.x), 300, fx.data.bullet);
     }
 
     player.setVelocity(direction.x * velocity, -direction.y * velocity);
@@ -146,6 +163,7 @@ function update ()
 
     if (animToPlay != "none") 
     {
+        player.fakeDirection = direction;
         player.anims.play(animToPlay, true);
     }
 }

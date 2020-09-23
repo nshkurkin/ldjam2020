@@ -19,6 +19,8 @@ var config = {
     }
 };
 
+// chris was here - remove dis
+
 var player;
 var explosion;
 var exampleBullet;

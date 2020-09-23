@@ -27,6 +27,8 @@ var exampleBullet;
 var cursors;
 var gScale = 5;
 
+var entities = []
+
 var fx = new Object();
 fx.data = new Object();
 

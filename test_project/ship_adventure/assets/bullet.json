@@ -1,0 +1,9 @@
+{
+    "assetPath" : "assets/bullet.png",
+    "id": "bullet",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 10, "y": 10 },
+    "keyFrames" : [
+        { "key" : "spiral",  "start": 0, "len": 2, "rate": 10, "repeat": -1}
+    ]
+}

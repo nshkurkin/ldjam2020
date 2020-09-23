@@ -21,6 +21,7 @@ var config = {
 
 var player;
 var explosion;
+var exampleBullet;
 var cursors;
 var gScale = 5;
 
@@ -36,6 +37,9 @@ function preload ()
 
     this.load.json('explosion-fx-red-desc', 'assets/explosion_red.json');
     this.load.spritesheet('explosion-fx-red', 'assets/explosion_red.png', { frameWidth: 10, frameHeight: 10 });
+
+    this.load.json('bullet-desc', 'assets/bullet.json');
+    this.load.spritesheet('bullet', 'assets/bullet.png', { frameWidth: 10, frameHeight: 10 });
 }
 
 function finishLoadAsset (phaser, json_name)
@@ -71,6 +75,7 @@ function create ()
 {
     var shipData = finishLoadAsset(this, 'ship-desc');
     fx.data.explosion_red = finishLoadAsset(this, 'explosion-fx-red-desc');
+    fx.data.bullet = finishLoadAsset(this, 'bullet-desc');
 
     // The player and its settings
     player = this.physics.add.sprite(350, 400, shipData.id).setScale(gScale);
@@ -79,6 +84,7 @@ function create ()
     player.setCollideWorldBounds(true);
 
     explosion = this.physics.add.sprite(100, 100, fx.data.explosion_red.id).setScale(gScale);
+    exampleBullet = this.physics.add.sprite(200, 100, fx.data.bullet.id).setScale(gScale);
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
@@ -87,6 +93,7 @@ function create ()
 function update ()
 {
     explosion.anims.play('explosion_repeating', true);
+    exampleBullet.anims.play('spiral', true);
 
     var velocity = 160;
     var direction = new Phaser.Math.Vector2(0, 0);

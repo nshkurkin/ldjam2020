@@ -1,4 +1,3 @@
-
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -19,6 +18,8 @@ var config = {
     }
 };
 
+var Vec2 = Phaser.Math.Vector2;
+
 // chris was here - remove dis
 
 var player;
@@ -28,6 +29,12 @@ var cursors;
 var spaceBar;
 var gScale = 5;
 var engine;
+
+// UI for drawing the boomerang path
+var drawnPathPolygon = null;
+var drawnPathPoints = [];
+var pathInProgress = false;
+
 
 var entities = []
 
@@ -79,6 +86,14 @@ function create ()
 
     var boomerang = this.physics.add.sprite(350, 400, fx.data.boomerang.id).setScale(gScale);
     boomerang.anims.play('spin', true);
+
+    drawnPathPolygon = this.add.polygon(100, 100, [new Vec2(0, 0)]);
+    drawnPathPolygon.setStrokeStyle(6, 0xefc53f);
+    drawnPathPolygon.closePath = false;
+
+    this.input.on('pointermove', onMouseMove);
+    this.input.on('pointerdown', onMouseDown);
+    this.input.on('pointerup', onMouseUp);
 }
 
 function update ()
@@ -86,25 +101,32 @@ function update ()
     for (var entity of entities) {
         entity.update();
     }
-
-    updateDrawPath();
 }
 
-
-
-// todo maybe move elsewhere?
-var drawnPath = null;
-var drawnPathPoints = [];
-var pathInProgress = false;
-function updateDrawPath ()
+function onMouseDown (pointer)
 {
-    var mouseDown = "";
-    if (pathInProgress)
+    console.log("mouse down at " + pointer.x + " " + pointer.y);
+    if (!pathInProgress)
     {
-
+        pathInProgress = true;
+        drawnPathPoints = [new Vec2(pointer.x, pointer.y)];
+        drawnPathPolygon.setData(drawnPathPoints);
     }
     else
     {
-
+        // TODO make this happen as you click and drag
+        drawnPathPoints.push(new Vec2(pointer.x, pointer.y));
+        drawnPathPolygon.setData(drawnPathPoints);
+        console.log(drawnPathPoints);
     }
+}
+
+function onMouseUp (pointer)
+{
+
+}
+
+function onMouseMove (pointer)
+{
+
 }

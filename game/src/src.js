@@ -97,7 +97,7 @@ function refreshDrawnPolygon ()
     if (null != drawnPathPolygon) {
         drawnPathPolygon.destroy();
     }
-    drawnPathPolygon = g.engine.add.polygon(0, 0, drawnPathPoints, 0xFF00FF);
+    drawnPathPolygon = g.engine.add.polygon(0, 0, drawnPathPoints);
     drawnPathPolygon.setStrokeStyle(6, 0xefc53f);
-    //drawnPathPolygon.setClosePath(false);
+    drawnPathPolygon.setClosePath(false);
 }

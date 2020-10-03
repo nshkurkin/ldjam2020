@@ -40,15 +40,15 @@ function preload ()
 {
     engine = this
 
-    // this.load.json('ship-desc', 'assets/ships.json');
-    // this.load.spritesheet('ship', 'assets/ships.png', { frameWidth: 10, frameHeight: 10 });
+    this.load.json('boomerang-desc', 'assets/simple_boomerang.json');
+    this.load.spritesheet('boomerang', 'assets/simple_boomerang.png', { frameWidth: 10, frameHeight: 10 });
 }
 
 function finishLoadAsset (phaser, json_name)
 {
     var data = phaser.cache.json.get(json_name);
 
-    if (data.type == "sprite-sheet")
+    if (data.type == 'sprite-sheet')
     {
         for (var keyFrame of data.keyFrames) {
             if (keyFrame.len > 1) {
@@ -75,22 +75,10 @@ function finishLoadAsset (phaser, json_name)
 
 function create ()
 {
-    var shipData = finishLoadAsset(this, 'ship-desc');
-    fx.data.explosion_red = finishLoadAsset(this, 'explosion-fx-red-desc');
-    fx.data.bullet = finishLoadAsset(this, 'bullet-desc');
+    fx.data.boomerang = finishLoadAsset(this, 'boomerang-desc');
 
-    // The player and its settings
-    player = this.physics.add.sprite(350, 400, shipData.id).setScale(gScale);
-
-    //  Player physics properties. Give the little guy a slight bounce.
-    player.setCollideWorldBounds(true);
-
-    explosion = this.physics.add.sprite(100, 100, fx.data.explosion_red.id).setScale(gScale);
-    exampleBullet = this.physics.add.sprite(200, 100, fx.data.bullet.id).setScale(gScale);
-
-    //  Input Events
-    cursors = this.input.keyboard.createCursorKeys();
-    spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    var boomerang = this.physics.add.sprite(350, 400, fx.data.boomerang.id).setScale(gScale);
+    boomerang.anims.play('spin', true);
 }
 
 function update ()

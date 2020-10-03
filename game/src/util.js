@@ -38,6 +38,11 @@ class Util {
     {
         return MakeVec2((1 - u) * a.x + (u) * b.x, (1 - u) * a.y + (u) * b.y);
     }
+
+    static pos(gameObj)
+    {
+        return MakeVec2(gameObj.x, gameObj.y);
+    }
 }
 
 function MakeVec2(x, y) {

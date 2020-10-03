@@ -144,5 +144,5 @@ function refreshDrawnPolygon ()
     drawnPathPolygon.displayOriginX = 0.5;
     drawnPathPolygon.displayOriginY = 0.5;
 
-    g.named.boomie.positionProvider = Boomerang.lerpAlongPerimeter(drawnPathPolygon, /* speed */ 20);
+    g.named.boomie.positionProvider = Boomerang.lerpAlongPerimeter(drawnPathPolygon, /* speed */ 20, false);
 }

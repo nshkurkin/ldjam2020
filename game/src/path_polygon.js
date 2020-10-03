@@ -55,7 +55,7 @@ class PathPolygon {
         }
         this.polygonObj = g.engine.add.polygon(0, 0, this.pathPoints);
         this.polygonObj.setStrokeStyle(this.strokeWidth, this.strokeColor);
-        this.polygonObj.setClosePath(false);
+        this.polygonObj.setClosePath(this.closedPath);
         this.polygonObj.displayOriginX = 0.5;
         this.polygonObj.displayOriginY = 0.5;
     }

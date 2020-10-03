@@ -26,10 +26,11 @@ class DrawPathBoomerang
             dir = MakeVec2(1, 0);
         }
         
-        this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
-        this.gameObj.anims.play(fxData.id + ':' + 'spin', true);
-        // TODO do a polygon like the real boomerang
         this.polygon = new PathPolygon(pos);
+
+        this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
+        this.gameObj.anims.play(fxData.id + ':' + 'static', true);
+        this.gameObj.alpha = 0.5;
 
         this.speed = 200; 
         this.currentDirection = dir;
@@ -37,6 +38,8 @@ class DrawPathBoomerang
         this.SEGMENT_DISTANCE = 20;
         
         //g.entities.push(this);
+
+        // TODO chris: maybe make this a pos provider for a real boomie so you can use it to hit switches still?
     }
 
     updateMovement(time, delta, dir)
@@ -48,7 +51,7 @@ class DrawPathBoomerang
         this.gameObj.setVelocity(this.currentDirection.x * this.speed, this.currentDirection.y * this.speed)
         // todo crash into walls
         let pos = MakeVec2(this.gameObj.x, this.gameObj.y);
-        let lastPathPoint= this.currentPath[this.currentPath.length - 1];
+        let lastPathPoint = this.currentPath[this.currentPath.length - 1];
         if (pos.distance(lastPathPoint) >= this.SEGMENT_DISTANCE)
         {
             this.currentPath.push(pos);
@@ -60,8 +63,12 @@ class DrawPathBoomerang
     // returns true if the path can create a loop now
     isPathComplete()
     {
-        // TODO
-        return false;
+        const MIN_NODES = 6;
+        const CLOSED_LOOP_DIST = 40;
+
+        let playerPos = Util.pos(g.named.player.gameObj);
+        let lastPathPoint = this.currentPath[this.currentPath.length - 1];
+        return this.currentPath.length >= MIN_NODES && lastPathPoint.distance(playerPos) <= CLOSED_LOOP_DIST;
     }
 
     // returns false if the path is too long or is otherwise broken
@@ -75,17 +82,7 @@ class DrawPathBoomerang
     {
         this.polygon.destroy();
         this.polygon = null;
-
-        const DURATION = 200;
-        g.engine.tweens.add({
-            targets: this.gameObj,
-            x: g.named.player.gameObj.x,
-            y: g.named.player.gameObj.y,
-            duration: DURATION,
-            ease: 'Sine.easeIn',
-        });
-        var thisRef = this;
-        setTimeout(function () { thisRef.gameObj.destroy(); }, DURATION);
+        this.gameObj.destroy();
     }
 
 }

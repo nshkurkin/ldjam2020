@@ -29,6 +29,9 @@ class Player
         this.altSkinIdx = 0;
 
         this.activeDrawPathBoomerang = null;
+        this.activeBoomie = null; // TODO more than one boomie
+        // move into boomerang?
+        this.activeBoomiePolygon = null;
 
         this.leftKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.rightKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -68,14 +71,22 @@ class Player
         // decide whether to pilot the path boomerang or not
         if (this.boomerangKey.keystroke())
         {
-            if (null === this.activeDrawPathBoomerang)
+            // throw the drawpath, or retrieve the drawpath, or retrieve the real boomie
+            if (null != this.activeBoomie)
             {
-                this.activeDrawPathBoomerang = new DrawPathBoomerang(g.fx.data.boomerang, MakeVec2(this.gameObj.x, this.gameObj.y), direction);
+                this.activeBoomie.destroy();
+                this.activeBoomie = null;
+                this.activeBoomiePolygon.destroy();
+                this.activeBoomiePolygon = null;
             }
-            else
+            else if (null != this.activeDrawPathBoomerang)
             {
                 this.activeDrawPathBoomerang.destroy();
                 this.activeDrawPathBoomerang = null;
+            }
+            else
+            {
+                this.activeDrawPathBoomerang = new DrawPathBoomerang(g.fx.data.boomerang, MakeVec2(this.gameObj.x, this.gameObj.y), direction);
             }
         }
         
@@ -84,6 +95,21 @@ class Player
             // pilot the boomerang path drawing
             this.activeDrawPathBoomerang.updateMovement(time, delta, direction);
             this.gameObj.setVelocity(0, 0);
+
+            // time to make a real boomie?
+            if (this.activeDrawPathBoomerang.isPathComplete())
+            {
+                let finalPath = this.activeDrawPathBoomerang.currentPath;
+
+                const BOOMIE_SPEED = 5; // todo different speed boomies
+                this.activeBoomiePolygon = new PathPolygon(finalPath[0], 8, 0x80A020, true);
+                this.activeBoomiePolygon.updatePathPoints(finalPath);
+                this.activeBoomie = new Boomerang(g.fx.data.boomerang, finalPath[0]);
+                this.activeBoomie.positionProvider = Boomerang.lerpAlongPerimeter(this.activeBoomiePolygon.polygonObj, BOOMIE_SPEED, true);
+
+                this.activeDrawPathBoomerang.destroy();
+                this.activeDrawPathBoomerang = null;
+            }
         }
         else
         {

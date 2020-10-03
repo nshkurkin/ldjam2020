@@ -39,8 +39,18 @@ class Boomerang
 
     destroy()
     {
-        this.gameObj.destroy();
         g.entities.splice(g.entities.indexOf(this), 1);
+
+        const DURATION = 300;
+        g.engine.tweens.add({
+            targets: this.gameObj,
+            x: g.named.player.gameObj.x,
+            y: g.named.player.gameObj.y,
+            duration: DURATION,
+            ease: 'Sine.easeIn',
+        });
+        var thisRef = this;
+        setTimeout(function () { thisRef.gameObj.destroy(); }, DURATION);
     }
 
     static disableLerpFunc()
@@ -55,7 +65,8 @@ class Boomerang
 
     static lerpAlongPerimeter(
         polygon /* Phaser.GameObjects.Polygon */,
-        speed /* float, pixels-per-second */)
+        speed /* float, pixels-per-second */,
+        loop /* bool */)
     {
         // If there there are no points, then early exit.
         if (polygon.geom.points.length <= 1) {
@@ -69,8 +80,17 @@ class Boomerang
         // @FIXME: Not sure why "50", but it makes the timescale behave more like expected.
         var duration = 1000.0 * (samples.length * stepRate) / (speed * 50);
         return function(time, delta) {
+            timeElapsed += delta;
             // @FIXME: If you run this really slowly, the boomerang jumps back and forth.
-            var u = Math.min(timeElapsed / duration, 1.0);
+            var u = timeElapsed / duration;
+            if (loop)
+            {
+                u = u % 1;
+            }
+            else
+            {
+                u = Math.min(u, 1.0);
+            }
             var whichSegment = Math.floor(u * (samples.length - 1));
             
             var a = samples[whichSegment];
@@ -79,8 +99,6 @@ class Boomerang
             }
             var b = samples[whichSegment + 1];
             var subU = (u * samples.length) % 1;
-
-            timeElapsed += delta;
 
             return Util.lerpVec2(subU, a, b);
         };

@@ -98,4 +98,25 @@ function update ()
     for (var entity of entities) {
         entity.update();
     }
+
+    updateDrawPath();
+}
+
+
+
+// todo maybe move elsewhere?
+var drawnPath = null;
+var drawnPathPoints = [];
+var pathInProgress = false;
+function updateDrawPath ()
+{
+    var mouseDown = "";
+    if (pathInProgress)
+    {
+
+    }
+    else
+    {
+
+    }
 }

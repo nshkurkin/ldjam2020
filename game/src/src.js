@@ -67,10 +67,10 @@ function create ()
         g.fx.data[assetTuple[0]] = Util.finishLoadAsset(assetTuple[1]);
     }
 
-    g.named.player = new Player(fxData=g.fx.data.bob, pos=MakeVec2(100, 100));
+    g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 100));
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];
 
-    g.named.boomie = new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
+    g.named.boomie = new Boomerang(g.fx.data.boomerang, MakeVec2(350, 400));
     g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();
     
     // @TEMP

@@ -39,7 +39,8 @@ class Boomerang
 
     destroy()
     {
-        // @TODO
+        this.gameObj.destroy();
+        g.entities.splice(g.entities.indexOf(this), 1);
     }
 
     static disableLerpFunc()

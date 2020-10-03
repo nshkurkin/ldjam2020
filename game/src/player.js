@@ -28,10 +28,13 @@ class Player
         this.altSkins = [fxData];
         this.altSkinIdx = 0;
 
+        this.activeDrawPathBoomerang = null;
+
         this.leftKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.rightKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.upKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.downKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.boomerangKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
         this.swapSkinKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH));
     }
 
@@ -62,7 +65,31 @@ class Player
             direction.y = 1;
         }
 
-        this.gameObj.setVelocity(direction.x * this.velocity, direction.y * this.velocity);
+        // decide whether to pilot the path boomerang or not
+        if (this.boomerangKey.keystroke())
+        {
+            if (null === this.activeDrawPathBoomerang)
+            {
+                this.activeDrawPathBoomerang = new DrawPathBoomerang(g.fx.data.boomerang, MakeVec2(this.gameObj.x, this.gameObj.y), direction);
+            }
+            else
+            {
+                this.activeDrawPathBoomerang.destroy();
+                this.activeDrawPathBoomerang = null;
+            }
+        }
+        
+        if (null != this.activeDrawPathBoomerang)
+        {
+            // pilot the boomerang path drawing
+            this.activeDrawPathBoomerang.updateMovement(time, delta, direction);
+            this.gameObj.setVelocity(0, 0);
+        }
+        else
+        {
+            // move normally
+            this.gameObj.setVelocity(direction.x * this.velocity, direction.y * this.velocity);
+        }
 
         var dirMap = [
             /* -X */ [

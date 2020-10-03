@@ -21,7 +21,7 @@ class Player
         this.fxData = fxData;
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
         this.gameObj.setCollideWorldBounds(true);
-        
+
         this.velocity = 100;
         this.faceDirection = MakeVec2(1, -1);
         this.faceDirectionAnim = this.fxData.id + ':dir:dr';

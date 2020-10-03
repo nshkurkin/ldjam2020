@@ -8,7 +8,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     },
     scene: {
@@ -75,9 +75,15 @@ function create ()
     g.named.world = this.add.tilemap('world-tiles-desc');
     var worldTileset = g.named.world.addTilesetImage("static_floors", "static_floors");
     g.named.background = g.named.world.createStaticLayer("ground-layer", worldTileset, 0, 0).setScale(g.scale);
+    g.named.background.setCollisionFromCollisionGroup(true);
+
+    // @TEMP: Debug render collisions
+    g.named.background_debug_gfx = this.add.graphics();
+    drawCollisionShapes (g.named.background_debug_gfx, g.named.background, g.scale);
 
     g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 100));
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];
+    g.engine.physics.add.collider(g.named.player.gameObj, g.named.background, null, null, g.engine);
 
     g.named.boomie = new Boomerang(g.fx.data.boomerang, MakeVec2(350, 400));
     g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();
@@ -96,6 +102,8 @@ function create ()
 function update (time, delta)
 {
     g.worldClock.update(time, delta);
+    // g.named.world.renderDebug(g.named.background_debug_gfx, 
+    //         { tileColor: null, collidingTileColor: null, faceColor: null }, g.named.background);
 
     g.named.player.update(time, delta);
 

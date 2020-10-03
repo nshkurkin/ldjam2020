@@ -100,4 +100,6 @@ function refreshDrawnPolygon ()
     drawnPathPolygon = g.engine.add.polygon(0, 0, drawnPathPoints);
     drawnPathPolygon.setStrokeStyle(6, 0xefc53f);
     drawnPathPolygon.setClosePath(false);
+    drawnPathPolygon.displayOriginX = 0.5;
+    drawnPathPolygon.displayOriginY = 0.5;
 }

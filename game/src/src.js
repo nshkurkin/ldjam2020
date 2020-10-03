@@ -41,10 +41,15 @@ function preload ()
     g.engine = this
 
     // temp colored squares to be stand-ins for other stuff
-    this.load.image('blacksquare', 'assets/blacksquare.png');
-    this.load.image('bluesquare', 'assets/bluesquare.png');
-    this.load.image('redsquare', 'assets/redsquare.png');
-    this.load.image('whitesquare', 'assets/whitesquare.png');
+    this.load.json('blacksquare-desc', 'assets/blacksquare.json');
+    this.load.spritesheet('blacksquare', 'assets/blacksquare.png', { frameWidth: 16, frameHeight: 16 });
+    this.load.json('bluesquare-desc', 'assets/bluesquare.json');
+    this.load.spritesheet('bluesquare', 'assets/bluesquare.png', { frameWidth: 16, frameHeight: 16 });
+    this.load.json('redsquare-desc', 'assets/redsquare.json');
+    this.load.spritesheet('redsquare', 'assets/redsquare.png', { frameWidth: 16, frameHeight: 16 });
+    this.load.json('whitesquare-desc', 'assets/whitesquare.json');
+    this.load.spritesheet('whitesquare', 'assets/whitesquare.png', { frameWidth: 16, frameHeight: 16 });
+
 
     this.load.json('boomerang-desc', 'assets/simple_boomerang.json');
     this.load.spritesheet('boomerang', 'assets/simple_boomerang.png', { frameWidth: 10, frameHeight: 10 });
@@ -54,6 +59,10 @@ function create ()
 {
     g.worldClock = new Phaser.Time.Clock(this);
     g.fx.data.boomerang = Util.finishLoadAsset('boomerang-desc');
+    g.fx.data.blacksquare = Util.finishLoadAsset('blacksquare-desc');
+    g.fx.data.bluesquare = Util.finishLoadAsset('bluesquare-desc');
+    g.fx.data.redsquare = Util.finishLoadAsset('redsquare-desc');
+    g.fx.data.whitesquare = Util.finishLoadAsset('whitesquare-desc');
 
     g.named.boomie = new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
     g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();

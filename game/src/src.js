@@ -98,6 +98,8 @@ function update (time, delta)
 {
     g.worldClock.update(time, delta);
 
+    g.named.player.update(time, delta);
+
     for (var entity of g.entities) {
         entity.update(time, delta);
     }

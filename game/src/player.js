@@ -19,8 +19,11 @@ class Player
         //}
         
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
+        this.gameObj.setCollideWorldBounds(true);
         // todo change with new sheets
         this.gameObj.anims.play('static', true);
+
+        this.velocity = 100;
 
 
         this.leftKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -51,7 +54,7 @@ class Player
             direction.y = 1;
         }
 
-        this.gameObj.setVelocity(direction.x * velocity, -direction.y * velocity);
+        this.gameObj.setVelocity(direction.x * this.velocity, direction.y * this.velocity);
     }
 
     destroy()

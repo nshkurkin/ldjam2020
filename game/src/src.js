@@ -40,6 +40,12 @@ function preload ()
 {
     g.engine = this
 
+    // temp colored squares to be stand-ins for other stuff
+    this.load.image('blacksquare', 'assets/blacksquare.png');
+    this.load.image('bluesquare', 'assets/bluesquare.png');
+    this.load.image('redsquare', 'assets/redsquare.png');
+    this.load.image('whitesquare', 'assets/whitesquare.png');
+
     this.load.json('boomerang-desc', 'assets/simple_boomerang.json');
     this.load.spritesheet('boomerang', 'assets/simple_boomerang.png', { frameWidth: 10, frameHeight: 10 });
 }

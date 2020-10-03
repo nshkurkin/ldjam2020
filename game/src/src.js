@@ -18,8 +18,6 @@ var config = {
     }
 };
 
-var Vec2 = Phaser.Math.Vector2;
-
 // UI for drawing the boomerang path
 var drawnPathPolygon = null;
 var drawnPathPoints = [];
@@ -29,6 +27,7 @@ var g = new Object();
 g.scale = 5.0;
 // g.engine = ...;
 g.entities = [];
+// g.named.ui = null;
 g.fx = new Object();
 g.fx.data = new Object();
 g.game = new Phaser.Game(config);
@@ -68,6 +67,8 @@ function create ()
         g.fx.data[assetTuple[0]] = Util.finishLoadAsset(assetTuple[1]);
     }
 
+    g.named.player = new Player(fxData=g.fx.data.bluesquare, pos=MakeVec2(100, 100));
+
     g.named.boomie = new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
     g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();
     
@@ -86,6 +87,8 @@ function update (time, delta)
 {
     g.worldClock.update(time, delta);
 
+    g.named.player.update(time, delta);
+
     for (var entity of g.entities) {
         entity.update(time, delta);
     }
@@ -97,13 +100,13 @@ function onMouseDown (pointer)
     if (!pathInProgress)
     {
         pathInProgress = true;
-        drawnPathPoints = [new Vec2(pointer.x, pointer.y)];
+        drawnPathPoints = [MakeVec2(pointer.x, pointer.y)];
         refreshDrawnPolygon();
     }
     else
     {
         // TODO make this happen as you click and drag
-        drawnPathPoints.push(new Vec2(pointer.x, pointer.y));
+        drawnPathPoints.push(MakeVec2(pointer.x, pointer.y));
         refreshDrawnPolygon();
         console.log(drawnPathPoints);
     }

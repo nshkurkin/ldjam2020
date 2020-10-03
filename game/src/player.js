@@ -5,10 +5,9 @@
 // g.entities : list<EntityObject>
 // g.fx.data.player : FxObject
 
-// This is the base class for the boomerang.
 class Player 
 {
-    constructor(
+    constructor (
         /* FxObject */ fxData = null, 
         /* Phaser.Math.Vector2 */ pos = null)
     {
@@ -19,20 +18,49 @@ class Player
         //    fxData = g.fx.data.player;
         //}
         
-        //this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
-        //this.gameObj.anims.play('d:down', true);
+        this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
+        this.gameObj.setCollideWorldBounds(true);
+        // todo change with new sheets
+        this.gameObj.anims.play('static', true);
 
-        //g.entities.push(this);
+        this.velocity = 100;
+
+
+        this.leftKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.rightKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.upKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.downKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     }
 
-    update(time, delta)
+    update (time, delta)
     {
-        // @TODO
+        var direction = MakeVec2(0, 0);
+
+        if (this.leftKey.isDown)
+        {
+            direction.x = -1;
+        }
+        else if (this.rightKey.isDown)
+        {
+            direction.x = 1;
+        }
+
+        if (this.upKey.isDown)
+        {
+            direction.y = -1;
+        }
+        else if (this.downKey.isDown)
+        {
+            direction.y = 1;
+        }
+
+        this.gameObj.setVelocity(direction.x * this.velocity, direction.y * this.velocity);
     }
 
     destroy()
     {
         // @TODO
+        this.gameObj.destroy()
     }
 
 }

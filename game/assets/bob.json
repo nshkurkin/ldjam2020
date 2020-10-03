@@ -1,0 +1,12 @@
+{
+    "assetPath" : "assets/pc_skins.png",
+    "id": "bob",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 10, "y": 15 },
+    "keyFrames" : [
+        { "key" : "dir:dr",  "start": 0, "len": 1, "rate": 20},
+        { "key" : "dir:ur",  "start": 1, "len": 1, "rate": 20},
+        { "key" : "dir:ul",  "start": 2, "len": 1, "rate": 20},
+        { "key" : "dir:dl",  "start": 3, "len": 1, "rate": 20}
+    ]
+}

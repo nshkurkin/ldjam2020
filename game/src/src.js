@@ -48,6 +48,15 @@ function preload ()
 
     this.load.json('boomerang-desc', 'assets/simple_boomerang.json');
     this.load.spritesheet('boomerang', 'assets/simple_boomerang.png', { frameWidth: 10, frameHeight: 10 });
+
+    this.load.json('bob-desc', 'assets/bob.json');
+    this.load.spritesheet('bob', 'assets/pc_skins.png', { frameWidth: 10, frameHeight: 15 });
+    this.load.json('autumn-desc', 'assets/autumn.json');
+    this.load.spritesheet('autumn', 'assets/pc_skins.png', { frameWidth: 10, frameHeight: 15 });
+    this.load.json('rudy-desc', 'assets/rudy.json');
+    this.load.spritesheet('rudy', 'assets/pc_skins.png', { frameWidth: 10, frameHeight: 15 });
+    this.load.json('henry-desc', 'assets/henry.json');
+    this.load.spritesheet('henry', 'assets/pc_skins.png', { frameWidth: 10, frameHeight: 15 });
 }
 
 function create ()

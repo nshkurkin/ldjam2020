@@ -1,0 +1,12 @@
+{
+    "assetPath" : "assets/pc_skins.png",
+    "id": "henry",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 10, "y": 10 },
+    "keyFrames" : [
+        { "key" : "dir:dr",  "start": 15, "len": 1, "rate": 20},
+        { "key" : "dir:ur",  "start": 16, "len": 1, "rate": 20},
+        { "key" : "dir:ul",  "start": 17, "len": 1, "rate": 20},
+        { "key" : "dir:dl",  "start": 18, "len": 1, "rate": 20}
+    ]
+}

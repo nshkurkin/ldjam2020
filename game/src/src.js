@@ -24,7 +24,7 @@ var drawnPathPoints = [];
 var pathInProgress = false;
 
 var g = new Object();
-g.scale = 5.0;
+g.scale = 3.0;
 // g.engine = ...;
 g.entities = [];
 // g.named.ui = null;
@@ -59,8 +59,9 @@ function preload ()
         this.load.spritesheet(assetTuple[0], 'assets/' + assetTuple[3], assetTuple[4]);
     }
 
-    //this.load.image("WorldTiles", "assets/static_floors.png");
-    //this.load.tilemapTiledJSON("World", "assets/first_level.json");
+    // World tileset
+    this.load.image("static_floors", "assets/static_floors.png");
+    this.load.tilemapTiledJSON("world-tiles-desc", "assets/first_level.json");
 }
 
 function create ()
@@ -70,14 +71,15 @@ function create ()
         g.fx.data[assetTuple[0]] = Util.finishLoadAsset(assetTuple[1]);
     }
 
-    //g.named.world = this.add.tilemap("World");
-    //var tileset = g.named.world.addTilesetImage("WorldTiles", "WorldTiles");
-    //g.named.background = g.named.world.createStaticLayer("World", tileset);
+    // Finish loading the world tileset.
+    g.named.world = this.add.tilemap('world-tiles-desc');
+    var worldTileset = g.named.world.addTilesetImage("static_floors", "static_floors");
+    g.named.background = g.named.world.createStaticLayer("ground-layer", worldTileset, 0, 0).setScale(g.scale);
 
-    g.named.player = new Player(fxData=g.fx.data.bob, pos=MakeVec2(100, 100));
+    g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 100));
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];
 
-    g.named.boomie = new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
+    g.named.boomie = new Boomerang(g.fx.data.boomerang, MakeVec2(350, 400));
     g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();
     
     // @TEMP

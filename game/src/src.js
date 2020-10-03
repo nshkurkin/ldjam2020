@@ -20,73 +20,35 @@ var config = {
 
 var Vec2 = Phaser.Math.Vector2;
 
-// chris was here - remove dis
-
-var player;
-var explosion;
-var exampleBullet;
-var cursors;
-var spaceBar;
-var gScale = 5;
-var engine;
-
 // UI for drawing the boomerang path
 var drawnPathPolygon = null;
 var drawnPathPoints = [];
 var pathInProgress = false;
 
+var g = new Object();
+g.scale = 5.0;
+// g.engine = ...;
+g.entities = [];
+g.fx = new Object();
+g.fx.data = new Object();
 
-var entities = []
-
-var fx = new Object();
-fx.data = new Object();
-
-var game = new Phaser.Game(config);
+g.game = new Phaser.Game(config);
 
 function preload ()
 {
-    engine = this
+    g.engine = this
 
     this.load.json('boomerang-desc', 'assets/simple_boomerang.json');
     this.load.spritesheet('boomerang', 'assets/simple_boomerang.png', { frameWidth: 10, frameHeight: 10 });
 }
 
-function finishLoadAsset (phaser, json_name)
-{
-    var data = phaser.cache.json.get(json_name);
-
-    if (data.type == 'sprite-sheet')
-    {
-        for (var keyFrame of data.keyFrames) {
-            if (keyFrame.len > 1) {
-                phaser.anims.create({
-                    key: keyFrame.key,
-                    frames: phaser.anims.generateFrameNumbers(data.id, 
-                            { start:  keyFrame.start, end: keyFrame.start + keyFrame.len - 1 }),
-                    frameRate: keyFrame.rate,
-                    repeat: keyFrame.repeat
-                });
-            }
-            else {
-                phaser.anims.create({
-                    key: keyFrame.key,
-                    frames: [ { key: data.id, frame: keyFrame.start } ],
-                    frameRate: keyFrame.rate
-                });
-            }
-        }
-    }
-
-    return data;
-}
-
 function create ()
 {
-    fx.data.boomerang = finishLoadAsset(this, 'boomerang-desc');
+    g.fx.data.boomerang = Util.finishLoadAsset('boomerang-desc');
 
-    var boomerang = this.physics.add.sprite(350, 400, fx.data.boomerang.id).setScale(gScale);
-    boomerang.anims.play('spin', true);
-
+    var boomie = new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
+    boomie.positionProvider = function() { return g.game.input.mousePointer; };
+    
     drawnPathPolygon = this.add.polygon(100, 100, [new Vec2(0, 0)]);
     drawnPathPolygon.setStrokeStyle(6, 0xefc53f);
     drawnPathPolygon.closePath = false;
@@ -98,7 +60,7 @@ function create ()
 
 function update ()
 {
-    for (var entity of entities) {
+    for (var entity of g.entities) {
         entity.update();
     }
 }

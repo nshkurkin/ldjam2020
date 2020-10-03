@@ -21,15 +21,15 @@ class Boomerang
         
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
         this.gameObj.anims.play('spin', true);
-        this.positionProvider = function() { return null; };
+        this.positionProvider = Boomerang.disableLerpFunc();
         
         g.entities.push(this);
     }
 
-    update()
+    update(time, delta)
     {
         // Lerp to the provided position.
-        var desiredPos = this.positionProvider();
+        var desiredPos = this.positionProvider(time, delta);
         if (desiredPos != null) {
             var u = 0.7;
             this.gameObj.x = (u) * this.gameObj.x + (1.0 - u) * desiredPos.x;
@@ -40,6 +40,49 @@ class Boomerang
     destroy()
     {
         // @TODO
+    }
+
+    static disableLerpFunc()
+    {
+        return function(time, delta) { return null; };
+    }
+
+    static lerpToMouseFunc()
+    {
+        return function(time, delta) { return g.game.input.mousePointer; };
+    }
+
+    static lerpAlongPerimeter(
+        polygon /* Phaser.GameObjects.Polygon */,
+        speed /* float, pixels-per-second */)
+    {
+        // If there there are no points, then early exit.
+        if (polygon.geom.points.length <= 1) {
+            return Boomerang.disableLerpFunc();
+        }
+        
+        var stepRate = 10.0 /* pixels */;
+        var samples = Phaser.Geom.Polygon.GetPoints(polygon.geom, /* quantity */ 0, stepRate);
+        // NOTE: clock time in milliseconds
+        var timeElapsed = 0;
+        // @FIXME: Not sure why "50", but it makes the timescale behave more like expected.
+        var duration = 1000.0 * (samples.length * stepRate) / (speed * 50);
+        return function(time, delta) {
+            // @FIXME: If you run this really slowly, the boomerang jumps back and forth.
+            var u = Math.min(timeElapsed / duration, 1.0);
+            var whichSegment = Math.floor(u * (samples.length - 1));
+            
+            var a = samples[whichSegment];
+            if (whichSegment >= samples.length - 1) {
+                return a;
+            }
+            var b = samples[whichSegment + 1];
+            var subU = (u * samples.length) % 1;
+
+            timeElapsed += delta;
+
+            return Util.lerpVec2(subU, a, b);
+        };
     }
 
 }

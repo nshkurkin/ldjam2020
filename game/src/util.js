@@ -33,6 +33,11 @@ class Util {
     
         return data;
     }
+
+    static lerpVec2(u, a, b)
+    {
+        return MakeVec2((1 - u) * a.x + (u) * b.x, (1 - u) * a.y + (u) * b.y);
+    }
 }
 
 function MakeVec2(x, y) {

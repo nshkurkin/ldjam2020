@@ -31,8 +31,10 @@ g.scale = 5.0;
 g.entities = [];
 g.fx = new Object();
 g.fx.data = new Object();
-
 g.game = new Phaser.Game(config);
+// g.worldClock = ...;
+
+g.named = new Object();
 
 function preload ()
 {
@@ -44,11 +46,11 @@ function preload ()
 
 function create ()
 {
+    g.worldClock = new Phaser.Time.Clock(this);
     g.fx.data.boomerang = Util.finishLoadAsset('boomerang-desc');
 
-    var boomie = new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
-    boomie.positionProvider = function() { return g.game.input.mousePointer; };
-    
+    g.named.boomie = new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
+    g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();
     
 
     this.input.on('pointermove', onMouseMove);
@@ -56,10 +58,12 @@ function create ()
     this.input.on('pointerup', onMouseUp);
 }
 
-function update ()
+function update (time, delta)
 {
+    g.worldClock.update(time, delta);
+
     for (var entity of g.entities) {
-        entity.update();
+        entity.update(time, delta);
     }
 }
 
@@ -102,4 +106,6 @@ function refreshDrawnPolygon ()
     drawnPathPolygon.setClosePath(false);
     drawnPathPolygon.displayOriginX = 0.5;
     drawnPathPolygon.displayOriginY = 0.5;
+
+    g.named.boomie.positionProvider = Boomerang.lerpAlongPerimeter(drawnPathPolygon, /* speed */ 20);
 }

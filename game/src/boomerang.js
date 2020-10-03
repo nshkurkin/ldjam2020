@@ -61,7 +61,7 @@ class Boomerang
             return Boomerang.disableLerpFunc();
         }
         
-        var stepRate = 10.0 /* pixels */;
+        var stepRate = 10.0 /* pixels-per-segment */;
         var samples = Phaser.Geom.Polygon.GetPoints(polygon.geom, /* quantity */ 0, stepRate);
         // NOTE: clock time in milliseconds
         var timeElapsed = 0;

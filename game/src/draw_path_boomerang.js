@@ -29,6 +29,7 @@ class DrawPathBoomerang
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
         this.gameObj.anims.play(fxData.id + ':' + 'spin', true);
         // TODO do a polygon like the real boomerang
+        this.polygon = new PathPolygon(pos);
 
         this.speed = 200; 
         this.currentDirection = dir;
@@ -53,6 +54,7 @@ class DrawPathBoomerang
             this.currentPath.push(pos);
         }
         // todo draw the path with a polygon
+        this.polygon.updatePathPoints([...this.currentPath, pos]);
     }
 
     // returns true if the path can create a loop now
@@ -71,6 +73,9 @@ class DrawPathBoomerang
 
     destroy()
     {
+        this.polygon.destroy();
+        this.polygon = null;
+
         const DURATION = 200;
         g.engine.tweens.add({
             targets: this.gameObj,

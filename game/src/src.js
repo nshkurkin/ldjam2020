@@ -36,48 +36,37 @@ g.game = new Phaser.Game(config);
 
 g.named = new Object();
 
+g.spritesheetAssetList = [
+    // Temp colored squares to be stand-ins for other stuff
+    ["blacksquare",     "blacksquare-desc", "blacksquare.json", "blacksquare.png", { frameWidth: 16, frameHeight: 16 }],
+    ["bluesquare",      "bluesquare-desc",  "bluesquare.json",  "bluesquare.png",  { frameWidth: 16, frameHeight: 16 }],
+    ["redsquare",       "redsquare-desc",   "redsquare.json",   "redsquare.png",   { frameWidth: 16, frameHeight: 16 }],
+    ["whitesquare",     "whitesquare-desc", "whitesquare.json", "whitesquare.png", { frameWidth: 16, frameHeight: 16 }],
+
+    ["boomerang", "boomerang-desc", "simple_boomerang.json", "simple_boomerang.png", { frameWidth: 10, frameHeight: 10 }],
+
+    ["bob",    "bob-desc",    "bob.json",    "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
+    ["autumn", "autumn-desc", "autumn.json", "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
+    ["rudy",   "rudy-desc",   "rudy.json",   "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
+    ["henry",  "henry-desc",  "henry.json",  "pc_skins.png", { frameWidth: 10, frameHeight: 15 }]
+]
+
 function preload ()
 {
     g.engine = this
 
-    // temp colored squares to be stand-ins for other stuff
-    this.load.json('blacksquare-desc', 'assets/blacksquare.json');
-    this.load.spritesheet('blacksquare', 'assets/blacksquare.png', { frameWidth: 16, frameHeight: 16 });
-    this.load.json('bluesquare-desc', 'assets/bluesquare.json');
-    this.load.spritesheet('bluesquare', 'assets/bluesquare.png', { frameWidth: 16, frameHeight: 16 });
-    this.load.json('redsquare-desc', 'assets/redsquare.json');
-    this.load.spritesheet('redsquare', 'assets/redsquare.png', { frameWidth: 16, frameHeight: 16 });
-    this.load.json('whitesquare-desc', 'assets/whitesquare.json');
-    this.load.spritesheet('whitesquare', 'assets/whitesquare.png', { frameWidth: 16, frameHeight: 16 });
-
-
-    this.load.json('boomerang-desc', 'assets/simple_boomerang.json');
-    this.load.spritesheet('boomerang', 'assets/simple_boomerang.png', { frameWidth: 10, frameHeight: 10 });
-
-    this.load.json('bob-desc', 'assets/bob.json');
-    this.load.spritesheet('bob', 'assets/pc_skins.png', { frameWidth: 10, frameHeight: 15 });
-    this.load.json('autumn-desc', 'assets/autumn.json');
-    this.load.spritesheet('autumn', 'assets/pc_skins.png', { frameWidth: 10, frameHeight: 15 });
-    this.load.json('rudy-desc', 'assets/rudy.json');
-    this.load.spritesheet('rudy', 'assets/pc_skins.png', { frameWidth: 10, frameHeight: 15 });
-    this.load.json('henry-desc', 'assets/henry.json');
-    this.load.spritesheet('henry', 'assets/pc_skins.png', { frameWidth: 10, frameHeight: 15 });
+    for (var assetTuple of g.spritesheetAssetList) {
+        this.load.json(assetTuple[1], 'assets/' + assetTuple[2]);
+        this.load.spritesheet(assetTuple[0], 'assets/' + assetTuple[3], assetTuple[4]);
+    }
 }
 
 function create ()
 {
     g.worldClock = new Phaser.Time.Clock(this);
-    g.fx.data.boomerang = Util.finishLoadAsset('boomerang-desc');
-
-    g.fx.data.bob = Util.finishLoadAsset('bob-desc');
-    g.fx.data.autumn = Util.finishLoadAsset('autumn-desc');
-    g.fx.data.rudy = Util.finishLoadAsset('rudy-desc');
-    g.fx.data.henry = Util.finishLoadAsset('henry-desc');
-
-    g.fx.data.blacksquare = Util.finishLoadAsset('blacksquare-desc');
-    g.fx.data.bluesquare = Util.finishLoadAsset('bluesquare-desc');
-    g.fx.data.redsquare = Util.finishLoadAsset('redsquare-desc');
-    g.fx.data.whitesquare = Util.finishLoadAsset('whitesquare-desc');
+    for (var assetTuple of g.spritesheetAssetList) {
+        g.fx.data[assetTuple[0]] = Util.finishLoadAsset(assetTuple[1]);
+    }
 
     g.named.boomie = new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
     g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();

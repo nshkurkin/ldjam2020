@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 720,
     pixelArt: true,
     antialias: false,
     physics: {
@@ -24,7 +24,7 @@ var drawnPathPoints = [];
 var pathInProgress = false;
 
 var g = new Object();
-g.scale = 3.0;
+g.scale = 4.0;
 // g.engine = ...;
 g.entities = [];
 // g.named.ui = null;

@@ -14,7 +14,7 @@ class Util {
             for (var keyFrame of data.keyFrames) {
                 if (keyFrame.len > 1) {
                     phaser.anims.create({
-                        key: keyFrame.key,
+                        key: data.id + ":" + keyFrame.key,
                         frames: phaser.anims.generateFrameNumbers(data.id, 
                                 { start:  keyFrame.start, end: keyFrame.start + keyFrame.len - 1 }),
                         frameRate: keyFrame.rate,
@@ -23,7 +23,7 @@ class Util {
                 }
                 else {
                     phaser.anims.create({
-                        key: keyFrame.key,
+                        key: data.id + ":" + keyFrame.key,
                         frames: [ { key: data.id, frame: keyFrame.start } ],
                         frameRate: keyFrame.rate
                     });

@@ -20,7 +20,7 @@ class Boomerang
         }
         
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
-        this.gameObj.anims.play('spin', true);
+        this.gameObj.anims.play(fxData.id + ':' + 'spin', true);
         this.positionProvider = Boomerang.disableLerpFunc();
         
         g.entities.push(this);

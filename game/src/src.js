@@ -63,10 +63,19 @@ function create ()
 {
     g.worldClock = new Phaser.Time.Clock(this);
     g.fx.data.boomerang = Util.finishLoadAsset('boomerang-desc');
+    g.fx.data.bob = Util.finishLoadAsset('bob-desc');
+    g.fx.data.autumn = Util.finishLoadAsset('autumn-desc');
+    g.fx.data.rudy = Util.finishLoadAsset('rudy-desc');
+    g.fx.data.henry = Util.finishLoadAsset('henry-desc');
 
     g.named.boomie = new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
     g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();
     
+    // @TEMP
+    g.engine.physics.add.sprite(100, 100, g.fx.data.bob.id).setScale(g.scale).anims.play("bob:dir:dr", true);
+    g.engine.physics.add.sprite(200, 100, g.fx.data.autumn.id).setScale(g.scale).anims.play("autumn:dir:dr", true);
+    g.engine.physics.add.sprite(300, 100, g.fx.data.rudy.id).setScale(g.scale).anims.play("rudy:dir:dr", true);
+    g.engine.physics.add.sprite(400, 100, g.fx.data.henry.id).setScale(g.scale).anims.play("henry:dir:dr", true);
 
     this.input.on('pointermove', onMouseMove);
     this.input.on('pointerdown', onMouseDown);

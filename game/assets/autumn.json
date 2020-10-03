@@ -1,0 +1,12 @@
+{
+    "assetPath" : "assets/pc_skins.png",
+    "id": "autumn",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 10, "y": 15 },
+    "keyFrames" : [
+        { "key" : "dir:dr",  "start": 10, "len": 1, "rate": 20},
+        { "key" : "dir:ur",  "start": 11, "len": 1, "rate": 20},
+        { "key" : "dir:ul",  "start": 12, "len": 1, "rate": 20},
+        { "key" : "dir:dl",  "start": 13, "len": 1, "rate": 20}
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "assetPath" : "assets/pc_skins.png",
+    "id": "rudy",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 10, "y": 15 },
+    "keyFrames" : [
+        { "key" : "dir:dr",  "start": 5, "len": 1, "rate": 20},
+        { "key" : "dir:ur",  "start": 6, "len": 1, "rate": 20},
+        { "key" : "dir:ul",  "start": 7, "len": 1, "rate": 20},
+        { "key" : "dir:dl",  "start": 8, "len": 1, "rate": 20}
+    ]
+}

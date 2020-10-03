@@ -44,3 +44,27 @@ function MakeVec2(x, y) {
     return new Phaser.Math.Vector2(x, y);
 }
 
+class KeyState {
+    constructor(key)
+    {
+        this.key = key;
+        this.pendingRelease = key.isDown;
+    }
+
+    keystroke()
+    {
+        var stroke = false;
+        
+        if (!this.key.isDown && this.pendingRelease)
+        {
+            this.pendingRelease = false;
+        }
+
+        if (this.key.isDown && !this.pendingRelease)
+        {
+            stroke = true;
+            this.pendingRelease = true;
+        }
+        return stroke;
+    }
+}

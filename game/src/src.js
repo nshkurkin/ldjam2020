@@ -49,9 +49,7 @@ function create ()
     var boomie = new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
     boomie.positionProvider = function() { return g.game.input.mousePointer; };
     
-    drawnPathPolygon = this.add.polygon(100, 100, [new Vec2(0, 0)]);
-    drawnPathPolygon.setStrokeStyle(6, 0xefc53f);
-    drawnPathPolygon.closePath = false;
+    
 
     this.input.on('pointermove', onMouseMove);
     this.input.on('pointerdown', onMouseDown);
@@ -72,13 +70,13 @@ function onMouseDown (pointer)
     {
         pathInProgress = true;
         drawnPathPoints = [new Vec2(pointer.x, pointer.y)];
-        drawnPathPolygon.setData(drawnPathPoints);
+        refreshDrawnPolygon();
     }
     else
     {
         // TODO make this happen as you click and drag
         drawnPathPoints.push(new Vec2(pointer.x, pointer.y));
-        drawnPathPolygon.setData(drawnPathPoints);
+        refreshDrawnPolygon();
         console.log(drawnPathPoints);
     }
 }
@@ -91,4 +89,15 @@ function onMouseUp (pointer)
 function onMouseMove (pointer)
 {
 
+}
+
+function refreshDrawnPolygon ()
+{
+    // delete and re add polygon. i cry every time
+    if (null != drawnPathPolygon) {
+        drawnPathPolygon.destroy();
+    }
+    drawnPathPolygon = g.engine.add.polygon(0, 0, drawnPathPoints, 0xFF00FF);
+    drawnPathPolygon.setStrokeStyle(6, 0xefc53f);
+    //drawnPathPolygon.setClosePath(false);
 }

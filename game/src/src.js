@@ -58,6 +58,9 @@ function preload ()
         this.load.json(assetTuple[1], 'assets/' + assetTuple[2]);
         this.load.spritesheet(assetTuple[0], 'assets/' + assetTuple[3], assetTuple[4]);
     }
+
+    //this.load.image("WorldTiles", "assets/static_floors.png");
+    //this.load.tilemapTiledJSON("World", "assets/first_level.json");
 }
 
 function create ()
@@ -66,6 +69,10 @@ function create ()
     for (var assetTuple of g.spritesheetAssetList) {
         g.fx.data[assetTuple[0]] = Util.finishLoadAsset(assetTuple[1]);
     }
+
+    //g.named.world = this.add.tilemap("World");
+    //var tileset = g.named.world.addTilesetImage("WorldTiles", "WorldTiles");
+    //g.named.background = g.named.world.createStaticLayer("World", tileset);
 
     g.named.player = new Player(fxData=g.fx.data.bob, pos=MakeVec2(100, 100));
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];

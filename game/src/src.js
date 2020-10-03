@@ -19,26 +19,18 @@ var config = {
     }
 };
 
-// chris was here - remove dis
+var g = new Object();
+g.scale = 5.0;
+// g.engine = ...;
+g.entities = [];
+g.fx = new Object();
+g.fx.data = new Object();
 
-var player;
-var explosion;
-var exampleBullet;
-var cursors;
-var spaceBar;
-var gScale = 5;
-var engine;
-
-var entities = []
-
-var fx = new Object();
-fx.data = new Object();
-
-var game = new Phaser.Game(config);
+g.game = new Phaser.Game(config);
 
 function preload ()
 {
-    engine = this
+    g.engine = this
 
     this.load.json('boomerang-desc', 'assets/simple_boomerang.json');
     this.load.spritesheet('boomerang', 'assets/simple_boomerang.png', { frameWidth: 10, frameHeight: 10 });
@@ -75,15 +67,14 @@ function finishLoadAsset (phaser, json_name)
 
 function create ()
 {
-    fx.data.boomerang = finishLoadAsset(this, 'boomerang-desc');
+    g.fx.data.boomerang = finishLoadAsset(this, 'boomerang-desc');
 
-    var boomerang = this.physics.add.sprite(350, 400, fx.data.boomerang.id).setScale(gScale);
-    boomerang.anims.play('spin', true);
+    new Boomerang(fxData=g.fx.data.boomerang, pos=MakeVec2(350, 400));
 }
 
 function update ()
 {
-    for (var entity of entities) {
+    for (var entity of g.entities) {
         entity.update();
     }
 }

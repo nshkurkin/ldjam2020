@@ -1,0 +1,14 @@
+{ "columns":8,
+ "image":"static_floors.png",
+ "imageheight":100,
+ "imagewidth":80,
+ "margin":0,
+ "name":"static_floors",
+ "spacing":0,
+ "tilecount":80,
+ "tiledversion":"1.4.2",
+ "tileheight":10,
+ "tilewidth":10,
+ "type":"tileset",
+ "version":1.4
+}

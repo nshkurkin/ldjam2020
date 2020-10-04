@@ -39,6 +39,7 @@ class Fire {
         g.named.fires.add(this.gameObj);
         // todo fire on top of most things?
         //this.gameObj.depth = g.layers.interactables;
+        var thisRef = this;
         this.gameObj.getOwner = function() { return  thisRef; };
         
         this.setActive(false);
@@ -67,6 +68,7 @@ class Fire {
 
     setActive (value)
     {
+        value = value || false; // There is an undefined coming from somewhere...clean up
         this.isActive = value;
         this.gameObj.setAlpha(value ? 1 : 0);
         if (null !== this.changeStateCallback)
@@ -86,8 +88,18 @@ class Fire {
         this.gameObj.destroy();
     }
 
-    static onCollideFires (fire1, fire2)
+    static onCollideFires (fireObj1, fireObj2)
     {
-        console.log("fires collided!");
+        let fire1 = fireObj1.getOwner();
+        let fire2 = fireObj2.getOwner();
+        console.log("fires");
+        console.log(fire1);
+        console.log(fire2);
+        // if the fires have a different state, one of them is lit
+        if (fire1.getActive() !== fire2.getActive())
+        {
+            fire1.setActive(true);
+            fire2.setActive(true);
+        }
     }
 }

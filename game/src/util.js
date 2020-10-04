@@ -66,6 +66,11 @@ class Util {
         }
         return null;
     }
+
+    static withContext(callback, context)
+    {
+        return function (...args) { callback.call(context, ...args) };
+    }
 }
 
 function MakeVec2(x, y) {

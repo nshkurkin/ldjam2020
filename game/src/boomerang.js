@@ -29,8 +29,6 @@ class Boomerang
         // flammable boomie
         let followOffset = MakeVec2(0, this.gameObj.height * 0.1).scale(g.scale);
         this.fire = new Fire(g.fx.data.fire, pos, this.gameObj, followOffset);
-        // TODO REMOVE
-        this.fire.setActive(true);
         
         g.entities.push(this);
     }

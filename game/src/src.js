@@ -219,7 +219,7 @@ function create ()
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.playeronlyBlockers, null, null, g.engine);
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.wallBlockers, null, null, g.engine);
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.roomTransitions, g.named.player.onCollideRoomTransition, null, g.named.player);
-    g.engine.physics.add.collider(g.named.fires, g.named.fires, Fire.onCollideFires, null, g.engine);
+    g.engine.physics.add.overlap(g.named.fires, g.named.fires, Fire.onCollideFires, null, g.engine);
     
     this.cameras.main.setBounds(0, 0, 5120, 5120);
 

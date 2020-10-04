@@ -1,0 +1,11 @@
+{
+    "assetPath" : "assets/box.png",
+    "id": "box",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 10, "y": 10 },
+    "keyFrames" : [
+        { "key" : "static",  "start": 0, "len": 1, "rate": 5 },
+        { "key" : "burn",    "start": 1, "len": 3, "rate": 3, "repeat": 0},
+        { "key" : "destroy", "start": 4, "len": 4, "rate": 10, "repeat": 0}
+    ]
+}

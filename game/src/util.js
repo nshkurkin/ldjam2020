@@ -22,7 +22,8 @@ class Util {
                         key: data.id + ":" + keyFrame.key,
                         frames: frames,
                         frameRate: keyFrame.rate,
-                        repeat: keyFrame.repeat
+                        repeat: keyFrame.repeat,
+                        yoyo: keyFrame.yoyo,
                     });
                 }
                 else {

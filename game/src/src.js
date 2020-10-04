@@ -1,3 +1,10 @@
+
+var g = new Object();
+g.debug = true;
+g.scale = 4.0;
+g.fx = new Object();
+g.fx.data = new Object();
+
 var config = {
     type: Phaser.AUTO,
     width: 1280,
@@ -8,7 +15,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true
+            debug: g.debug
         }
     },
     scene: {
@@ -18,17 +25,13 @@ var config = {
     }
 };
 
-var g = new Object();
-g.scale = 4.0;
-// g.engine = ...;
-g.entities = [];
-// g.named.ui = null;
-g.fx = new Object();
-g.fx.data = new Object();
 g.game = new Phaser.Game(config);
 // g.worldClock = ...;
-
+// g.engine = ...;
 g.named = new Object();
+// g.named.ui = null;
+g.entities = [];
+
 
 g.spritesheetAssetList = [
     // Temp colored squares to be stand-ins for other stuff
@@ -74,9 +77,11 @@ function create ()
 
     // @TEMP: Debug render collisions
     g.named.background_debug_gfx = this.add.graphics();
-    drawCollisionShapes(g.named.background_debug_gfx, g.named.background, g.scale);
+    if (g.debug) {
+        drawCollisionShapes(g.named.background_debug_gfx, g.named.background, g.scale);
+    }
 
-    g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 100));
+    g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 400));
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.background, null, null, g.engine);
 
@@ -84,10 +89,9 @@ function create ()
     g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();
     
     // @TEMP
-    //g.engine.physics.add.sprite(100, 100, g.fx.data.bob.id).setScale(g.scale).anims.play("bob:dir:dr", true);
-    g.engine.physics.add.sprite(200, 100, g.fx.data.autumn.id).setScale(g.scale).anims.play("autumn:dir:dr", true);
-    g.engine.physics.add.sprite(300, 100, g.fx.data.rudy.id).setScale(g.scale).anims.play("rudy:dir:dr", true);
-    g.engine.physics.add.sprite(400, 100, g.fx.data.henry.id).setScale(g.scale).anims.play("henry:dir:dr", true);
+    g.engine.physics.add.sprite(100, 200, g.fx.data.autumn.id).setScale(g.scale).anims.play("autumn:dir:dr", true);
+    g.engine.physics.add.sprite(200, 200, g.fx.data.rudy.id).setScale(g.scale).anims.play("rudy:dir:dr", true);
+    g.engine.physics.add.sprite(300, 200, g.fx.data.henry.id).setScale(g.scale).anims.play("henry:dir:dr", true);
 
     this.input.on('pointermove', onMouseMove);
     this.input.on('pointerdown', onMouseDown);

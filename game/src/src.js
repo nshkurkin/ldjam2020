@@ -35,7 +35,7 @@ g.game = new Phaser.Game(config);
 g.named = new Object();
 // g.named.ui = null;
 g.entities = [];
-
+g.byName = new Object();
 
 g.spritesheetAssetList = [
     // Temp colored squares to be stand-ins for other stuff
@@ -52,7 +52,7 @@ g.spritesheetAssetList = [
     ["henry",  "henry-desc",  "henry.json",  "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
 
     ["basic_switch", "basic-switch-desc", "basic_switch.json", "basic_switch.png", { frameWidth: 10, frameHeight: 10 }],
-    ["door", "door-desc", "door.json", "door.png", { frameWidth: 5, frameHeight: 15 }],
+    ["door", "door-desc", "door.json", "door.png", { frameWidth: 10, frameHeight: 30 }],
 ];
 
 g.interactableClassList = new Object();
@@ -174,9 +174,24 @@ function create ()
         let sheetName = theSet.name;
         let frameIdx = (gid - theSet.firstgid);
 
-        var interactable = new g.interactableClassList[sheetName](g.fx.data[sheetName]);
-        interactable.gameObj.setPosition(desc.x * g.scale + g.scale * interactable.gameObj.width/2.0, desc.y * g.scale - g.scale *  interactable.gameObj.height/2.0);
+        // Extract out the custom data.
+        var custData = new Object();
+        if (desc.properties)
+        {    
+            for (var entry of desc.properties) {
+                custData[entry.name] = entry.value;
+            }
+        }
+        var interactable = new g.interactableClassList[sheetName](g.fx.data[sheetName], /* pos */ null, custData);
+        interactable.gameObj.setPosition(
+                desc.x * g.scale + g.scale * interactable.gameObj.width/2.0, 
+                desc.y * g.scale - g.scale *  interactable.gameObj.height/2.0);
         g.named.interactables.add(interactable.gameObj);
+
+        // Put our object into a global name list for later lookup.
+        if (desc.name != "") {
+            g.byName[desc.name] = interactable;
+        }
     }
 
     g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 400));

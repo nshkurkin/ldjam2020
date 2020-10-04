@@ -2,7 +2,8 @@
 class Door {
     constructor(
         /* FxObject */ fxData = null, 
-        /* Phaser.Math.Vector2 */ pos = null)
+        /* Phaser.Math.Vector2 */ pos = null,
+        /* Object */ custData = null)
     {
         if (pos == null) {
             pos = MakeVec2(0, 0);
@@ -12,19 +13,27 @@ class Door {
         }
         
         this.fxData = fxData;
+        this.custData = custData;
+
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
         this.gameObj.depth = g.layers.interactables;
         var thisRef = this;
         this.gameObj.getOwner = function() { return  thisRef; };
-        this.open = false;
-        this.setOpen(false);
+        if (custData) {
+            this.open = custData.open;
+        }
+        this.setOpen(this.open);
 
         g.entities.push(this);
     }
 
     tryActivate(instigator)
     {
-        // Do nothing
+        if (instigator.prototype instanceof Boomerang) {
+            return;
+        }
+
+        this.setOpen(!this.open);
     }
 
     setOpen(open)
@@ -46,5 +55,15 @@ class Door {
             }
         }
         this.open = open;
+    }
+
+    update(time, delta)
+    {
+        // TODO
+    }
+
+    destroy()
+    {
+        // TODO
     }
 }

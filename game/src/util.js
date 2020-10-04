@@ -43,6 +43,24 @@ class Util {
     {
         return MakeVec2(gameObj.x, gameObj.y);
     }
+
+    // gets the value of a TiledObject custom property called propertyName
+    static getTiledProperty(tiledObject, propertyName)
+    {
+        if (!("properties" in tiledObject))
+        {
+            return null;
+        }
+
+        for (var property of tiledObject.properties)
+        {
+            if (property.name === propertyName)
+            {
+                return property.value
+            }
+        }
+        return null;
+    }
 }
 
 function MakeVec2(x, y) {

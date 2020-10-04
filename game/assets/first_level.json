@@ -25,8 +25,85 @@
         {
          "draworder":"topdown",
          "id":2,
-         "name":"object-layer",
-         "objects":[],
+         "name":"playeronly-collision-layer",
+         "objects":[
+                {
+                 "height":7.33333333333333,
+                 "id":1,
+                 "name":"leftmost",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":57.3333333333333,
+                 "x":133,
+                 "y":62.3333333333333
+                }, 
+                {
+                 "height":19.3333333333333,
+                 "id":2,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":7,
+                 "x":183,
+                 "y":42.6666666666667
+                }, 
+                {
+                 "height":6.66666666666667,
+                 "id":3,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":67.3333333333333,
+                 "x":191.333333333333,
+                 "y":42.3333333333333
+                }, 
+                {
+                 "height":84,
+                 "id":4,
+                 "name":"rightmost",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":10,
+                 "x":260,
+                 "y":43
+                }, 
+                {
+                 "height":9.66666666666666,
+                 "id":5,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":68,
+                 "x":191,
+                 "y":117
+                }, 
+                {
+                 "height":29.3333333333333,
+                 "id":6,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8.66666666666666,
+                 "x":182.666666666667,
+                 "y":97.6666666666667
+                }, 
+                {
+                 "height":9.33333333333333,
+                 "id":7,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":48.6666666666667,
+                 "x":132.666666666667,
+                 "y":97.6666666666667
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -34,7 +111,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":1,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.2",

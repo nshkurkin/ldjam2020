@@ -74,6 +74,16 @@ function create ()
     var worldTileset = g.named.world.addTilesetImage("static_floors", "static_floors");
     g.named.background = g.named.world.createStaticLayer("ground-layer", worldTileset, 0, 0).setScale(g.scale);
     g.named.background.setCollisionFromCollisionGroup(true);
+    
+    // Generate player-only colliders from the map
+    g.named.playeronlyBlockers = this.physics.add.group({ allowGravity: false, immovable: true });
+    var blockers = g.named.world.getObjectLayer('playeronly-collision-layer')['objects'];
+    for (var blocker of blockers) {
+        var pos = MakeVec2(blocker.x * g.scale, blocker.y * g.scale);
+        var rect = new Phaser.GameObjects.Rectangle(this, 0, 0, blocker.width, blocker.height).setScale(g.scale);
+        rect.setPosition(pos.x + g.scale * rect.width/2.0, pos.y + g.scale * rect.height/2.0);
+        g.named.playeronlyBlockers.add(rect);
+    }
 
     // @TEMP: Debug render collisions
     g.named.background_debug_gfx = this.add.graphics();
@@ -84,6 +94,7 @@ function create ()
     g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 400));
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.background, null, null, g.engine);
+    g.engine.physics.add.collider(g.named.player.gameObj, g.named.playeronlyBlockers, null, null, g.engine);
 
     g.named.boomie = new Boomerang(g.fx.data.boomerang, MakeVec2(350, 400));
     g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();

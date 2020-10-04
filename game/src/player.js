@@ -28,7 +28,7 @@ class Player
         this.gameObj.depth = g.layers.player;
 
         this.velocity = 100;
-        this.faceDirection = MakeVec2(1, -1);
+        this.faceDirection = MakeVec2(1, 0);
         this.faceDirectionAnim = this.fxData.id + ':dir:dr';
         this.altSkins = [fxData];
         this.altSkinIdx = 0;
@@ -216,13 +216,20 @@ class Player
     
             if (this.swapSkinKey.keystroke())
             {
-                this.altSkinIdx = (this.altSkinIdx + 1) % this.altSkins.length;
-                this.fxData = this.altSkins[this.altSkinIdx];
-                this.playAnim(this.faceDirectionAnim);
+                this.swapSkin((this.altSkinIdx + 1) % this.altSkins.length);
             }
         }
 
         this.maybeMoveCamera();
+    }
+
+    swapSkin(skinIdx)
+    {
+        this.altSkinIdx = skinIdx;
+        this.fxData = this.altSkins[this.altSkinIdx];
+        let curDir = this.faceDirectionAnim.split(':').slice(1).join(':');
+        this.faceDirectionAnim = curDir;
+        this.playAnim(this.faceDirectionAnim);
     }
 
     maybeMoveCamera ()

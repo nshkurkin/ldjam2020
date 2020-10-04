@@ -29,7 +29,7 @@ class Door {
 
     tryActivate(instigator)
     {
-        if (instigator.prototype instanceof Boomerang) {
+        if (instigator instanceof Boomerang) {
             return;
         }
 
@@ -55,6 +55,12 @@ class Door {
             }
         }
         this.open = open;
+        if (this.open) {
+            g.named.wallBlockers.remove(this.gameObj);
+        }
+        else {
+            g.named.wallBlockers.add(this.gameObj);
+        }
     }
 
     update(time, delta)

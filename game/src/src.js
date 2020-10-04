@@ -208,7 +208,7 @@ function create ()
         }
     }
 
-    g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 400));
+    g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 350));
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];
     g.named.player.swapSkin(Math.floor(Math.min(Math.random(), 0.999) * g.named.player.altSkins.length));
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.background, null, null, g.engine);
@@ -225,7 +225,7 @@ function create ()
     //g.engine.physics.add.sprite(100, 200, g.fx.data.autumn.id).setScale(g.scale).anims.play("autumn:dir:dr", true);
     //g.engine.physics.add.sprite(200, 200, g.fx.data.rudy.id).setScale(g.scale).anims.play("rudy:dir:dr", true);
     //g.engine.physics.add.sprite(300, 200, g.fx.data.henry.id).setScale(g.scale).anims.play("henry:dir:dr", true);
-    g.engine.physics.add.sprite(300, 200, g.fx.data.fire.id).setScale(g.scale).anims.play("fire:flicker", true);
+    //g.engine.physics.add.sprite(300, 200, g.fx.data.fire.id).setScale(g.scale).anims.play("fire:flicker", true);
 
     this.input.on('pointermove', onMouseMove);
     this.input.on('pointerdown', onMouseDown);

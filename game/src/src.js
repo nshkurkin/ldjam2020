@@ -58,8 +58,8 @@ function preload ()
     }
 
     // World tileset
-    this.load.image("static_floors", "assets/static_floors.png");
-    this.load.tilemapTiledJSON("world-tiles-desc", "assets/first_level.json");
+    this.load.image("static_floors", "assets/map/static_floors.png");
+    this.load.tilemapTiledJSON("world-tiles-desc", "assets/map/first_level.json");
 }
 
 function create ()

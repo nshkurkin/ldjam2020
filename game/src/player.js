@@ -20,7 +20,7 @@ class Player
         
         this.fxData = fxData;
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
-        this.gameObj.setCollideWorldBounds(true);
+        //this.gameObj.setCollideWorldBounds(true);
         this.gameObj.body.offset.y = this.gameObj.body.height / 2.0;
         this.gameObj.body.setSize(
                 /* size */ this.gameObj.body.width, this.gameObj.body.height / 2.0, 
@@ -221,6 +221,23 @@ class Player
                 this.playAnim(this.faceDirectionAnim);
             }
         }
+
+        this.maybeMoveCamera();
+    }
+
+    maybeMoveCamera ()
+    {
+        let camWidth = g.engine.cameras.main.width;
+        let camHeight = g.engine.cameras.main.height;
+        let screenStartX = Math.floor(this.gameObj.x / camWidth) * camWidth;
+        let screenStartY = Math.floor(this.gameObj.y / camHeight) * camHeight;
+        //screenStartX = this.gameObj.x - 100;
+        //screenStartY = this.gameObj.y - 100;
+        // TODO REMOVE
+        //console.log("Player pos " + this.gameObj.x + " , " + this.gameObj.y);
+        //console.log("Camera moving to " + screenStartX + " , " + screenStartY);
+        //console.log("Current camera pos " + g.engine.cameras.main.scrollX + " , " + g.engine.cameras.main.scrollY);
+        g.engine.cameras.main.setPosition(-screenStartX, -screenStartY);
     }
 
     destroy()

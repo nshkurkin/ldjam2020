@@ -61,6 +61,38 @@ class Player
         }
     }
 
+    onCollideRoomTransition(thisGameObject, transitionObject)
+    {
+        // TODO 
+        console.log("This object, then transition object");
+        console.log(thisGameObject);
+        console.log(transitionObject);
+        console.log("left " + transitionObject.geom.left + " right " + transitionObject.geom.right);
+
+        let isVerticalDoor = transitionObject.geom.height >= transitionObject.geom.width;
+        let deltaX = this.gameObj.x - transitionObject.x;
+        let deltaY = this.gameObj.y - transitionObject.y;
+
+        let dest = transitionObject.getData("destination");
+        let destObj = g.named.roomTransitionsByName[dest];
+        if (!destObj)
+        {
+            console.log("Could not find transition destination: " + dest);
+            return;
+        }
+
+        if (isVerticalDoor)
+        {
+            // keep relative Y the same, move across on X
+            this.gameObj.setPosition(destObj.x - deltaX, destObj.y + deltaY);
+        }
+        else
+        {
+            // vice versa
+            this.gameObj.setPosition(destObj.x + deltaX, destObj.y - deltaY);
+        }
+    }
+
     update (time, delta)
     {
         var direction = MakeVec2(0, 0);

@@ -120,6 +120,7 @@ function create ()
 
     // Generate player-only colliders from the map
     g.named.roomTransitions = this.physics.add.group({ allowGravity: false, immovable: true });
+    g.named.roomTransitionsByName = {}
     var transitions = g.named.world.getObjectLayer('transition-marker-layer')['objects'];
     for (var transition of transitions) {
         console.log("TRANSITION");
@@ -127,13 +128,13 @@ function create ()
         var pos = MakeVec2(transition.x * g.scale, transition.y * g.scale);
         var rect = new Phaser.GameObjects.Rectangle(this, 0, 0, transition.width, transition.height).setScale(g.scale);
         rect.setPosition(pos.x + g.scale * rect.width/2.0, pos.y + g.scale * rect.height/2.0);
-        // TODO these probably need to be in a dictionary somewhere
         let name = transition.name;
         rect.setData("name", name);
         let destination = Util.getTiledProperty(transition, "destination");
         rect.setData("destination", destination);
         console.log("Destination of " + name + " is " + destination);
         g.named.roomTransitions.add(rect);
+        g.named.roomTransitionsByName[name] = rect;
     }
 
     // @TEMP: Debug render collisions
@@ -146,6 +147,7 @@ function create ()
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.background, null, null, g.engine);
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.playeronlyBlockers, null, null, g.engine);
+    g.engine.physics.add.collider(g.named.player.gameObj, g.named.roomTransitions, g.named.player.onCollideRoomTransition, null, g.named.player);
     
     //g.named.boomie = new Boomerang(g.fx.data.boomerang, MakeVec2(350, 400));
     //g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();

@@ -50,6 +50,17 @@ class Player
         this.gameObj.anims.play(this.fxData.id + ':' + keyframeId, true);
     }
 
+    detachBoomie()
+    {
+        if (null != this.activeBoomie)
+        {
+            this.activeBoomie.destroy();
+            this.activeBoomie = null;
+            this.activeBoomiePolygon.destroy();
+            this.activeBoomiePolygon = null;
+        }
+    }
+
     update (time, delta)
     {
         var direction = MakeVec2(0, 0);
@@ -78,10 +89,7 @@ class Player
             // If we already threw a boomie, retract him.
             if (null != this.activeBoomie)
             {
-                this.activeBoomie.destroy();
-                this.activeBoomie = null;
-                this.activeBoomiePolygon.destroy();
-                this.activeBoomiePolygon = null;
+                this.detachBoomie();
             }
             // If we were drawing a path, cancel it.
             else if (null != this.activeDrawPathBoomerang)
@@ -125,6 +133,11 @@ class Player
                 polygons.push(this.activeBoomiePolygon.polygonObj);
 
                 this.activeBoomie.setPositionProvider(Boomerang.lerpAlongPerimeter(BOOMIE_SPEED, true, ...polygons));
+                var thisRef = this;
+                g.engine.physics.add.collider(this.activeBoomie.gameObj, g.named.wallBlockers, function() {
+                    console.log("Boomie hit a wall!");
+                    thisRef.detachBoomie();
+                }, null, g.engine);
 
                 this.activeDrawPathBoomerang.destroy();
                 this.activeDrawPathBoomerang = null;

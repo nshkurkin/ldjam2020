@@ -32,8 +32,9 @@ class Boomerang
         var desiredPos = this.positionProvider(time, delta, /* destroy? */ false);
         if (desiredPos != null) {
             var u = 0.7;
-            this.gameObj.x = (u) * this.gameObj.x + (1.0 - u) * desiredPos.x;
-            this.gameObj.y = (u) * this.gameObj.y + (1.0 - u) * desiredPos.y;
+            this.gameObj.setPosition(
+                    (u) * this.gameObj.x + (1.0 - u) * desiredPos.x, 
+                    (u) * this.gameObj.y + (1.0 - u) * desiredPos.y);
         }
     }
 

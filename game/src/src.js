@@ -75,6 +75,39 @@ function create ()
     g.named.background = g.named.world.createStaticLayer("ground-layer", worldTileset, 0, 0).setScale(g.scale);
     g.named.background.setCollisionFromCollisionGroup(true);
     
+    // Generate everything-colliders from the map
+    g.named.wallBlockers = this.physics.add.group({ allowGravity: false, immovable: true });
+    g.named.background.forEachTile(function (tile)
+    {
+        var tileWorldX = tile.getLeft();
+        var tileWorldY = tile.getTop();
+        var collisionGroup = tile.getCollisionGroup();
+
+        // console.log(collisionGroup);
+
+        if (!collisionGroup || collisionGroup.objects.length === 0) { return; }
+
+        // The group will have an array of objects - these are the individual collision shapes
+        var objects = collisionGroup.objects;
+
+        for (var i = 0; i < objects.length; i++)
+        {
+            var object = objects[i];
+            var objectX = tileWorldX + object.x;
+            var objectY = tileWorldY + object.y;
+
+            // When objects are parsed by Phaser, they will be guaranteed to have one of the
+            // following properties if they are a rectangle/ellipse/polygon/polyline.
+            if (object.rectangle)
+            {
+                var pos = MakeVec2(objectX, objectY);
+                var rect = new Phaser.GameObjects.Rectangle(g.engine, 0, 0, object.width, object.height).setScale(g.scale);
+                rect.setPosition(pos.x + g.scale * rect.width/2.0, pos.y + g.scale * rect.height/2.0);
+                g.named.wallBlockers.add(rect);
+            }
+        }
+    });
+
     // Generate player-only colliders from the map
     g.named.playeronlyBlockers = this.physics.add.group({ allowGravity: false, immovable: true });
     var blockers = g.named.world.getObjectLayer('playeronly-collision-layer')['objects'];
@@ -86,10 +119,10 @@ function create ()
     }
 
     // @TEMP: Debug render collisions
-    g.named.background_debug_gfx = this.add.graphics();
-    if (g.debug) {
-        drawCollisionShapes(g.named.background_debug_gfx, g.named.background, g.scale);
-    }
+    //g.named.background_debug_gfx = this.add.graphics();
+    //if (g.debug) {
+    //    drawCollisionShapes(g.named.background_debug_gfx, g.named.background, g.scale);
+    //}
 
     g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 400));
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];

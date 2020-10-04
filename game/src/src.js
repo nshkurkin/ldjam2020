@@ -47,6 +47,7 @@ g.spritesheetAssetList = [
 
     ["fire", "fire-desc", "fire.json", "fire.png", { frameWidth: 10, frameHeight: 10 }],
     ["torch", "torch-desc", "torch.json", "torch.png", { frameWidth: 10, frameHeight: 10 }],
+    ["box", "box-desc", "box.json", "box.png", { frameWidth: 10, frameHeight: 10 }],
 
     ["boomerang", "boomerang-desc", "simple_boomerang.json", "simple_boomerang.png", { frameWidth: 10, frameHeight: 10 }],
 
@@ -81,6 +82,7 @@ function create ()
         "basic_switch" : BasicSwitch,
         "door" : Door,
         "torch" : Torch,
+        "box" : FlammableBox,
     };
 
     g.worldClock = new Phaser.Time.Clock(this);

@@ -18,16 +18,22 @@ class Torch {
 
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
         this.gameObj.depth = g.layers.interactables;
+
+        this.flame = null;
+
         var thisRef = this;
         this.gameObj.getOwner = function() { return  thisRef; };
-        this.active = false;
-        this.setActive(false);
+        if (custData){
+            this.active = custData.lit;
+        }
+        this.setActive(this.active);
 
         g.entities.push(this);
     }
 
     tryActivate(instigator)
     {
+        // @TODO: gate this with the "Flammable" actor
         this.setActive(!this.active);
     }
 
@@ -36,9 +42,18 @@ class Torch {
         var stateSwitched = this.active != active;
         this.active = active;
         if (active) {
+            if (this.flame == null) {
+                this.flame = g.engine.physics.add.sprite(0, 0, g.fx.data.fire.id).setScale(g.scale);
+                this.flame.depth = this.gameObj.depth;
+                this.flame.anims.play("fire:flicker", true);
+            }
             this.gameObj.anims.play(this.fxData.id + ':' + 'flicker', true);
         }
         else {
+            if (this.flame) {
+                this.flame.destroy();
+                this.flame = null;
+            }
             this.gameObj.anims.play(this.fxData.id + ':' + 'unlit', true);
         }
 
@@ -59,11 +74,14 @@ class Torch {
 
     update(time, delta)
     {
-        // TODO
+        if (this.flame) {
+            this.flame.x = this.gameObj.x;
+            this.flame.y = this.gameObj.y - g.scale * 0.5 * this.flame.height;
+        }
     }
 
     destroy()
     {
-        // TODO
+        this.setActive(false);
     }
 }

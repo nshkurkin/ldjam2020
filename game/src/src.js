@@ -187,11 +187,20 @@ function create ()
                 custData[entry.name] = entry.value;
             }
         }
+        if (theSet.tileProperties && theSet.tileProperties[frameIdx]) {
+            for (var key in theSet.tileProperties[frameIdx]) {
+                custData[key] = theSet.tileProperties[frameIdx][key];
+            }
+        }
+
         var interactable = new g.interactableClassList[sheetName](g.fx.data[sheetName], /* pos */ null, custData);
         interactable.gameObj.setPosition(
                 desc.x * g.scale + g.scale * interactable.gameObj.width/2.0, 
                 desc.y * g.scale - g.scale *  interactable.gameObj.height/2.0);
         g.named.interactables.add(interactable.gameObj);
+        if (custData.playerBlocker) {
+            g.named.playeronlyBlockers.add(interactable.gameObj);
+        }
 
         // Put our object into a global name list for later lookup.
         if (desc.name != "") {

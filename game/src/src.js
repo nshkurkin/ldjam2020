@@ -52,6 +52,7 @@ g.spritesheetAssetList = [
     ["henry",  "henry-desc",  "henry.json",  "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
 
     ["basic_switch", "basic-switch-desc", "basic_switch.json", "basic_switch.png", { frameWidth: 10, frameHeight: 10 }],
+    ["door", "door-desc", "door.json", "door.png", { frameWidth: 5, frameHeight: 15 }],
 ];
 
 g.interactableClassList = new Object();
@@ -73,7 +74,8 @@ function preload ()
 function create ()
 {
     g.interactableClassList = {
-        "basic_switch" : BasicSwitch
+        "basic_switch" : BasicSwitch,
+        "door" : Door,
     };
 
     g.worldClock = new Phaser.Time.Clock(this);

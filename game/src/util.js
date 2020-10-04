@@ -13,10 +13,14 @@ class Util {
         {
             for (var keyFrame of data.keyFrames) {
                 if (keyFrame.len > 1) {
+                    var frames = phaser.anims.generateFrameNumbers(data.id, 
+                            { start:  keyFrame.start, end: keyFrame.start + keyFrame.len - 1 });
+                    if (keyFrame.reversed) {
+                        frames.reverse();
+                    }
                     phaser.anims.create({
                         key: data.id + ":" + keyFrame.key,
-                        frames: phaser.anims.generateFrameNumbers(data.id, 
-                                { start:  keyFrame.start, end: keyFrame.start + keyFrame.len - 1 }),
+                        frames: frames,
                         frameRate: keyFrame.rate,
                         repeat: keyFrame.repeat
                     });

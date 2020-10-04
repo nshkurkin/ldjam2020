@@ -23,12 +23,24 @@ class BasicSwitch {
         this.activationCooldown = 0;
         this.setActive(false);
 
+        if (g.debug) {
+            this.gameObj.setInteractive();
+            this.gameObj.on('pointerdown', function() {
+                thisRef.tryActivate(thisRef);
+            });
+        }
+
         g.entities.push(this);
     }
 
     tryActivate(instigator)
     {
         this.setActive(!this.active);
+    }
+
+    isActivated()
+    {
+        return this.active;
     }
 
     setActive(active)

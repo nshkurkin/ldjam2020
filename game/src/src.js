@@ -45,8 +45,12 @@ g.spritesheetAssetList = [
     ["bob",    "bob-desc",    "bob.json",    "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
     ["autumn", "autumn-desc", "autumn.json", "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
     ["rudy",   "rudy-desc",   "rudy.json",   "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
-    ["henry",  "henry-desc",  "henry.json",  "pc_skins.png", { frameWidth: 10, frameHeight: 15 }]
-]
+    ["henry",  "henry-desc",  "henry.json",  "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
+
+    ["basic_switch", "basic-switch-desc", "basic_switch.json", "basic_switch.png", { frameWidth: 10, frameHeight: 10 }],
+];
+
+g.interactableClassList = new Object();
 
 function preload ()
 {
@@ -64,6 +68,10 @@ function preload ()
 
 function create ()
 {
+    g.interactableClassList = {
+        "basic_switch" : BasicSwitch
+    };
+
     g.worldClock = new Phaser.Time.Clock(this);
     for (var assetTuple of g.spritesheetAssetList) {
         g.fx.data[assetTuple[0]] = Util.finishLoadAsset(assetTuple[1]);
@@ -142,11 +150,33 @@ function create ()
     //    drawCollisionShapes(g.named.background_debug_gfx, g.named.background, g.scale);
     //}
 
+    // Generate interactable colliders from the map
+    g.named.interactables = this.physics.add.group({ allowGravity: false, immovable: true });
+    var interactables = g.named.world.getObjectLayer('interactable-layer')['objects'];
+    for (var desc of interactables) {
+        let gid = desc.gid;
+        // Search for the owning tileset.
+        var tsetIdx = 0;
+        for (var tset of g.named.world.tilesets) {
+            if (gid >= tset.firstgid && gid < tset.firstgid + tset.total) {
+                break;
+            }
+            tsetIdx += 1;
+        }
+        let theSet = g.named.world.tilesets[tsetIdx];
+        let sheetName = theSet.name;
+        let frameIdx = (gid - theSet.firstgid);
+
+        var interactable = new g.interactableClassList[sheetName](g.fx.data[sheetName]);
+        interactable.gameObj.setPosition(desc.x * g.scale + g.scale * interactable.gameObj.width/2.0, desc.y * g.scale - g.scale *  interactable.gameObj.height/2.0);
+        g.named.interactables.add(interactable.gameObj);
+    }
+
     g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 400));
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.background, null, null, g.engine);
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.playeronlyBlockers, null, null, g.engine);
-    
+
     //g.named.boomie = new Boomerang(g.fx.data.boomerang, MakeVec2(350, 400));
     //g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();
     

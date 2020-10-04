@@ -89,6 +89,9 @@ function create ()
     for (var assetTuple of g.spritesheetAssetList) {
         g.fx.data[assetTuple[0]] = Util.finishLoadAsset(assetTuple[1]);
     }
+    
+    // group for Fire objects
+    g.named.fires = this.physics.add.group({ allowGravity: false });
 
     // Finish loading the world tileset.
     g.named.world = this.add.tilemap('world-tiles-desc');
@@ -195,10 +198,11 @@ function create ()
             }
         }
 
-        var interactable = new g.interactableClassList[sheetName](g.fx.data[sheetName], /* pos */ null, custData);
-        interactable.gameObj.setPosition(
+        let spawnPos = MakeVec2(desc.x * g.scale, desc.y * g.scale)
+        var interactable = new g.interactableClassList[sheetName](g.fx.data[sheetName], spawnPos, custData);
+        /*interactable.gameObj.setPosition(
                 desc.x * g.scale + g.scale * interactable.gameObj.width/2.0, 
-                desc.y * g.scale - g.scale *  interactable.gameObj.height/2.0);
+                desc.y * g.scale - g.scale *  interactable.gameObj.height/2.0);*/
         g.named.interactables.add(interactable.gameObj);
         if (custData.playerBlocker) {
             g.named.playeronlyBlockers.add(interactable.gameObj);
@@ -217,6 +221,7 @@ function create ()
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.playeronlyBlockers, null, null, g.engine);
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.wallBlockers, null, null, g.engine);
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.roomTransitions, g.named.player.onCollideRoomTransition, null, g.named.player);
+    g.engine.physics.add.collider(g.named.fires, g.named.fires, Fire.onCollideFires, null, g.engine);
     
     this.cameras.main.setBounds(0, 0, 5120, 5120);
 

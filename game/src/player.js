@@ -27,7 +27,7 @@ class Player
                 /* centered? */ false);
         this.gameObj.depth = g.layers.player;
 
-        this.velocity = 100;
+        this.velocity = 200;
         this.faceDirection = MakeVec2(1, 0);
         this.faceDirectionAnim = this.fxData.id + ':dir:dr';
         this.altSkins = [fxData];
@@ -62,6 +62,7 @@ class Player
         }
     }
 
+    // this runs in the context of g.named.player
     onCollideRoomTransition(thisGameObject, transitionObject)
     {
         // TODO 

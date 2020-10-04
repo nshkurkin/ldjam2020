@@ -17,9 +17,11 @@ class Torch {
         this.custData = custData;
 
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
+        this.gameObj.setOrigin(0, 1);
         this.gameObj.depth = g.layers.interactables;
 
-        this.flame = null;
+        let followOffset = MakeVec2(this.gameObj.width * 0.5, -this.gameObj.height * 0.7).scale(g.scale);
+        this.fire = new Fire(g.fx.data.fire, pos, this.gameObj, followOffset);
 
         var thisRef = this;
         this.gameObj.getOwner = function() { return  thisRef; };
@@ -60,19 +62,11 @@ class Torch {
     {
         var stateSwitched = this.active != active;
         this.active = active;
+        this.fire.setActive(active);
         if (active) {
-            if (this.flame == null) {
-                this.flame = g.engine.physics.add.sprite(0, 0, g.fx.data.fire.id).setScale(g.scale);
-                this.flame.depth = this.gameObj.depth;
-                this.flame.anims.play("fire:flicker", true);
-            }
             this.gameObj.anims.play(this.fxData.id + ':' + 'flicker', true);
         }
         else {
-            if (this.flame) {
-                this.flame.destroy();
-                this.flame = null;
-            }
             this.gameObj.anims.play(this.fxData.id + ':' + 'unlit', true);
         }
 
@@ -93,14 +87,12 @@ class Torch {
 
     update(time, delta)
     {
-        if (this.flame) {
-            this.flame.x = this.gameObj.x;
-            this.flame.y = this.gameObj.y - g.scale * 0.5 * this.flame.height;
-        }
+        
     }
 
     destroy()
     {
         this.setActive(false);
+        this.fire.destroy();
     }
 }

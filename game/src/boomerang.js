@@ -46,7 +46,7 @@ class Boomerang
         }
     }
 
-    destroy()
+    destroy(animate=true)
     {
         // put the fire out right away
         this.fire.destroy();
@@ -55,8 +55,11 @@ class Boomerang
             return MakeVec2(g.named.player.gameObj.x, g.named.player.gameObj.y); 
         });
         const SPEED = 20; /* pixels-per-second */
-        const DURATION = 1000.0 * MakeVec2(g.named.player.gameObj.x, g.named.player.gameObj.y).subtract(
+        var DURATION = 1000.0 * MakeVec2(g.named.player.gameObj.x, g.named.player.gameObj.y).subtract(
                 MakeVec2(this.gameObj.x, this.gameObj.y)).length() / (50.0 * SPEED);
+        if (!animate) {
+            DURATION = 0;
+        }
         var thisRef = this;
         setTimeout(function () { 
             g.entities.splice(g.entities.indexOf(thisRef), 1);

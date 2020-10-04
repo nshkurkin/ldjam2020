@@ -51,11 +51,11 @@ class Player
         this.gameObj.anims.play(this.fxData.id + ':' + keyframeId, true);
     }
 
-    detachBoomie()
+    detachBoomie(animate=true)
     {
         if (null != this.activeBoomie)
         {
-            this.activeBoomie.destroy();
+            this.activeBoomie.destroy(/* animate? */ animate);
             this.activeBoomie = null;
             this.activeBoomiePolygon.destroy();
             this.activeBoomiePolygon = null;
@@ -92,6 +92,9 @@ class Player
             // vice versa
             this.gameObj.setPosition(destObj.x + deltaX, destObj.y - deltaY);
         }
+
+        // Make sure to recall boomie
+        this.detachBoomie(/* animate? */ false);
     }
 
     update (time, delta)

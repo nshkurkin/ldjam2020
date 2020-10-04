@@ -34,7 +34,7 @@ class Torch {
     tryActivate(instigator)
     {
         // @TODO: gate this with the "Flammable" actor
-        this.setActive(!this.active);
+        this.setActive(true);
     }
 
     setActive(active)

@@ -183,6 +183,8 @@ function create ()
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.playeronlyBlockers, null, null, g.engine);
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.roomTransitions, g.named.player.onCollideRoomTransition, null, g.named.player);
     
+    this.cameras.main.setBounds(0, 0, 5120, 5120);
+
     //g.named.boomie = new Boomerang(g.fx.data.boomerang, MakeVec2(350, 400));
     //g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();
     

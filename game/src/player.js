@@ -231,13 +231,13 @@ class Player
         let camHeight = g.engine.cameras.main.height;
         let screenStartX = Math.floor(this.gameObj.x / camWidth) * camWidth;
         let screenStartY = Math.floor(this.gameObj.y / camHeight) * camHeight;
-        //screenStartX = this.gameObj.x - 100;
-        //screenStartY = this.gameObj.y - 100;
+        //screenStartX = this.gameObj.x - 300;
+        //screenStartY = this.gameObj.y - 300;
         // TODO REMOVE
         //console.log("Player pos " + this.gameObj.x + " , " + this.gameObj.y);
         //console.log("Camera moving to " + screenStartX + " , " + screenStartY);
         //console.log("Current camera pos " + g.engine.cameras.main.scrollX + " , " + g.engine.cameras.main.scrollY);
-        g.engine.cameras.main.setPosition(-screenStartX, -screenStartY);
+        g.engine.cameras.main.setScroll(screenStartX, screenStartY);
     }
 
     destroy()

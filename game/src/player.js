@@ -62,6 +62,7 @@ class Player
         }
     }
 
+    // this runs in the context of g.named.player
     onCollideRoomTransition(thisGameObject, transitionObject)
     {
         // TODO 

@@ -16,6 +16,7 @@ class Door {
         this.custData = custData;
 
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
+        this.gameObj.setOrigin(0, 1);
         this.gameObj.depth = g.layers.interactables;
         var thisRef = this;
         this.gameObj.getOwner = function() { return  thisRef; };

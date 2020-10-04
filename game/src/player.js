@@ -21,6 +21,10 @@ class Player
         this.fxData = fxData;
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
         this.gameObj.setCollideWorldBounds(true);
+        this.gameObj.body.offset.y = this.gameObj.body.height / 2.0;
+        this.gameObj.body.setSize(
+                /* size */ this.gameObj.body.width, this.gameObj.body.height / 2.0, 
+                /* centered? */ false);
 
         this.velocity = 100;
         this.faceDirection = MakeVec2(1, -1);

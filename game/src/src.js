@@ -18,11 +18,6 @@ var config = {
     }
 };
 
-// UI for drawing the boomerang path
-var drawnPathPolygon = null;
-var drawnPathPoints = [];
-var pathInProgress = false;
-
 var g = new Object();
 g.scale = 4.0;
 // g.engine = ...;
@@ -79,7 +74,7 @@ function create ()
 
     // @TEMP: Debug render collisions
     g.named.background_debug_gfx = this.add.graphics();
-    drawCollisionShapes (g.named.background_debug_gfx, g.named.background, g.scale);
+    drawCollisionShapes(g.named.background_debug_gfx, g.named.background, g.scale);
 
     g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 100));
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];
@@ -102,8 +97,6 @@ function create ()
 function update (time, delta)
 {
     g.worldClock.update(time, delta);
-    // g.named.world.renderDebug(g.named.background_debug_gfx, 
-    //         { tileColor: null, collidingTileColor: null, faceColor: null }, g.named.background);
 
     g.named.player.update(time, delta);
 
@@ -115,19 +108,6 @@ function update (time, delta)
 function onMouseDown (pointer)
 {
     console.log("mouse down at " + pointer.x + " " + pointer.y);
-    if (!pathInProgress)
-    {
-        pathInProgress = true;
-        drawnPathPoints = [MakeVec2(pointer.x, pointer.y)];
-        refreshDrawnPolygon();
-    }
-    else
-    {
-        // TODO make this happen as you click and drag
-        drawnPathPoints.push(MakeVec2(pointer.x, pointer.y));
-        refreshDrawnPolygon();
-        console.log(drawnPathPoints);
-    }
 }
 
 function onMouseUp (pointer)
@@ -138,19 +118,4 @@ function onMouseUp (pointer)
 function onMouseMove (pointer)
 {
 
-}
-
-function refreshDrawnPolygon ()
-{
-    // delete and re add polygon. i cry every time
-    if (null != drawnPathPolygon) {
-        drawnPathPolygon.destroy();
-    }
-    drawnPathPolygon = g.engine.add.polygon(0, 0, drawnPathPoints);
-    drawnPathPolygon.setStrokeStyle(6, 0xefc53f);
-    drawnPathPolygon.setClosePath(false);
-    drawnPathPolygon.displayOriginX = 0.5;
-    drawnPathPolygon.displayOriginY = 0.5;
-
-    g.named.boomie.positionProvider = Boomerang.lerpAlongPerimeter(drawnPathPolygon, /* speed */ 20, false);
 }

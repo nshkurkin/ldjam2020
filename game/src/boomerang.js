@@ -156,6 +156,11 @@ class Boomerang
             var b = samples[whichSegment + 1];
             var subU = (u * samples.length) % 1;
 
+            // @FIXME: Somehow the first point of the second segment is sometimes NaN
+            if (isNaN(a.x) || isNaN(a.y)) {
+                a = b;
+            }
+
             return Util.lerpVec2(subU, a, b);
         };
     }

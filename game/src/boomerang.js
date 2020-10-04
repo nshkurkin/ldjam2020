@@ -39,19 +39,17 @@ class Boomerang
 
     destroy()
     {
-        this.setPositionProvider(Boomerang.disableLerpFunc());
-        g.entities.splice(g.entities.indexOf(this), 1);
-
-        const DURATION = 300;
-        g.engine.tweens.add({
-            targets: this.gameObj,
-            x: g.named.player.gameObj.x,
-            y: g.named.player.gameObj.y,
-            duration: DURATION,
-            ease: 'Sine.easeIn',
+        this.setPositionProvider(function(time, delta, destroy) { 
+            return MakeVec2(g.named.player.gameObj.x, g.named.player.gameObj.y); 
         });
+        const SPEED = 20; /* pixels-per-second */
+        const DURATION = 1000.0 * MakeVec2(g.named.player.gameObj.x, g.named.player.gameObj.y).subtract(
+                MakeVec2(this.gameObj.x, this.gameObj.y)).length() / (50.0 * SPEED);
         var thisRef = this;
-        setTimeout(function () { thisRef.gameObj.destroy(); }, DURATION);
+        setTimeout(function () { 
+            g.entities.splice(g.entities.indexOf(thisRef), 1);
+            thisRef.gameObj.destroy(); 
+        }, DURATION);
     }
 
     setPositionProvider(theFunc)
@@ -117,6 +115,7 @@ class Boomerang
 
             timeElapsed += delta;
             if (timeElapsed > sampleDurations[whichSampleSet] && whichSampleSet + 1 < sampleSets.length) {
+                polygons[whichSampleSet].destroy();
                 whichSampleSet += 1;
                 timeElapsed = 0;
             }

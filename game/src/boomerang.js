@@ -25,6 +25,11 @@ class Boomerang
         var thisRef = this;
         this.gameObj.getOwner = function() { return  thisRef; };
         this.setPositionProvider(Boomerang.disableLerpFunc());
+
+        // flammable boomie
+        this.fire = new Fire(g.fx.data.fire, pos, this.gameObj);
+        // TODO REMOVE
+        this.fire.setActive(true);
         
         g.entities.push(this);
     }
@@ -43,6 +48,9 @@ class Boomerang
 
     destroy()
     {
+        // put the fire out right away
+        this.fire.destroy();
+        
         this.setPositionProvider(function(time, delta, destroy) { 
             return MakeVec2(g.named.player.gameObj.x, g.named.player.gameObj.y); 
         });

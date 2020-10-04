@@ -92,9 +92,9 @@ class Fire {
     {
         let fire1 = fireObj1.getOwner();
         let fire2 = fireObj2.getOwner();
-        console.log("fires");
-        console.log(fire1);
-        console.log(fire2);
+        //console.log("fires");
+        //console.log(fire1);
+        //console.log(fire2);
         // if the fires have a different state, one of them is lit
         if (fire1.getActive() !== fire2.getActive())
         {

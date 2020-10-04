@@ -23,19 +23,27 @@ class FlammableBox {
         this.gameObj.getOwner = function() { return thisRef; };
 
         this.ignited = false;
+        let followOffset = MakeVec2(0, 0).scale(g.scale);
+        this.fire = new Fire(g.fx.data.fire, pos, this.gameObj, followOffset, Util.withContext(this._onFireStateChanged, this));
     }
 
     tryActivate(instigator)
     {
-        // @TODO: Make this tied to being flammable.
-        if (instigator instanceof Boomerang) {
-            this.ignite();
-        }
+        // Do nothing
     }
 
     isActivated()
     {
         return false;
+    }
+
+    _onFireStateChanged (value)
+    {
+        if (value)
+        {
+            // this should not loop because it will stop changing the fire state
+            this.ignite();
+        }
     }
 
     ignite()
@@ -65,6 +73,7 @@ class FlammableBox {
 
     destroy()
     {
+        this.fire.destroy();
         this.gameObj.destroy();
     }
 }

@@ -125,7 +125,7 @@ function create ()
         console.log("TRANSITION");
         console.log(transition);
         var pos = MakeVec2(transition.x * g.scale, transition.y * g.scale);
-        var rect = new Phaser.GameObjects.Rectangle(this, 0, 0, blocker.width, blocker.height).setScale(g.scale);
+        var rect = new Phaser.GameObjects.Rectangle(this, 0, 0, transition.width, transition.height).setScale(g.scale);
         rect.setPosition(pos.x + g.scale * rect.width/2.0, pos.y + g.scale * rect.height/2.0);
         // TODO these probably need to be in a dictionary somewhere
         let name = transition.name;

@@ -584,7 +584,7 @@
                         {
                          "name":"collision",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }]
                 }, 
                 {
@@ -1017,39 +1017,11 @@
                 }, 
                 {
                  "id":73,
-                 "objectgroup":
-                    {
-                     "draworder":"index",
-                     "name":"",
-                     "objects":[
-                            {
-                             "height":9.4322753687975,
-                             "id":1,
-                             "name":"",
-                             "properties":[
-                                    {
-                                     "name":"collidePlayerOnly",
-                                     "type":"bool",
-                                     "value":true
-                                    }],
-                             "rotation":0,
-                             "type":"",
-                             "visible":true,
-                             "width":9.34286991506482,
-                             "x":0.37997317836388,
-                             "y":0.290567724631203
-                            }],
-                     "opacity":1,
-                     "type":"objectgroup",
-                     "visible":true,
-                     "x":0,
-                     "y":0
-                    },
                  "properties":[
                         {
                          "name":"collision",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }]
                 }, 
                 {

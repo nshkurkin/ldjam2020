@@ -25,6 +25,7 @@ class Player
         this.gameObj.body.setSize(
                 /* size */ this.gameObj.body.width, this.gameObj.body.height / 2.0, 
                 /* centered? */ false);
+        this.gameObj.depth = g.layers.player;
 
         this.velocity = 100;
         this.faceDirection = MakeVec2(1, -1);
@@ -167,8 +168,12 @@ class Player
                 this.activeBoomie.setPositionProvider(Boomerang.lerpAlongPerimeter(BOOMIE_SPEED, true, ...polygons));
                 var thisRef = this;
                 g.engine.physics.add.collider(this.activeBoomie.gameObj, g.named.wallBlockers, function() {
-                    console.log("Boomie hit a wall!");
+                    // console.log("Boomie hit a wall!");
                     thisRef.detachBoomie();
+                }, null, g.engine);
+                g.engine.physics.add.collider(this.activeBoomie.gameObj, g.named.interactables, function(boomie, interactable) {
+                    // console.log("Boomie hit interactable", interactable.getOwner().fxData.id);
+                    interactable.getOwner().tryActivate(boomie.getOwner());
                 }, null, g.engine);
 
                 this.activeDrawPathBoomerang.destroy();

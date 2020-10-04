@@ -21,6 +21,9 @@ class Boomerang
         
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
         this.gameObj.anims.play(fxData.id + ':' + 'spin', true);
+        this.gameObj.depth = g.layers.player;
+        var thisRef = this;
+        this.gameObj.getOwner = function() { return  thisRef; };
         this.setPositionProvider(Boomerang.disableLerpFunc());
         
         g.entities.push(this);

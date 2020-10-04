@@ -54,6 +54,7 @@ class PathPolygon {
             this.polygonObj.destroy();
         }
         this.polygonObj = g.engine.add.polygon(0, 0, this.pathPoints);
+        this.polygonObj.depth = g.layers.boomieTrail;
         this.polygonObj.setStrokeStyle(this.strokeWidth, this.strokeColor);
         this.polygonObj.setClosePath(this.closedPath);
         this.polygonObj.displayOriginX = 0.5;

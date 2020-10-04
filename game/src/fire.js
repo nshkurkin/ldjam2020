@@ -49,7 +49,7 @@ class Fire {
     setActive (value)
     {
         this.isActive = value;
-        // TODO change anim
+        this.gameObj.setAlpha(value ? 1 : 0);
         if (null !== this.changeStateCallback)
         {
             this.changeStateCallback(value);

@@ -2,8 +2,8 @@
     "assetPath" : "assets/fire.png",
     "id": "fire",
     "type" : "sprite-sheet",
-    "elementSize" : { "x": 12, "y": 12 },
+    "elementSize" : { "x": 10, "y": 10 },
     "keyFrames" : [
-        { "key" : "flicker",  "start": 0, "len": 2, "rate": 5, "repeat" : -1}
+        { "key" : "flicker",  "start": 0, "len": 3, "rate": 8, "repeat" : -1}
     ]
 }

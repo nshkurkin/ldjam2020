@@ -36,7 +36,26 @@ class Torch {
     tryActivate(instigator)
     {
         // @TODO: gate this with the "Flammable" actor
-        this.setActive(true);
+        var hitByFlammable = (instigator instanceof Boomerang);
+        var shouldActivate = hitByFlammable;
+
+        if (this.custData.activateIf) {
+            let requiredNames = this.custData.activateIf.split(',');
+            var allTrue = true;
+            for (var name of requiredNames) {
+                allTrue = allTrue && g.byName[name].isActivated();
+            }
+            shouldActivate = shouldActivate || allTrue;
+        }
+        
+        if (shouldActivate) {
+            this.setActive(true);
+        }
+    }
+    
+    isActivated()
+    {
+        return this.active;
     }
 
     setActive(active)

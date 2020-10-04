@@ -34,7 +34,20 @@ class Door {
             return;
         }
 
-        this.setOpen(!this.open);
+        var shouldActivate = true;
+
+        if (this.custData.activateIf) {
+            let requiredNames = this.custData.activateIf.split(',');
+            var allTrue = true;
+            for (var name of requiredNames) {
+                allTrue = allTrue && g.byName[name].isActivated();
+            }
+            shouldActivate = shouldActivate && allTrue;
+        }
+
+        if (shouldActivate) {
+            this.setOpen(!this.open);
+        }
     }
 
     setOpen(open)

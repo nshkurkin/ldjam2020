@@ -5,6 +5,7 @@ g.scale = 4.0;
 g.fx = new Object();
 g.fx.data = new Object();
 g.layers = new Object();
+g.layers.effects = 6;
 g.layers.player = 5;
 g.layers.interactables = 4;
 g.layers.boomieTrail = 3;

@@ -1,0 +1,10 @@
+{
+    "assetPath" : "assets/basic_switch.png",
+    "id": "basic_switch",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 10, "y": 10 },
+    "keyFrames" : [
+        { "key" : "inactive",  "start": 0, "len": 1, "rate": 20},
+        { "key" : "active",  "start": 2, "len": 2, "rate": 5}
+    ]
+}

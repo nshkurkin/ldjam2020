@@ -45,6 +45,7 @@ g.spritesheetAssetList = [
     ["whitesquare",     "whitesquare-desc", "whitesquare.json", "whitesquare.png", { frameWidth: 16, frameHeight: 16 }],
 
     ["fire", "fire-desc", "fire.json", "fire.png", { frameWidth: 12, frameHeight: 12 }],
+    ["torch", "torch-desc", "torch.json", "torch.png", { frameWidth: 10, frameHeight: 10 }],
 
     ["boomerang", "boomerang-desc", "simple_boomerang.json", "simple_boomerang.png", { frameWidth: 10, frameHeight: 10 }],
 
@@ -78,6 +79,7 @@ function create ()
     g.interactableClassList = {
         "basic_switch" : BasicSwitch,
         "door" : Door,
+        "torch" : Torch,
     };
 
     g.worldClock = new Phaser.Time.Clock(this);

@@ -97,7 +97,7 @@ function create ()
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.playeronlyBlockers, null, null, g.engine);
 
     g.named.boomie = new Boomerang(g.fx.data.boomerang, MakeVec2(350, 400));
-    g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();
+    g.named.boomie.setPositionProvider(Boomerang.lerpToMouseFunc());
     
     // @TEMP
     g.engine.physics.add.sprite(100, 200, g.fx.data.autumn.id).setScale(g.scale).anims.play("autumn:dir:dr", true);

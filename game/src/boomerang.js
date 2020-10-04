@@ -21,7 +21,7 @@ class Boomerang
         
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
         this.gameObj.anims.play(fxData.id + ':' + 'spin', true);
-        this.positionProvider = Boomerang.disableLerpFunc();
+        this.setPositionProvider(Boomerang.disableLerpFunc());
         
         g.entities.push(this);
     }
@@ -29,7 +29,7 @@ class Boomerang
     update(time, delta)
     {
         // Lerp to the provided position.
-        var desiredPos = this.positionProvider(time, delta);
+        var desiredPos = this.positionProvider(time, delta, /* destroy? */ false);
         if (desiredPos != null) {
             var u = 0.7;
             this.gameObj.x = (u) * this.gameObj.x + (1.0 - u) * desiredPos.x;
@@ -39,6 +39,7 @@ class Boomerang
 
     destroy()
     {
+        this.setPositionProvider(Boomerang.disableLerpFunc());
         g.entities.splice(g.entities.indexOf(this), 1);
 
         const DURATION = 300;
@@ -53,14 +54,22 @@ class Boomerang
         setTimeout(function () { thisRef.gameObj.destroy(); }, DURATION);
     }
 
+    setPositionProvider(theFunc)
+    {
+        if (this.positionProvider != null) {
+            this.positionProvider(0, 0, /* destroy? */ true);
+        }
+        this.positionProvider = theFunc;
+    }
+
     static disableLerpFunc()
     {
-        return function(time, delta) { return null; };
+        return function(time, delta, destroy) { return null; };
     }
 
     static lerpToMouseFunc()
     {
-        return function(time, delta) { return g.game.input.mousePointer; };
+        return function(time, delta, destroy) { return g.game.input.mousePointer; };
     }
 
     static lerpAlongPerimeter(
@@ -95,11 +104,19 @@ class Boomerang
             sampleDurations.push(1000.0 * (samples.length * stepRate) / (speed * 50));
         }
 
-        return function(time, delta) {
+        return function(time, delta, destroy) {
+
+            if (destroy) {
+                var idx = whichSampleSet;
+                while (idx < sampleSets.length - 1) {
+                    polygons[idx].destroy();
+                    idx += 1;
+                }
+                return null;
+            }
+
             timeElapsed += delta;
             if (timeElapsed > sampleDurations[whichSampleSet] && whichSampleSet + 1 < sampleSets.length) {
-                // @FIXME: This shouldn't be this function's resposibility to clean this up.
-                polygons[whichSampleSet].destroy();
                 whichSampleSet += 1;
                 timeElapsed = 0;
             }

@@ -124,7 +124,7 @@ class Player
                 }
                 polygons.push(this.activeBoomiePolygon.polygonObj);
 
-                this.activeBoomie.positionProvider = Boomerang.lerpAlongPerimeter(BOOMIE_SPEED, true, ...polygons);
+                this.activeBoomie.setPositionProvider(Boomerang.lerpAlongPerimeter(BOOMIE_SPEED, true, ...polygons));
 
                 this.activeDrawPathBoomerang.destroy();
                 this.activeDrawPathBoomerang = null;

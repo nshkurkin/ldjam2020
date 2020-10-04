@@ -72,10 +72,10 @@ class Player
             direction.y = 1;
         }
 
-        // decide whether to pilot the path boomerang or not
+        // Decide whether to pilot the path boomerang or not
         if (this.boomerangKey.keystroke())
         {
-            // throw the drawpath, or retrieve the drawpath, or retrieve the real boomie
+            // If we already threw a boomie, retract him.
             if (null != this.activeBoomie)
             {
                 this.activeBoomie.destroy();
@@ -83,17 +83,21 @@ class Player
                 this.activeBoomiePolygon.destroy();
                 this.activeBoomiePolygon = null;
             }
+            // If we were drawing a path, cancel it.
             else if (null != this.activeDrawPathBoomerang)
             {
                 this.activeDrawPathBoomerang.destroy();
                 this.activeDrawPathBoomerang = null;
             }
+            // Otherwise, throw a path for dynamic drawing in the direction we were facing
             else
             {
-                this.activeDrawPathBoomerang = new DrawPathBoomerang(g.fx.data.boomerang, MakeVec2(this.gameObj.x, this.gameObj.y), direction);
+                this.activeDrawPathBoomerang = new DrawPathBoomerang(g.fx.data.boomerang, 
+                        MakeVec2(this.gameObj.x, this.gameObj.y), this.faceDirection);
             }
         }
         
+        // If we are drawing a path for boomie to follow, then update its movement.
         if (null != this.activeDrawPathBoomerang)
         {
             // pilot the boomerang path drawing
@@ -103,13 +107,24 @@ class Player
             // time to make a real boomie?
             if (this.activeDrawPathBoomerang.isPathComplete())
             {
-                let finalPath = this.activeDrawPathBoomerang.currentPath;
+                let finalPaths = this.activeDrawPathBoomerang.subpaths();
+                let finalLoop = finalPaths[finalPaths.length - 1];
 
                 const BOOMIE_SPEED = 5; // todo different speed boomies
-                this.activeBoomiePolygon = new PathPolygon(finalPath[0], 8, 0x80A020, true);
-                this.activeBoomiePolygon.updatePathPoints(finalPath);
-                this.activeBoomie = new Boomerang(g.fx.data.boomerang, finalPath[0]);
-                this.activeBoomie.positionProvider = Boomerang.lerpAlongPerimeter(this.activeBoomiePolygon.polygonObj, BOOMIE_SPEED, true);
+                this.activeBoomiePolygon = new PathPolygon(finalLoop[0], 8, 0x80A020, true);
+                this.activeBoomiePolygon.updatePathPoints(finalLoop);
+                this.activeBoomie = new Boomerang(g.fx.data.boomerang, finalPaths[0][0]);
+
+                var polygons = [];
+                if (finalPaths.length > 1) {
+                    var path = finalPaths[0];
+                    var polygon = new PathPolygon(path[0], 8, 0x80A020, false);
+                    polygon.updatePathPoints(path);
+                    polygons.push(polygon.polygonObj);
+                }
+                polygons.push(this.activeBoomiePolygon.polygonObj);
+
+                this.activeBoomie.positionProvider = Boomerang.lerpAlongPerimeter(BOOMIE_SPEED, true, ...polygons);
 
                 this.activeDrawPathBoomerang.destroy();
                 this.activeDrawPathBoomerang = null;
@@ -119,42 +134,42 @@ class Player
         {
             // move normally
             this.gameObj.setVelocity(direction.x * this.velocity, direction.y * this.velocity);
-        }
 
-        var dirMap = [
-            /* -X */ [
-                /* -Y */ "dir:dl",
-                /* 0Y */ "dir:dl",
-                /* +Y */ "dir:ul",
-            ],
-    
-            /* 0 X */ [
-                /* -Y */ "dir:dr",
-                /* 0Y */ "none",
-                /* +Y */ "dir:ur",
-            ],
-    
-            /* +X */ [
-                /* -Y */ "dir:dr",
-                /* 0Y */ "dir:dr",
-                /* +Y */ "dir:ur",
+            var dirMap = [
+                /* -X */ [
+                    /* -Y */ "dir:dl",
+                    /* 0Y */ "dir:dl",
+                    /* +Y */ "dir:ul",
+                ],
+        
+                /* 0 X */ [
+                    /* -Y */ "dir:dr",
+                    /* 0Y */ "none",
+                    /* +Y */ "dir:ur",
+                ],
+        
+                /* +X */ [
+                    /* -Y */ "dir:dr",
+                    /* 0Y */ "dir:dr",
+                    /* +Y */ "dir:ur",
+                ]
             ]
-        ]
+        
+            var animToPlay = dirMap[direction.x + 1][-direction.y + 1]
+        
+            if (animToPlay != "none") 
+            {
+                this.faceDirection = direction;
+                this.faceDirectionAnim = animToPlay;
+                this.playAnim(animToPlay);
+            }
     
-        var animToPlay = dirMap[direction.x + 1][-direction.y + 1]
-    
-        if (animToPlay != "none") 
-        {
-            this.faceDirection = direction;
-            this.faceDirectionAnim = animToPlay;
-            this.playAnim(animToPlay);
-        }
-
-        if (this.swapSkinKey.keystroke())
-        {
-            this.altSkinIdx = (this.altSkinIdx + 1) % this.altSkins.length;
-            this.fxData = this.altSkins[this.altSkinIdx];
-            this.playAnim(this.faceDirectionAnim);
+            if (this.swapSkinKey.keystroke())
+            {
+                this.altSkinIdx = (this.altSkinIdx + 1) % this.altSkins.length;
+                this.fxData = this.altSkins[this.altSkinIdx];
+                this.playAnim(this.faceDirectionAnim);
+            }
         }
     }
 

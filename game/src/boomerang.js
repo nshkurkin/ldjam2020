@@ -64,26 +64,51 @@ class Boomerang
     }
 
     static lerpAlongPerimeter(
-        polygon /* Phaser.GameObjects.Polygon */,
         speed /* float, pixels-per-second */,
-        loop /* bool */)
+        loop /* bool */,
+        ...polygons /* [Phaser.GameObjects.Polygon] */)
     {
         // If there there are no points, then early exit.
-        if (polygon.geom.points.length <= 1) {
+        if (polygons.length == 0 || polygons[polygons.length - 1].geom.points.length <= 1) {
             return Boomerang.disableLerpFunc();
         }
         
         var stepRate = 10.0 /* pixels-per-segment */;
-        var samples = Phaser.Geom.Polygon.GetPoints(polygon.geom, /* quantity */ 0, stepRate);
+        var sampleSets = []
+        var sampleDurations = []
+        var whichSampleSet = 0;
         // NOTE: clock time in milliseconds
         var timeElapsed = 0;
-        // @FIXME: Not sure why "50", but it makes the timescale behave more like expected.
-        var duration = 1000.0 * (samples.length * stepRate) / (speed * 50);
+        for (var polygon of polygons) {
+            var samples = Phaser.Geom.Polygon.GetPoints(polygon.geom, /* quantity */ 0, stepRate);
+            // NOTE: The Perimeter function treats it like a closed loop. So we need to ignore some segments.
+            var closeLoopLength = samples.length * stepRate;
+            var first = polygon.geom.points[0];
+            var last = polygon.geom.points[polygon.geom.points.length - 1];
+            var finalSegmentLength = MakeVec2(last.x, last.y).subtract(MakeVec2(first.x, first.y)).length();
+            if (finalSegmentLength > 10) {
+                var realLastSegment = Math.floor((closeLoopLength - finalSegmentLength) / stepRate);
+                samples = samples.slice(0, realLastSegment);
+            }
+            sampleSets.push(samples);
+            // @FIXME: Not sure why "50", but it makes the timescale behave more like expected.
+            sampleDurations.push(1000.0 * (samples.length * stepRate) / (speed * 50));
+        }
+
         return function(time, delta) {
             timeElapsed += delta;
+            if (timeElapsed > sampleDurations[whichSampleSet] && whichSampleSet + 1 < sampleSets.length) {
+                // @FIXME: This shouldn't be this function's resposibility to clean this up.
+                polygons[whichSampleSet].destroy();
+                whichSampleSet += 1;
+                timeElapsed = 0;
+            }
+            var duration = sampleDurations[whichSampleSet];
+            var samples = sampleSets[whichSampleSet];
+
             // @FIXME: If you run this really slowly, the boomerang jumps back and forth.
             var u = timeElapsed / duration;
-            if (loop)
+            if (loop && whichSampleSet == sampleSets.length - 1)
             {
                 u = u % 1;
             }

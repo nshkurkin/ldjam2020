@@ -168,7 +168,12 @@ class Player
             this.gameObj.setVelocity(0, 0);
 
             // time to make a real boomie?
-            if (this.activeDrawPathBoomerang.isPathComplete())
+            if (!this.activeDrawPathBoomerang.isPathValid())
+            {
+                this.activeDrawPathBoomerang.destroy();
+                this.activeDrawPathBoomerang = null;
+            }
+            else if (this.activeDrawPathBoomerang.isPathComplete())
             {
                 let finalPaths = this.activeDrawPathBoomerang.subpaths();
                 let finalLoop = finalPaths[finalPaths.length - 1];

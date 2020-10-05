@@ -956,7 +956,7 @@
                  "gid":147,
                  "height":30,
                  "id":74,
-                 "name":"",
+                 "name":"space",
                  "properties":[
                         {
                          "name":"hidden",
@@ -971,7 +971,7 @@
                  "y":161.354365650807
                 }, 
                 {
-                 "gid":156,
+                 "gid":157,
                  "height":40,
                  "id":75,
                  "name":"",
@@ -1078,7 +1078,7 @@
                  "y":312.940228537943
                 }, 
                 {
-                 "gid":159,
+                 "gid":160,
                  "height":10,
                  "id":89,
                  "name":"r3_d1",
@@ -2237,21 +2237,21 @@
          "tilewidth":10
         }, 
         {
-         "columns":1,
+         "columns":2,
          "firstgid":147,
          "image":"..\/space.png",
          "imageheight":30,
-         "imagewidth":45,
+         "imagewidth":90,
          "margin":0,
          "name":"space",
          "spacing":0,
-         "tilecount":1,
+         "tilecount":2,
          "tileheight":30,
          "tilewidth":45
         }, 
         {
          "columns":11,
-         "firstgid":148,
+         "firstgid":149,
          "image":"..\/make_loops.png",
          "imageheight":40,
          "imagewidth":385,
@@ -2264,7 +2264,7 @@
         }, 
         {
          "columns":1,
-         "firstgid":159,
+         "firstgid":160,
          "image":"..\/door2.png",
          "imageheight":40,
          "imagewidth":30,

@@ -243,6 +243,13 @@ class Player
             }
         }
 
+        if (this.activeBoomie) {
+            g.byName["space"].gameObj.anims.play(g.byName["space"].fxData.id + ":static2", true);
+        }
+        else {
+            g.byName["space"].gameObj.anims.play(g.byName["space"].fxData.id + ":static", true);
+        }
+
         this.maybeMoveCamera();
     }
 

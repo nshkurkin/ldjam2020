@@ -4,6 +4,7 @@
     "type" : "sprite-sheet",
     "elementSize" : { "x": 45, "y": 30 },
     "keyFrames" : [
-        { "key" : "static",  "start": 0, "len": 1, "rate": 5 }
+        { "key" : "static",  "start": 0, "len": 1, "rate": 5 },
+        { "key" : "static2",  "start": 1, "len": 2, "rate": 5 }
     ]
 }

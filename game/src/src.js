@@ -1,6 +1,6 @@
 
 var g = new Object();
-g.debug = false; //true;
+g.debug = true; //true;
 g.scale = 4.0;
 g.fx = new Object();
 g.fx.data = new Object();
@@ -180,6 +180,7 @@ function create ()
     var playerSpawnLoc = MakeVec2(100, 350);
     g.named.roomTransitions = this.physics.add.group({ allowGravity: false, immovable: true });
     g.named.roomTransitionsByName = {}
+    g.named.roomTransitionArray = []
     var transitions = g.named.world.getObjectLayer('transition-marker-layer')['objects'];
     for (var transition of transitions) {
         //console.log("TRANSITION");
@@ -194,12 +195,14 @@ function create ()
         rect.setData("direction", Util.getTiledProperty(transition, "direction"));
         //console.log("Destination of " + name + " is " + destination);
         g.named.roomTransitions.add(rect);
+        g.named.roomTransitionArray.push(rect);
         g.named.roomTransitionsByName[name] = rect;
 
         if (name == "player_spawn") {
             playerSpawnLoc = pos;
         }
     }
+    g.debugTransitionIdx = 0;
 
     // @TEMP: Debug render collisions
     //g.named.background_debug_gfx = this.add.graphics();
@@ -240,9 +243,9 @@ function create ()
 
         let spawnPos = MakeVec2(desc.x * g.scale, desc.y * g.scale)
         var interactable = new g.interactableClassList[sheetName](g.fx.data[sheetName], spawnPos, custData);
-        /*interactable.gameObj.setPosition(
-                desc.x * g.scale + g.scale * interactable.gameObj.width/2.0, 
-                desc.y * g.scale - g.scale *  interactable.gameObj.height/2.0);*/
+        if (desc.rotation) {
+            interactable.gameObj.setRotation(Util.degToRad(Math.round(desc.rotation)));
+        }
         g.named.interactables.add(interactable.gameObj);
         if (custData.playerBlocker) {
             g.named.playeronlyBlockers.add(interactable.gameObj);
@@ -277,11 +280,24 @@ function create ()
     this.input.on('pointermove', onMouseMove);
     this.input.on('pointerdown', onMouseDown);
     this.input.on('pointerup', onMouseUp);
+
+    g.debugCycleLevelNext = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M));
+    g.debugCycleLevelPrev = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N));
 }
 
 function update (time, delta)
 {
     g.worldClock.update(time, delta);
+    if (g.debug) {
+        if (g.debugCycleLevelNext.keystroke()) {
+            g.debugTransitionIdx = (g.debugTransitionIdx + 1) % g.named.roomTransitionArray.length;
+            g.named.player.onCollideRoomTransition(g.named.player, g.named.roomTransitionArray[g.debugTransitionIdx]);
+        }
+        if (g.debugCycleLevelPrev.keystroke()) {
+            g.debugTransitionIdx = (g.named.roomTransitionArray.length + g.debugTransitionIdx - 1) % g.named.roomTransitionArray.length;
+            g.named.player.onCollideRoomTransition(g.named.player, g.named.roomTransitionArray[g.debugTransitionIdx]);
+        }
+    }
 
     g.named.player.update(time, delta);
 

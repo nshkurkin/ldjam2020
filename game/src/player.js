@@ -29,7 +29,7 @@ class Player
 
         this.velocity = 200;
         this.faceDirection = MakeVec2(1, 0);
-        this.faceDirectionAnim = this.fxData.id + ':dir:dr';
+        this.faceDirectionAnim = 'dir:dr';
         this.altSkins = [fxData];
         this.altSkinIdx = 0;
 
@@ -43,7 +43,7 @@ class Player
         this.upKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.downKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.boomerangKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
-        this.swapSkinKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH));
+        this.swapSkinKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K));
         this.noClipKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
     }
 
@@ -287,8 +287,6 @@ class Player
     {
         this.altSkinIdx = skinIdx;
         this.fxData = this.altSkins[this.altSkinIdx];
-        let curDir = this.faceDirectionAnim.split(':').slice(1).join(':');
-        this.faceDirectionAnim = curDir;
         this.playAnim(this.faceDirectionAnim);
     }
 

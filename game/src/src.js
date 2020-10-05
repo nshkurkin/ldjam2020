@@ -207,14 +207,26 @@ function create ()
         rect.setData("direction", Util.getTiledProperty(transition, "direction"));
         //console.log("Destination of " + name + " is " + destination);
         g.named.roomTransitions.add(rect);
-        g.named.roomTransitionArray.push(rect);
+        // Names of the form "r##" (level markers)
+        if (name.length <= 3) {
+            rect.username = name;
+            g.named.roomTransitionArray.push(rect);
+        }
         g.named.roomTransitionsByName[name] = rect;
 
         if (name == "player_spawn") {
             playerSpawnLoc = pos;
         }
     }
+    g.named.roomTransitionArray.sort((a, b) => (a.username > b.username) ? 1 : -1);
     g.debugTransitionIdx = 0;
+    if (g.debug) {
+        var levelNames = [];
+        for (var level of g.named.roomTransitionArray) {
+            levelNames.push(level.username);
+        }
+        console.log("Available levels: ", levelNames, "(new index: ", g.debugTransitionIdx, ")");
+    }
 
     // @TEMP: Debug render collisions
     //g.named.background_debug_gfx = this.add.graphics();
@@ -295,21 +307,29 @@ function create ()
     this.input.on('pointerdown', onMouseDown);
     this.input.on('pointerup', onMouseUp);
 
-    g.debugCycleLevelNext = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M));
-    g.debugCycleLevelPrev = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N));
+    g.debugCycleLevelNext = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH));
+    g.debugCycleLevelPrev = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.PERIOD));
 }
 
 function update (time, delta)
 {
     g.worldClock.update(time, delta);
     if (g.debug) {
+        var changed = false;
         if (g.debugCycleLevelNext.keystroke()) {
             g.debugTransitionIdx = (g.debugTransitionIdx + 1) % g.named.roomTransitionArray.length;
-            g.named.player.onCollideRoomTransition(g.named.player, g.named.roomTransitionArray[g.debugTransitionIdx]);
+            changed = true;
         }
         if (g.debugCycleLevelPrev.keystroke()) {
             g.debugTransitionIdx = (g.named.roomTransitionArray.length + g.debugTransitionIdx - 1) % g.named.roomTransitionArray.length;
-            g.named.player.onCollideRoomTransition(g.named.player, g.named.roomTransitionArray[g.debugTransitionIdx]);
+            changed = true;
+        }
+
+        if (changed) {
+            let transition = g.named.roomTransitionArray[g.debugTransitionIdx];
+            g.named.player.gameObj.x = transition.x;
+            g.named.player.gameObj.y = transition.y;
+            console.log("Switching to level: ", transition.username);
         }
     }
 

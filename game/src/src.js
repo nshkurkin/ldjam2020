@@ -54,6 +54,7 @@ g.spritesheetAssetList = [
     ["move", "move-desc", "move.json", "move.png", { frameWidth: 30, frameHeight: 30 }],
     ["space", "space-desc", "space.json", "space.png", { frameWidth: 45, frameHeight: 30 }],
     ["swap", "swap-desc", "swap.json", "swap.png", { frameWidth: 34, frameHeight: 20 }],
+    ["hit_stuff", "hit_stuff-desc", "hit_stuff.json", "hit_stuff.png", { frameWidth: 34, frameHeight: 20 }],
 
     ["boomerang", "boomerang-desc", "simple_boomerang.json", "simple_boomerang.png", { frameWidth: 10, frameHeight: 10 }],
 
@@ -122,6 +123,7 @@ function create ()
         "move" : StaticText,
         "space" : StaticText,
         "swap" : StaticText,
+        "hit_stuff": StaticText
     };
 
     g.worldClock = new Phaser.Time.Clock(this);

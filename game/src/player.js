@@ -44,6 +44,7 @@ class Player
         this.downKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.boomerangKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
         this.swapSkinKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH));
+        this.noClipKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
     }
 
     playAnim(keyframeId)
@@ -108,6 +109,16 @@ class Player
     update (time, delta)
     {
         var direction = MakeVec2(0, 0);
+        let velocity = this.velocity;
+        if (g.debug)
+        {
+            this.gameObj.body.checkCollision.none = this.noClipKey.isDown;
+            if (this.noClipKey.isDown)
+            {
+                velocity *= 5;
+            }
+        }
+
 
         if (this.leftKey.isDown)
         {
@@ -195,7 +206,7 @@ class Player
         else
         {
             // move normally
-            this.gameObj.setVelocity(direction.x * this.velocity, direction.y * this.velocity);
+            this.gameObj.setVelocity(direction.x * velocity, direction.y * velocity);
 
             var dirMap = [
                 /* -X */ [

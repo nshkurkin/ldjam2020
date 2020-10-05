@@ -22,12 +22,16 @@ class BasicSwitch {
         this.gameObj.getOwner = function() { return  thisRef; };
         this.active = false;
         this.activationCooldown = 0;
-        this.setActive(false);
 
         this.optionalDuration = 0;
+        this.durationTimeout = null;
+        this.activeAnim = "active";
+        this.inactiveAnim = "inactive";
         if (null !== custData && "duration" in custData)
         {
             this.optionalDuration = custData.duration;
+            this.activeAnim = "active_timed";
+            this.inactiveAnim = "inactive_timed";
         }
 
         if (g.debug) {
@@ -36,13 +40,22 @@ class BasicSwitch {
                 thisRef.tryActivate(thisRef);
             });
         }
+        
+        this.setActive(false);
 
         g.entities.push(this);
     }
 
     tryActivate(instigator)
     {
-        this.setActive(!this.active);
+        if (this.optionalDuration > 0)
+        {
+            this.setActive(true);
+        }
+        else
+        {
+            this.setActive(!this.active);
+        }
     }
 
     isActivated()
@@ -57,10 +70,24 @@ class BasicSwitch {
             var stateSwitched = this.active != active;
             this.active = active;
             if (active) {
-                this.gameObj.anims.play(this.fxData.id + ':' + 'active', true);
+                this.gameObj.anims.play(this.fxData.id + ':' + this.activeAnim, true);
             }
             else {
-                this.gameObj.anims.play(this.fxData.id + ':' + 'inactive', true);
+                this.gameObj.anims.play(this.fxData.id + ':' + this.inactiveAnim, true);
+            }
+            
+            // timed switch ... todo SFX
+            if (this.optionalDuration > 0 && active) 
+            {
+                if (null !== this.durationTimeout)
+                {
+                    clearTimeout(this.durationTimeout);
+                }
+                this.durationTimeout = setTimeout(Util.withContext(function ()
+                {
+                    this.durationTimeout = null;
+                    this.setActive(false);
+                }, this), this.optionalDuration);
             }
 
             if (stateSwitched) {

@@ -994,24 +994,6 @@
                  "y":159.301143209804
                 }, 
                 {
-                 "gid":105,
-                 "height":30,
-                 "id":80,
-                 "name":"r3_d1",
-                 "properties":[
-                        {
-                         "name":"activateIf",
-                         "type":"string",
-                         "value":"r3_s1,r3_s2,r3_s3,r3_s4"
-                        }],
-                 "rotation":89.8803431335559,
-                 "type":"",
-                 "visible":true,
-                 "width":10,
-                 "x":460.524310874443,
-                 "y":350.144140959972
-                }, 
-                {
                  "gid":108,
                  "height":30,
                  "id":81,
@@ -1094,6 +1076,24 @@
                  "width":10,
                  "x":515.949311456197,
                  "y":312.940228537943
+                }, 
+                {
+                 "gid":159,
+                 "height":10,
+                 "id":89,
+                 "name":"r3_d1",
+                 "properties":[
+                        {
+                         "name":"activateIf",
+                         "type":"string",
+                         "value":"r3_s1,r3_s2,r3_s3,r3_s4"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":30,
+                 "x":460.241271783536,
+                 "y":359.457360516292
                 }],
          "opacity":1,
          "properties":[
@@ -1108,7 +1108,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":89,
+ "nextobjectid":90,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.2",
@@ -2261,6 +2261,38 @@
          "tilecount":11,
          "tileheight":40,
          "tilewidth":35
+        }, 
+        {
+         "columns":1,
+         "firstgid":159,
+         "image":"..\/door2.png",
+         "imageheight":40,
+         "imagewidth":30,
+         "margin":0,
+         "name":"door2",
+         "spacing":0,
+         "tilecount":4,
+         "tileheight":10,
+         "tiles":[
+                {
+                 "id":0,
+                 "properties":[
+                        {
+                         "name":"open",
+                         "type":"bool",
+                         "value":false
+                        }]
+                }, 
+                {
+                 "id":3,
+                 "properties":[
+                        {
+                         "name":"open",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }],
+         "tilewidth":30
         }],
  "tilewidth":10,
  "type":"map",

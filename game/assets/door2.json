@@ -1,0 +1,12 @@
+{
+    "assetPath" : "assets/door2.png",
+    "id": "door2",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 30, "y": 10 },
+    "keyFrames" : [
+        { "key" : "closed",  "start": 0, "len": 1, "rate": 20},
+        { "key" : "closing", "start": 0, "len": 4, "rate": 10, "reversed": true},
+        { "key" : "opening", "start": 0, "len": 4, "rate": 10},
+        { "key" : "opened",    "start": 3, "len": 1, "rate": 5}
+    ]
+}

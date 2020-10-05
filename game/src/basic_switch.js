@@ -76,7 +76,7 @@ class BasicSwitch {
                 this.gameObj.anims.play(this.fxData.id + ':' + this.inactiveAnim, true);
             }
             
-            // timed switch ... todo SFX
+            // timed switch
             if (this.optionalDuration > 0 ) 
             {
                 if (active)
@@ -89,6 +89,7 @@ class BasicSwitch {
                     {
                         clearTimeout(this.durationTimeout);
                     }
+                    //console.log("Switch has ", this.optionalDuration, " ms");
                     this.durationTimeout = setTimeout(Util.withContext(function ()
                     {
                         this.durationTimeout = null;

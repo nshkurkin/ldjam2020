@@ -109,6 +109,11 @@ class Torch {
                 g.byName[name].tryActivate(this);
             }
         }
+
+        if (this.active && this.custData && this.custData.turnOnMusic) {
+            console.log("Restart music");
+            playLoop("music");
+        }
     }
 
     update(time, delta)

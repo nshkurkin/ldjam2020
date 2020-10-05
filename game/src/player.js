@@ -78,6 +78,12 @@ class Player
 
         let dest = transitionObject.getData("destination");
 
+        if (dest == "turnOffMusic") {
+            //console.log("Turn off music");
+            stopLoop("music");
+            return;
+        }
+
         // Ensure we offset the correct direction or else we might end up in a wall or something.
         let directionStr = transitionObject.getData("direction");
         if (!directionStr) {

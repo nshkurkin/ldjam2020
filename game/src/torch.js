@@ -67,6 +67,10 @@ class Torch {
             shouldActivate = shouldActivate || allTrue;
         }
 
+        if (!this.custData.activateIf && (instigator instanceof Torch || instigator instanceof BasicSwitch)) {
+            shouldActivate = true;
+        }
+
         if (shouldActivate) {
             this.setActive(true);
         }
@@ -97,8 +101,10 @@ class Torch {
 
     triggerListeners()
     {
+        //console.log("Torch triggered");
         if (this.custData && this.custData.receivers) {
             let receiverNames = this.custData.receivers.split(',');
+            //console.log("Torch receivers: ", receiverNames);
             for (var name of receiverNames) {
                 g.byName[name].tryActivate(this);
             }

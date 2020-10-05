@@ -76,6 +76,7 @@ class FlammableBox {
     {
         this.fire.destroy();
         this.gameObj.destroy();
+        playSFX("box_break");
     }
 }
 

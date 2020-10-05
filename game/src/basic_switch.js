@@ -37,6 +37,7 @@ class BasicSwitch {
     tryActivate(instigator)
     {
         this.setActive(!this.active);
+        playSFX("hit_switch");
     }
 
     isActivated()

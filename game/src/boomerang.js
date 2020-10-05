@@ -33,6 +33,7 @@ class Boomerang
         g.entities.push(this);
 
         playSFX("boomie_throw");
+        playLoop("boomie_loop");
     }
 
     update(time, delta)
@@ -51,6 +52,7 @@ class Boomerang
     {
         // put the fire out right away
         this.fire.destroy();
+        stopLoop("boomie_loop");
         playSFX("boomie_retrieve");
         
         this.setPositionProvider(function(time, delta, destroy) { 

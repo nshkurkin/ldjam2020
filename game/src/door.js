@@ -53,6 +53,7 @@ class Door {
     setOpen(open)
     {
         if (this.open != open) {
+            playSFX("door_open");
             if (open) {
                 this.gameObj.anims.play(this.fxData.id + ':' + 'opening', true);
             }

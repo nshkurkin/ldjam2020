@@ -100,7 +100,7 @@ class Player
         }
         this.gameObj.setPosition(
                 destObj.x - offsetMap[directionStr].x * this.gameObj.width * g.scale,
-                destObj.y + offsetMap[directionStr].y * this.gameObj.height * g.scale);
+                destObj.y - offsetMap[directionStr].y * this.gameObj.height * g.scale);
 
         // Make sure to recall boomie
         this.detachBoomie(/* animate? */ false);
@@ -191,7 +191,10 @@ class Player
                 var thisRef = this;
                 g.engine.physics.add.collider(this.activeBoomie.gameObj, g.named.wallBlockers, function() {
                     // console.log("Boomie hit a wall!");
-                    playSFX("boomie_hit_wall");
+                    if (null !== thisRef.activeBoomie) 
+                    {
+                        playSFX("boomie_hit_wall");
+                    }
                     thisRef.detachBoomie();
                 }, null, g.engine);
                 g.engine.physics.add.collider(this.activeBoomie.gameObj, g.named.interactables, function(boomie, interactable) {

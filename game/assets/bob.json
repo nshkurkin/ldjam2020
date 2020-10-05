@@ -7,6 +7,16 @@
         { "key" : "dir:dr",  "start": 0, "len": 1, "rate": 20},
         { "key" : "dir:ur",  "start": 1, "len": 1, "rate": 20},
         { "key" : "dir:ul",  "start": 2, "len": 1, "rate": 20},
-        { "key" : "dir:dl",  "start": 3, "len": 1, "rate": 20}
+        { "key" : "dir:dl",  "start": 3, "len": 1, "rate": 20},
+
+        { "key" : "throw:dir:dr",  "start": 4, "len": 1, "rate": 20},
+        { "key" : "throw:dir:ur",  "start": 5, "len": 1, "rate": 20},
+        { "key" : "throw:dir:ul",  "start": 6, "len": 1, "rate": 20},
+        { "key" : "throw:dir:dl",  "start": 7, "len": 1, "rate": 20},
+
+        { "key" : "run:dir:dr",  "start": 8, "len": 3, "rate": 8},
+        { "key" : "run:dir:dl",  "start": 8, "len": 3, "rate": 8},
+        { "key" : "run:dir:ur",  "start": 11, "len": 3, "rate": 8},
+        { "key" : "run:dir:ul",  "start": 11, "len": 3, "rate": 8}
     ]
 }

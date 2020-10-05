@@ -216,6 +216,12 @@ class Player
                     /* +Y */ "dir:ur",
                 ]
             ]
+
+            // If we are running, put in the run animation prefix
+            var prefix = "";
+            if (direction.length() > 0) {
+                prefix = "run:";
+            }
         
             var animToPlay = dirMap[direction.x + 1][-direction.y + 1]
         
@@ -223,7 +229,20 @@ class Player
             {
                 this.faceDirection = direction;
                 this.faceDirectionAnim = animToPlay;
-                this.playAnim(animToPlay);
+                this.playAnim(prefix + animToPlay);
+            }
+
+            // NOTE: Nikolai was lazy and didn't want to draw out all of the run animations.
+            if (prefix == "run:") {
+                this.gameObj.flipX = direction.x < 0;
+            }
+            else {
+                this.gameObj.flipX = false;
+            }
+
+            // Return to a steady state animation
+            if (direction.length() == 0 && this.faceDirectionAnim != "" && this.faceDirectionAnim != "none") {
+                this.playAnim(this.faceDirectionAnim);
             }
     
             if (this.swapSkinKey.keystroke())

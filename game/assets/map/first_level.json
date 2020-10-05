@@ -1032,7 +1032,7 @@
                         {
                          "name":"receivers",
                          "type":"string",
-                         "value":"r2_d1"
+                         "value":"r3_d1"
                         }],
                  "rotation":0,
                  "type":"",
@@ -1050,7 +1050,7 @@
                         {
                          "name":"receivers",
                          "type":"string",
-                         "value":"r2_d1"
+                         "value":"r3_d1"
                         }],
                  "rotation":0,
                  "type":"",
@@ -1068,7 +1068,7 @@
                         {
                          "name":"receivers",
                          "type":"string",
-                         "value":"r2_d1"
+                         "value":"r3_d1"
                         }],
                  "rotation":0,
                  "type":"",
@@ -1086,7 +1086,7 @@
                         {
                          "name":"receivers",
                          "type":"string",
-                         "value":"r2_d1"
+                         "value":"r3_d1"
                         }],
                  "rotation":0,
                  "type":"",
@@ -1103,7 +1103,7 @@
                  "value":true
                 }],
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],

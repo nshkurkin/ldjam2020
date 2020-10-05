@@ -69,12 +69,14 @@ g.spritesheetAssetList = [
 // key: file path, volume, loop
 // assume they all have .wav and .ogg
 g.sfxAssetData = {
+    "music": ["assets/music/song", .3 ],
+
     "boomie_target": ["assets/sfx/boomie_target", .2 ],
     "boomie_hit_wall": ["assets/sfx/boomie_hit_wall", .6 ],
     "boomie_throw": ["assets/sfx/boomie_throw", .5 ],
     "boomie_retrieve": ["assets/sfx/boomie_retrieve", .5 ], // make this one box destroy?
     "boomie_loop": ["assets/sfx/boomie_loop", .3 ],
-    "set_fire": ["assets/sfx/set_fire", .6 ],
+    "set_fire": ["assets/sfx/set_fire", .4 ],
     "box_break": ["assets/sfx/box_break", .6 ],
     "door_open": ["assets/sfx/door_open", .8 ],
     "hit_switch": ["assets/sfx/hit_switch", .5 ],
@@ -277,6 +279,8 @@ function create ()
     g.engine.physics.add.overlap(g.named.fires, g.named.fires, Fire.onCollideFires, null, g.engine);
     
     this.cameras.main.setBounds(0, 0, 5120, 5120);
+
+    playLoop("music");
 
     //g.named.boomie = new Boomerang(g.fx.data.boomerang, MakeVec2(350, 400));
     //g.named.boomie.positionProvider = Boomerang.lerpToMouseFunc();

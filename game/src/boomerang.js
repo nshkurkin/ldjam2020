@@ -31,6 +31,8 @@ class Boomerang
         this.fire = new Fire(g.fx.data.fire, pos, this.gameObj, followOffset);
         
         g.entities.push(this);
+
+        playSFX("boomie_throw");
     }
 
     update(time, delta)
@@ -49,6 +51,7 @@ class Boomerang
     {
         // put the fire out right away
         this.fire.destroy();
+        playSFX("boomie_retrieve");
         
         this.setPositionProvider(function(time, delta, destroy) { 
             return MakeVec2(g.named.player.gameObj.x, g.named.player.gameObj.y); 
@@ -62,7 +65,7 @@ class Boomerang
         var thisRef = this;
         setTimeout(function () { 
             g.entities.splice(g.entities.indexOf(thisRef), 1);
-            thisRef.gameObj.destroy(); 
+            thisRef.gameObj.destroy();
         }, DURATION);
     }
 

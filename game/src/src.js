@@ -1,6 +1,6 @@
 
 var g = new Object();
-g.debug = true;
+g.debug = false; //true;
 g.scale = 4.0;
 g.fx = new Object();
 g.fx.data = new Object();
@@ -65,6 +65,16 @@ g.spritesheetAssetList = [
     ["door", "door-desc", "door.json", "door.png", { frameWidth: 10, frameHeight: 30 }],
 ];
 
+// key, file path, volume
+// assume they all have .wav and .ogg
+g.sfxAssetData = {
+    "boomie_hit_wall": ["assets/sfx/boomie_hit_wall", 1 ],
+    "boomie_throw": ["assets/sfx/boomie_throw", .5 ],
+    "boomie_retrieve": ["assets/sfx/boomie_retrieve", .5 ],
+};
+// dictionary of audio objects
+g.sfx = {};
+
 g.interactableClassList = new Object();
 
 function preload ()
@@ -74,6 +84,12 @@ function preload ()
     for (var assetTuple of g.spritesheetAssetList) {
         this.load.json(assetTuple[1], 'assets/' + assetTuple[2]);
         this.load.spritesheet(assetTuple[0], 'assets/' + assetTuple[3], assetTuple[4]);
+    }
+
+    for (var sfxKey of Object.keys(g.sfxAssetData))
+    {
+        let baseFileName =  g.sfxAssetData[sfxKey][0];
+        this.load.audio(sfxKey, [baseFileName + ".wav", baseFileName + ".ogg"]);
     }
 
     // World tileset
@@ -97,6 +113,13 @@ function create ()
     g.worldClock = new Phaser.Time.Clock(this);
     for (var assetTuple of g.spritesheetAssetList) {
         g.fx.data[assetTuple[0]] = Util.finishLoadAsset(assetTuple[1]);
+    }
+
+    for (var sfxKey of Object.keys(g.sfxAssetData))
+    {
+        let sfxTuple = g.sfxAssetData[sfxKey];
+        let effect = this.sound.add(sfxKey, { volume: sfxTuple[1] });
+        g.sfx[sfxKey] = effect;
     }
     
     // group for Fire objects
@@ -280,4 +303,9 @@ function onMouseUp (pointer)
 function onMouseMove (pointer)
 {
 
+}
+
+function playSFX(sfxKey)
+{
+    g.sfx[sfxKey].play();
 }

@@ -77,17 +77,28 @@ class BasicSwitch {
             }
             
             // timed switch ... todo SFX
-            if (this.optionalDuration > 0 && active) 
+            if (this.optionalDuration > 0 ) 
             {
-                if (null !== this.durationTimeout)
+                if (active)
                 {
-                    clearTimeout(this.durationTimeout);
+                    if (stateSwitched)
+                    {
+                        playLoop("switch_tick");
+                    }
+                    if (null !== this.durationTimeout)
+                    {
+                        clearTimeout(this.durationTimeout);
+                    }
+                    this.durationTimeout = setTimeout(Util.withContext(function ()
+                    {
+                        this.durationTimeout = null;
+                        this.setActive(false);
+                    }, this), this.optionalDuration);
                 }
-                this.durationTimeout = setTimeout(Util.withContext(function ()
+                else
                 {
-                    this.durationTimeout = null;
-                    this.setActive(false);
-                }, this), this.optionalDuration);
+                    stopLoop("switch_tick");
+                }
             }
 
             if (stateSwitched) {

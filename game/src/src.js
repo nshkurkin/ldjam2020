@@ -78,6 +78,7 @@ g.sfxAssetData = {
     "box_break": ["assets/sfx/box_break", .6 ],
     "door_open": ["assets/sfx/door_open", .8 ],
     "hit_switch": ["assets/sfx/hit_switch", .5 ],
+    "switch_tick": ["assets/sfx/switch_tick", .2 ],
     // box_catch_fire is not in use rn
 };
 // dictionary of audio objects

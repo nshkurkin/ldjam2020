@@ -270,11 +270,14 @@ class Player
             }
         }
 
-        if (this.activeBoomie) {
-            g.byName["space"].gameObj.anims.play(g.byName["space"].fxData.id + ":static2", true);
-        }
-        else {
-            g.byName["space"].gameObj.anims.play(g.byName["space"].fxData.id + ":static", true);
+        let spaceNames = ["space", "space2"];
+        for (var spaceName of spaceNames) {
+            if (this.activeBoomie) {
+                g.byName[spaceName].gameObj.anims.play(g.byName[spaceName].fxData.id + ":static2", true);
+            }
+            else {
+                g.byName[spaceName].gameObj.anims.play(g.byName[spaceName].fxData.id + ":static", true);
+            }
         }
 
         this.maybeMoveCamera();

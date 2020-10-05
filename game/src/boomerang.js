@@ -52,6 +52,9 @@ class Boomerang
 
     destroy(animate=true)
     {
+        // Prevent dead boomie from causing more collision events.
+        this.gameObj.body.enable = false;
+
         // put the fire out right away
         this.fire.destroy();
         stopLoop("boomie_loop");

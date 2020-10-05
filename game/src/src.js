@@ -72,11 +72,11 @@ g.sfxAssetData = {
     "music": ["assets/music/song", .3 ],
 
     "boomie_target": ["assets/sfx/boomie_target", .2 ],
-    "boomie_hit_wall": ["assets/sfx/boomie_hit_wall", .6 ],
+    "boomie_hit_wall": ["assets/sfx/boomie_hit_wall", .1 ],
     "boomie_throw": ["assets/sfx/boomie_throw", .5 ],
     "boomie_retrieve": ["assets/sfx/boomie_retrieve", .5 ], // make this one box destroy?
     "boomie_loop": ["assets/sfx/boomie_loop", .3 ],
-    "set_fire": ["assets/sfx/set_fire", .4 ],
+    "set_fire": ["assets/sfx/set_fire", .1 ],
     "box_break": ["assets/sfx/box_break", .6 ],
     "door_open": ["assets/sfx/door_open", .8 ],
     "hit_switch": ["assets/sfx/hit_switch", .5 ],

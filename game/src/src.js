@@ -49,6 +49,11 @@ g.spritesheetAssetList = [
     ["torch", "torch-desc", "torch.json", "torch.png", { frameWidth: 10, frameHeight: 10 }],
     ["box", "box-desc", "box.json", "box.png", { frameWidth: 10, frameHeight: 10 }],
 
+    ["arrows", "arrows-desc", "arrows.json", "arrows.png", { frameWidth: 10, frameHeight: 10 }],
+    ["make_loops", "make_loops-desc", "make_loops.json", "make_loops.png", { frameWidth: 35, frameHeight: 40 }],
+    ["move", "move-desc", "move.json", "move.png", { frameWidth: 30, frameHeight: 30 }],
+    ["space", "space-desc", "space.json", "space.png", { frameWidth: 45, frameHeight: 30 }],
+
     ["boomerang", "boomerang-desc", "simple_boomerang.json", "simple_boomerang.png", { frameWidth: 10, frameHeight: 10 }],
 
     ["bob",    "bob-desc",    "bob.json",    "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
@@ -83,6 +88,10 @@ function create ()
         "door" : Door,
         "torch" : Torch,
         "box" : FlammableBox,
+
+        "make_loops" : StaticText,
+        "move" : StaticText,
+        "space" : StaticText,
     };
 
     g.worldClock = new Phaser.Time.Clock(this);
@@ -96,8 +105,10 @@ function create ()
     // Finish loading the world tileset.
     g.named.world = this.add.tilemap('world-tiles-desc');
     var worldTileset = g.named.world.addTilesetImage("static_floors", "static_floors");
+    var arrowTileset = g.named.world.addTilesetImage("arrows", "arrows");
     g.named.background = g.named.world.createStaticLayer("ground-layer", worldTileset, 0, 0).setScale(g.scale);
     g.named.background.setCollisionFromCollisionGroup(true);
+    g.named.backgroundEx = g.named.world.createStaticLayer("fluff-layer", arrowTileset, 0, 0).setScale(g.scale);
     
     // Generate everything-colliders from the map
     g.named.wallBlockers = this.physics.add.group({ allowGravity: false, immovable: true });
@@ -157,6 +168,7 @@ function create ()
         rect.setData("name", name);
         let destination = Util.getTiledProperty(transition, "destination");
         rect.setData("destination", destination);
+        rect.setData("direction", Util.getTiledProperty(transition, "direction"));
         //console.log("Destination of " + name + " is " + destination);
         g.named.roomTransitions.add(rect);
         g.named.roomTransitionsByName[name] = rect;

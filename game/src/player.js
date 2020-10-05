@@ -72,27 +72,34 @@ class Player
         //console.log("left " + transitionObject.geom.left + " right " + transitionObject.geom.right);
 
         let isVerticalDoor = transitionObject.geom.height >= transitionObject.geom.width;
-        let deltaX = this.gameObj.x - transitionObject.x;
-        let deltaY = this.gameObj.y - transitionObject.y;
+        var deltaX = this.gameObj.x - transitionObject.x;
+        var deltaY = this.gameObj.y - transitionObject.y;
 
         let dest = transitionObject.getData("destination");
+
+        // Ensure we offset the correct direction or else we might end up in a wall or something.
+        let directionStr = transitionObject.getData("direction");
+        if (!directionStr) {
+            directionStr = "center";
+        }
+        let offsetMap = {
+            "left" : MakeVec2(-1, 0),
+            "right": MakeVec2(1, 0),
+            "up"   : MakeVec2(0, -1),
+            "down" : MakeVec2(0, 1),
+            "center": MakeVec2(0, 0),
+        };
+
         let destObj = g.named.roomTransitionsByName[dest];
+
         if (!destObj)
         {
-            //console.log("Could not find transition destination: " + dest);
+            console.log("Could not find transition destination: " + dest);
             return;
         }
-
-        if (isVerticalDoor)
-        {
-            // keep relative Y the same, move across on X
-            this.gameObj.setPosition(destObj.x - deltaX, destObj.y + deltaY);
-        }
-        else
-        {
-            // vice versa
-            this.gameObj.setPosition(destObj.x + deltaX, destObj.y - deltaY);
-        }
+        this.gameObj.setPosition(
+                destObj.x - offsetMap[directionStr].x * this.gameObj.width * g.scale,
+                destObj.y + offsetMap[directionStr].y * this.gameObj.height * g.scale);
 
         // Make sure to recall boomie
         this.detachBoomie(/* animate? */ false);

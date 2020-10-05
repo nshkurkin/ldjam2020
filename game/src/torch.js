@@ -40,9 +40,9 @@ class Torch {
 
     _onFireStateChanged (value)
     {
-        console.log("callback this");
-        console.log(this);
-        console.log("Callback value: " + value);
+        //console.log("callback this");
+        //console.log(this);
+        //console.log("Callback value: " + value);
 
         if (value)
         {

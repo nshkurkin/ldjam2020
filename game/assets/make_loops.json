@@ -1,0 +1,10 @@
+{
+    "assetPath" : "assets/make_loops.png",
+    "id": "make_loops",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 35, "y": 40 },
+    "keyFrames" : [
+        { "key" : "static",  "start": 10, "len": 1, "rate": 5 },
+        { "key" : "animate", "start": 0, "len": 11, "rate": 5, "repeat": -1}
+    ]
+}

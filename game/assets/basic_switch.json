@@ -5,6 +5,8 @@
     "elementSize" : { "x": 10, "y": 10 },
     "keyFrames" : [
         { "key" : "inactive",  "start": 0, "len": 1, "rate": 20},
-        { "key" : "active",  "start": 2, "len": 2, "rate": 5, "repeat": -1 }
+        { "key" : "active",  "start": 2, "len": 2, "rate": 5, "repeat": -1 },
+        { "key" : "inactive_timed",  "start": 4, "len": 1, "rate": 20},
+        { "key" : "active_timed",  "start": 6, "len": 2, "rate": 5, "repeat": -1 }
     ]
 }

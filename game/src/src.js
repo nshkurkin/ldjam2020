@@ -70,7 +70,7 @@ g.spritesheetAssetList = [
 // assume they all have .wav and .ogg
 g.sfxAssetData = {
     "boomie_target": ["assets/sfx/boomie_target", .2 ],
-    "boomie_hit_wall": ["assets/sfx/boomie_hit_wall", 1 ],
+    "boomie_hit_wall": ["assets/sfx/boomie_hit_wall", .6 ],
     "boomie_throw": ["assets/sfx/boomie_throw", .5 ],
     "boomie_retrieve": ["assets/sfx/boomie_retrieve", .5 ], // make this one box destroy?
     "boomie_loop": ["assets/sfx/boomie_loop", .3 ],

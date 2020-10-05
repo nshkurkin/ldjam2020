@@ -9715,6 +9715,18 @@
                  "width":10,
                  "x":37.8290999940515,
                  "y":640.298316578431
+                }, 
+                {
+                 "gid":168,
+                 "height":20,
+                 "id":834,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":34,
+                 "x":49.9761066633438,
+                 "y":314.351889349241
                 }],
          "opacity":1,
          "properties":[
@@ -9734,7 +9746,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":834,
+ "nextobjectid":835,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.2",
@@ -10913,6 +10925,19 @@
                         }]
                 }],
          "tilewidth":30
+        }, 
+        {
+         "columns":1,
+         "firstgid":168,
+         "image":"..\/swap.png",
+         "imageheight":20,
+         "imagewidth":34,
+         "margin":0,
+         "name":"swap",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":20,
+         "tilewidth":34
         }],
  "tilewidth":10,
  "type":"map",

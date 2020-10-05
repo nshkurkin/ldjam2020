@@ -42,6 +42,8 @@ class Fire {
         var thisRef = this;
         this.gameObj.getOwner = function() { return  thisRef; };
         
+        // hack to fix sound
+        this.allowSound = false;
         this.setActive(false);
 
         g.entities.push(this);
@@ -49,6 +51,7 @@ class Fire {
 
     update (time, delta)
     {
+        this.allowSound = true;
         // smooth follow
         if (null !== this.follow)
         {
@@ -71,7 +74,7 @@ class Fire {
         value = value || false; // There is an undefined coming from somewhere...clean up
         if (this.isActive != value)
         {
-            if (value)
+            if (value && this.allowSound)
             {
                 playSFX("set_fire");
             }

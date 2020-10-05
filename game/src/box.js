@@ -19,11 +19,12 @@ class FlammableBox {
 
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
         this.gameObj.depth = g.layers.interactables;
+        this.gameObj.setOrigin(0, 1);
         var thisRef = this;
         this.gameObj.getOwner = function() { return thisRef; };
 
         this.ignited = false;
-        let followOffset = MakeVec2(0, 0).scale(g.scale);
+        let followOffset = MakeVec2(this.gameObj.width/2.0, -this.gameObj.height/2.0).scale(g.scale);
         this.fire = new Fire(g.fx.data.fire, pos, this.gameObj, followOffset, Util.withContext(this._onFireStateChanged, this));
     }
 

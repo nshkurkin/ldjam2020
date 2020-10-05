@@ -66,10 +66,10 @@ class Player
     onCollideRoomTransition(thisGameObject, transitionObject)
     {
         // TODO 
-        console.log("This object, then transition object");
-        console.log(thisGameObject);
-        console.log(transitionObject);
-        console.log("left " + transitionObject.geom.left + " right " + transitionObject.geom.right);
+        //console.log("This object, then transition object");
+        //console.log(thisGameObject);
+        //console.log(transitionObject);
+        //console.log("left " + transitionObject.geom.left + " right " + transitionObject.geom.right);
 
         let isVerticalDoor = transitionObject.geom.height >= transitionObject.geom.width;
         let deltaX = this.gameObj.x - transitionObject.x;
@@ -79,7 +79,7 @@ class Player
         let destObj = g.named.roomTransitionsByName[dest];
         if (!destObj)
         {
-            console.log("Could not find transition destination: " + dest);
+            //console.log("Could not find transition destination: " + dest);
             return;
         }
 

@@ -1,6 +1,6 @@
 
 var g = new Object();
-g.debug = false;
+g.debug = true;
 g.scale = 4.0;
 g.fx = new Object();
 g.fx.data = new Object();
@@ -143,12 +143,13 @@ function create ()
     }
 
     // Generate player-only colliders from the map
+    var playerSpawnLoc = MakeVec2(100, 350);
     g.named.roomTransitions = this.physics.add.group({ allowGravity: false, immovable: true });
     g.named.roomTransitionsByName = {}
     var transitions = g.named.world.getObjectLayer('transition-marker-layer')['objects'];
     for (var transition of transitions) {
-        console.log("TRANSITION");
-        console.log(transition);
+        //console.log("TRANSITION");
+        //console.log(transition);
         var pos = MakeVec2(transition.x * g.scale, transition.y * g.scale);
         var rect = new Phaser.GameObjects.Rectangle(this, 0, 0, transition.width, transition.height).setScale(g.scale);
         rect.setPosition(pos.x + g.scale * rect.width/2.0, pos.y + g.scale * rect.height/2.0);
@@ -156,9 +157,13 @@ function create ()
         rect.setData("name", name);
         let destination = Util.getTiledProperty(transition, "destination");
         rect.setData("destination", destination);
-        console.log("Destination of " + name + " is " + destination);
+        //console.log("Destination of " + name + " is " + destination);
         g.named.roomTransitions.add(rect);
         g.named.roomTransitionsByName[name] = rect;
+
+        if (name == "player_spawn") {
+            playerSpawnLoc = pos;
+        }
     }
 
     // @TEMP: Debug render collisions
@@ -214,13 +219,13 @@ function create ()
         }
     }
 
-    g.named.player = new Player(g.fx.data.bob, MakeVec2(100, 350));
+    g.named.player = new Player(g.fx.data.bob, playerSpawnLoc);
     g.named.player.altSkins = [g.fx.data.bob, g.fx.data.autumn, g.fx.data.rudy, g.fx.data.henry];
     g.named.player.swapSkin(Math.floor(Math.min(Math.random(), 0.999) * g.named.player.altSkins.length));
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.background, null, null, g.engine);
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.playeronlyBlockers, null, null, g.engine);
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.wallBlockers, null, null, g.engine);
-    g.engine.physics.add.collider(g.named.player.gameObj, g.named.roomTransitions, g.named.player.onCollideRoomTransition, null, g.named.player);
+    g.engine.physics.add.overlap(g.named.player.gameObj, g.named.roomTransitions, g.named.player.onCollideRoomTransition, null, g.named.player);
     g.engine.physics.add.overlap(g.named.fires, g.named.fires, Fire.onCollideFires, null, g.engine);
     
     this.cameras.main.setBounds(0, 0, 5120, 5120);

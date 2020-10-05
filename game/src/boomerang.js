@@ -28,8 +28,10 @@ class Boomerang
 
         // flammable boomie
         let followOffset = MakeVec2(0, this.gameObj.height * 0.1).scale(g.scale);
-        this.fire = new Fire(g.fx.data.fire, pos, this.gameObj, followOffset);
-        
+        this.fire = new Fire(g.fx.data.fire, pos, this.gameObj, followOffset, Util.withContext(this._onFireStateChanged, this));
+        this.EXTINGUISH_TIME_MS = 3000;
+        this.extinguishTimeout = null;
+
         g.entities.push(this);
 
         playSFX("boomie_throw");
@@ -69,6 +71,22 @@ class Boomerang
             g.entities.splice(g.entities.indexOf(thisRef), 1);
             thisRef.gameObj.destroy();
         }, DURATION);
+    }
+
+    _onFireStateChanged (value)
+    {
+        if (value)
+        {
+            if (null !== this.extinguishTimeout)
+            {
+                clearTimeout(this.extinguishTimeout);
+            }
+            this.extinguishTimeout = setTimeout(Util.withContext(function ()
+            {
+                this.extinguishTimeout = null;
+                this.fire.setActive(false);
+            }, this), this.EXTINGUISH_TIME_MS);
+        }
     }
 
     setPositionProvider(theFunc)

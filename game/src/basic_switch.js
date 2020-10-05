@@ -24,6 +24,12 @@ class BasicSwitch {
         this.activationCooldown = 0;
         this.setActive(false);
 
+        this.optionalDuration = 0;
+        if (null !== custData && "duration" in custData)
+        {
+            this.optionalDuration = custData.duration;
+        }
+
         if (g.debug) {
             this.gameObj.setInteractive();
             this.gameObj.on('pointerdown', function() {

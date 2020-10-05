@@ -115,7 +115,17 @@ class DrawPathBoomerang
     isPathValid()
     {
         // TODO
-        return true;
+        console.log("Camera stuff");
+        console.log("x " + this.gameObj.x + " y " + this.gameObj.y);
+        console.log(g.engine.cameras.main.scrollX)
+        console.log(g.engine.cameras.main.scrollY)
+        console.log(g.engine.cameras.main.width)
+        console.log(g.engine.cameras.main.height)
+        // make sure boomie is in bounds
+        return this.gameObj.x > g.engine.cameras.main.scrollX
+            && this.gameObj.x < g.engine.cameras.main.scrollX + g.engine.cameras.main.width
+            && this.gameObj.y > g.engine.cameras.main.scrollY 
+            && this.gameObj.y < g.engine.cameras.main.scrollY + g.engine.cameras.main.height;
     }
 
     destroy()

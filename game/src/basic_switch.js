@@ -37,7 +37,6 @@ class BasicSwitch {
     tryActivate(instigator)
     {
         this.setActive(!this.active);
-        playSFX("hit_switch");
     }
 
     isActivated()
@@ -60,9 +59,10 @@ class BasicSwitch {
 
             if (stateSwitched) {
                 this.triggerListeners();
+                playSFX("hit_switch");
             }
 
-            this.activationCooldown = 1000.0;
+            this.activationCooldown = 500.0;
         }
     }
 

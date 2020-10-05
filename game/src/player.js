@@ -44,6 +44,7 @@ class Player
         this.downKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.boomerangKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
         this.swapSkinKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH));
+        this.noClipKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
     }
 
     playAnim(keyframeId)
@@ -99,7 +100,7 @@ class Player
         }
         this.gameObj.setPosition(
                 destObj.x - offsetMap[directionStr].x * this.gameObj.width * g.scale,
-                destObj.y + offsetMap[directionStr].y * this.gameObj.height * g.scale);
+                destObj.y - offsetMap[directionStr].y * this.gameObj.height * g.scale);
 
         // Make sure to recall boomie
         this.detachBoomie(/* animate? */ false);
@@ -108,6 +109,16 @@ class Player
     update (time, delta)
     {
         var direction = MakeVec2(0, 0);
+        let velocity = this.velocity;
+        if (g.debug)
+        {
+            this.gameObj.body.checkCollision.none = this.noClipKey.isDown;
+            if (this.noClipKey.isDown)
+            {
+                velocity *= 5;
+            }
+        }
+
 
         if (this.leftKey.isDown)
         {
@@ -180,7 +191,10 @@ class Player
                 var thisRef = this;
                 g.engine.physics.add.collider(this.activeBoomie.gameObj, g.named.wallBlockers, function() {
                     // console.log("Boomie hit a wall!");
-                    playSFX("boomie_hit_wall");
+                    if (null !== thisRef.activeBoomie) 
+                    {
+                        playSFX("boomie_hit_wall");
+                    }
                     thisRef.detachBoomie();
                 }, null, g.engine);
                 g.engine.physics.add.collider(this.activeBoomie.gameObj, g.named.interactables, function(boomie, interactable) {
@@ -195,7 +209,7 @@ class Player
         else
         {
             // move normally
-            this.gameObj.setVelocity(direction.x * this.velocity, direction.y * this.velocity);
+            this.gameObj.setVelocity(direction.x * velocity, direction.y * velocity);
 
             var dirMap = [
                 /* -X */ [

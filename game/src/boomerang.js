@@ -57,15 +57,20 @@ class Boomerang
         stopLoop("boomie_loop");
         playSFX("boomie_retrieve");
         
-        this.setPositionProvider(function(time, delta, destroy) { 
-            return MakeVec2(g.named.player.gameObj.x, g.named.player.gameObj.y); 
-        });
         const SPEED = 20; /* pixels-per-second */
         var DURATION = 1000.0 * MakeVec2(g.named.player.gameObj.x, g.named.player.gameObj.y).subtract(
                 MakeVec2(this.gameObj.x, this.gameObj.y)).length() / (50.0 * SPEED);
         if (!animate) {
             DURATION = 0;
         }
+        var timeRemaining = DURATION;
+        var startVec = MakeVec2(this.gameObj.x, this.gameObj.y);
+        this.setPositionProvider(function(time, delta, destroy) {
+            timeRemaining = Math.max(0, timeRemaining - delta);
+            let t = timeRemaining / Math.max(1, DURATION);
+            let dest = MakeVec2(g.named.player.gameObj.x, g.named.player.gameObj.y);
+            return startVec.clone().lerp(dest, 1 - t);
+        });
         var thisRef = this;
         setTimeout(function () { 
             g.entities.splice(g.entities.indexOf(thisRef), 1);

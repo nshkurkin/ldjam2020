@@ -42,6 +42,9 @@ class Fire {
         var thisRef = this;
         this.gameObj.getOwner = function() { return  thisRef; };
         
+        this.allowPropagation = true;
+        this.PROPAGATION_DELAY = 300;
+
         // hack to fix sound
         this.allowSound = false;
         this.setActive(false);
@@ -74,9 +77,14 @@ class Fire {
         value = value || false; // There is an undefined coming from somewhere...clean up
         if (this.isActive != value)
         {
-            if (value && this.allowSound)
+            if (value)
             {
-                playSFX("set_fire");
+                if (this.allowSound)
+                {
+                    playSFX("set_fire");
+                }
+                this.allowPropagation = false;
+                setTimeout(Util.withContext(function () { this.allowPropagation = true; }, this), this.PROPAGATION_DELAY);
             }
         }
         this.isActive = value;
@@ -102,11 +110,11 @@ class Fire {
     {
         let fire1 = fireObj1.getOwner();
         let fire2 = fireObj2.getOwner();
-        //console.log("fires");
-        //console.log(fire1);
-        //console.log(fire2);
+        let fire1Active = fire1.getActive() && fire1.allowPropagation;
+        let fire2Active = fire2.getActive() && fire2.allowPropagation;
+        
         // if the fires have a different state, one of them is lit
-        if (fire1.getActive() !== fire2.getActive())
+        if (fire1Active !== fire2Active)
         {
             fire1.setActive(true);
             fire2.setActive(true);

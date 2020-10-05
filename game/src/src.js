@@ -1,6 +1,6 @@
 
 var g = new Object();
-g.debug = true; //true;
+g.debug = true;
 g.scale = 4.0;
 g.fx = new Object();
 g.fx.data = new Object();

@@ -63,6 +63,7 @@ g.spritesheetAssetList = [
 
     ["basic_switch", "basic-switch-desc", "basic_switch.json", "basic_switch.png", { frameWidth: 10, frameHeight: 10 }],
     ["door", "door-desc", "door.json", "door.png", { frameWidth: 10, frameHeight: 30 }],
+    ["door2", "door2-desc", "door2.json", "door2.png", { frameWidth: 30, frameHeight: 10 }],
 ];
 
 // key: file path, volume, loop
@@ -109,6 +110,7 @@ function create ()
     g.interactableClassList = {
         "basic_switch" : BasicSwitch,
         "door" : Door,
+        "door2" : Door,
         "torch" : Torch,
         "box" : FlammableBox,
 

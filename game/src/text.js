@@ -24,11 +24,14 @@ class StaticText {
         if (custData && custData.animate) {
             this.gameObj.anims.play(this.fxData.id + ":animate", true);
         }
+        if (custData && custData.hidden) {
+            this.gameObj.visible = !custData.hidden;
+        }
     }
 
     tryActivate(instigator)
     {
-        // Do nothing
+        this.gameObj.visible = true;
     }
 
     isActivated()

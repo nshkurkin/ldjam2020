@@ -11,10 +11,15 @@ class Util {
     
         if (data.type == 'sprite-sheet')
         {
+            var offset = 0;
+            if (data.keyFrameOffset) {
+                offset = data.keyFrameOffset;
+            }
+            
             for (var keyFrame of data.keyFrames) {
                 if (keyFrame.len > 1) {
                     var frames = phaser.anims.generateFrameNumbers(data.id, 
-                            { start:  keyFrame.start, end: keyFrame.start + keyFrame.len - 1 });
+                            { start:  keyFrame.start + offset, end: keyFrame.start + offset + keyFrame.len - 1 });
                     if (keyFrame.reversed) {
                         frames.reverse();
                     }
@@ -29,7 +34,7 @@ class Util {
                 else {
                     phaser.anims.create({
                         key: data.id + ":" + keyFrame.key,
-                        frames: [ { key: data.id, frame: keyFrame.start } ],
+                        frames: [ { key: data.id, frame: keyFrame.start + offset } ],
                         frameRate: keyFrame.rate
                     });
                 }

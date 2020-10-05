@@ -94,7 +94,7 @@ class Player
 
         if (!destObj)
         {
-            console.log("Could not find transition destination: " + dest);
+            //console.log("Could not find transition destination: " + dest);
             return;
         }
         this.gameObj.setPosition(

@@ -71,7 +71,13 @@ class BasicSwitch {
         if (this.custData && this.custData.receivers) {
             let receiverNames = this.custData.receivers.split(',');
             for (var name of receiverNames) {
-                g.byName[name].tryActivate(this);
+                let thing = g.byName[name];
+                if (thing) {
+                    thing.tryActivate(this);
+                }
+                else {
+                    console.log("Unknown name: ", name);
+                }
             }
         }
     }

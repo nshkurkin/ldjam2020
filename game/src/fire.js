@@ -69,6 +69,13 @@ class Fire {
     setActive (value)
     {
         value = value || false; // There is an undefined coming from somewhere...clean up
+        if (this.isActive != value)
+        {
+            if (value)
+            {
+                playSFX("set_fire");
+            }
+        }
         this.isActive = value;
         this.gameObj.setAlpha(value ? 1 : 0);
         if (null !== this.changeStateCallback)

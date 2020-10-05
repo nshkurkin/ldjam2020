@@ -180,6 +180,7 @@ class Player
                 var thisRef = this;
                 g.engine.physics.add.collider(this.activeBoomie.gameObj, g.named.wallBlockers, function() {
                     // console.log("Boomie hit a wall!");
+                    playSFX("boomie_hit_wall");
                     thisRef.detachBoomie();
                 }, null, g.engine);
                 g.engine.physics.add.collider(this.activeBoomie.gameObj, g.named.interactables, function(boomie, interactable) {

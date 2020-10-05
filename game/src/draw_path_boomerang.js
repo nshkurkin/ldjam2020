@@ -38,6 +38,8 @@ class DrawPathBoomerang
         this.intersectionIndices = [];
         this.SEGMENT_DISTANCE = 20;
         
+        playSFX("boomie_target");
+
         //g.entities.push(this);
 
         // TODO chris: maybe make this a pos provider for a real boomie so you can use it to hit switches still?

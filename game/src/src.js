@@ -65,12 +65,19 @@ g.spritesheetAssetList = [
     ["door", "door-desc", "door.json", "door.png", { frameWidth: 10, frameHeight: 30 }],
 ];
 
-// key, file path, volume
+// key: file path, volume, loop
 // assume they all have .wav and .ogg
 g.sfxAssetData = {
+    "boomie_target": ["assets/sfx/boomie_target", .2 ],
     "boomie_hit_wall": ["assets/sfx/boomie_hit_wall", 1 ],
     "boomie_throw": ["assets/sfx/boomie_throw", .5 ],
-    "boomie_retrieve": ["assets/sfx/boomie_retrieve", .5 ],
+    "boomie_retrieve": ["assets/sfx/boomie_retrieve", .5 ], // make this one box destroy?
+    "boomie_loop": ["assets/sfx/boomie_loop", .3 ],
+    "set_fire": ["assets/sfx/set_fire", .6 ],
+    "box_break": ["assets/sfx/box_break", .6 ],
+    "door_open": ["assets/sfx/door_open", .8 ],
+    "hit_switch": ["assets/sfx/hit_switch", .5 ],
+    // box_catch_fire is not in use rn
 };
 // dictionary of audio objects
 g.sfx = {};
@@ -307,5 +314,14 @@ function onMouseMove (pointer)
 
 function playSFX(sfxKey)
 {
-    g.sfx[sfxKey].play();
+    g.sfx[sfxKey].play({ loop: false });
+}
+
+function playLoop(sfxKey)
+{
+    g.sfx[sfxKey].play({ loop: true });
+}
+function stopLoop(sfxKey)
+{
+    g.sfx[sfxKey].stop();
 }

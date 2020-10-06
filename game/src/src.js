@@ -102,7 +102,7 @@ function preload ()
     for (var sfxKey of Object.keys(g.sfxAssetData))
     {
         let baseFileName =  g.sfxAssetData[sfxKey][0];
-        this.load.audio(sfxKey, [baseFileName + ".wav", baseFileName + ".ogg"]);
+        this.load.audio(sfxKey, [baseFileName + ".wav", baseFileName + ".ogg", baseFileName + ".mp3"]);
     }
 
     // World tileset

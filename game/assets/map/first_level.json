@@ -1928,6 +1928,12 @@
                  "height":30,
                  "id":73,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"desktopOnly",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1941,6 +1947,11 @@
                  "id":74,
                  "name":"space2",
                  "properties":[
+                        {
+                         "name":"desktopOnly",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"hidden",
                          "type":"bool",
@@ -3600,6 +3611,11 @@
                  "id":252,
                  "name":"space",
                  "properties":[
+                        {
+                         "name":"desktopOnly",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"hidden",
                          "type":"bool",
@@ -9721,6 +9737,12 @@
                  "height":20,
                  "id":834,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"desktopOnly",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,

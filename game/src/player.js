@@ -26,6 +26,10 @@ class Player
                 /* size */ this.gameObj.body.width, this.gameObj.body.height / 2.0, 
                 /* centered? */ false);
         this.gameObj.depth = g.layers.player;
+        var thisRef = this;
+        this.gameObj.setInteractive().on('pointerdown', function() {
+            thisRef.swapSkin((thisRef.altSkinIdx + 1) % thisRef.altSkins.length);
+        });
 
         this.velocity = 200;
         this.faceDirection = MakeVec2(1, 0);
@@ -45,6 +49,38 @@ class Player
         this.boomerangKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE));
         this.swapSkinKey = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K));
         this.noClipKey = g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        
+        this.pendingBoomieThrow = false;
+        if (!g.useJoystickPlugin) {
+            this.joystick = {
+                left: false,
+                right: false,
+                up: false,
+                down: false,
+                base: {},
+                thumb: {},
+            };
+        }
+        else {
+            var radius = 100;
+            if (g.isMobile) {
+                radius = 150;
+            }
+            this.joystick = g.engine.plugins.get('rexvirtualjoystickplugin').add(g.engine, {
+                x: 0,
+                y: 0,
+                radius: radius,
+                
+                dir: '8dir',
+                fixed: true,
+                enable: true
+            });
+            this.joystick.base.alpha = 0.0;
+            this.joystick.thumb.alpha = 0.0;
+        }
+
+        this.cachedScreenStartX = null;
+        this.cachedscreenStartY = null;
     }
 
     playAnim(keyframeId)
@@ -125,27 +161,26 @@ class Player
             }
         }
 
-
-        if (this.leftKey.isDown)
+        if (this.leftKey.isDown || this.joystick.left)
         {
             direction.x = -1;
         }
-        else if (this.rightKey.isDown)
+        else if (this.rightKey.isDown || this.joystick.right)
         {
             direction.x = 1;
         }
 
-        if (this.upKey.isDown)
+        if (this.upKey.isDown || this.joystick.up)
         {
             direction.y = -1;
         }
-        else if (this.downKey.isDown)
+        else if (this.downKey.isDown || this.joystick.down)
         {
             direction.y = 1;
         }
 
         // Decide whether to pilot the path boomerang or not
-        if (this.boomerangKey.keystroke())
+        if (this.boomerangKey.keystroke() || this.pendingBoomieThrow)
         {
             // If we already threw a boomie, retract him.
             if (null != this.activeBoomie)
@@ -164,6 +199,8 @@ class Player
                 this.activeDrawPathBoomerang = new DrawPathBoomerang(g.fx.data.boomerang, 
                         MakeVec2(this.gameObj.x, this.gameObj.y), this.faceDirection);
             }
+
+            this.pendingBoomieThrow = false;
         }
         
         // If we are drawing a path for boomie to follow, then update its movement.
@@ -302,13 +339,17 @@ class Player
         let camHeight = g.engine.cameras.main.height;
         let screenStartX = Math.floor(this.gameObj.x / camWidth) * camWidth;
         let screenStartY = Math.floor(this.gameObj.y / camHeight) * camHeight;
-        //screenStartX = this.gameObj.x - 300;
-        //screenStartY = this.gameObj.y - 300;
-        // TODO REMOVE
+        
         //console.log("Player pos " + this.gameObj.x + " , " + this.gameObj.y);
         //console.log("Camera moving to " + screenStartX + " , " + screenStartY);
         //console.log("Current camera pos " + g.engine.cameras.main.scrollX + " , " + g.engine.cameras.main.scrollY);
-        g.engine.cameras.main.setScroll(screenStartX, screenStartY);
+
+        // NOTE: Used cached values because "setScroll()" is expensive to call.
+        if (this.cachedScreenStartX != screenStartX || this.cachedscreenStartY != screenStartY) {
+            g.engine.cameras.main.setScroll(screenStartX, screenStartY);
+            this.cachedScreenStartX = screenStartX;
+            this.cachedscreenStartY = screenStartY;
+        }
     }
 
     destroy()

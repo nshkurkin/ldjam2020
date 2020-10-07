@@ -1,6 +1,18 @@
 
+// TODO List:
+//
+//    o The game is very slow on Android and at startup. 
+//          Our hunch is that we need to disable collisions between box fire sprites.
+//          For example, we can dynamically change the groups for colliders
+//          ("on fire" group and "no on fire" group).
+//
+//    o [MOBILE] vertical screen scaling needs some work still (the game is chopped
+//          off on the bottom on iOS).
+
 var g = new Object();
 g.debug = false;
+g.debugPretendToBeMobile = false;
+g.debugShowFps = false;
 g.scale = 4.0;
 g.fx = new Object();
 g.fx.data = new Object();
@@ -9,25 +21,39 @@ g.layers.effects = 6;
 g.layers.player = 5;
 g.layers.interactables = 4;
 g.layers.boomieTrail = 3;
+g.isMobile = false;
+g.useJoystickPlugin = true;
+
+const FPS_LIMIT = 60;
+
+const DEFAULT_WIDTH = 1280;
+const DEFAULT_HEIGHT = 720;
 
 var config = {
     type: Phaser.AUTO,
-    width: 1280,
-    height: 720,
+    backgroundColor: '#131314',
+    scale: {
+        // The game will be scaled manually in the resizeWindow()
+        mode: Phaser.Scale.NONE,
+        width: DEFAULT_WIDTH,
+        height: DEFAULT_HEIGHT,
+    },
     pixelArt: true,
     antialias: false,
     physics: {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: g.debug
+            debug: g.debug,
+            fps: FPS_LIMIT,
         }
     },
     scene: {
         preload: preload,
         create: create,
         update: update
-    }
+    },
+    fps: FPS_LIMIT,
 };
 
 g.game = new Phaser.Game(config);
@@ -93,6 +119,27 @@ g.interactableClassList = new Object();
 function preload ()
 {
     g.engine = this
+    this.physics.world.setFPS(FPS_LIMIT);
+
+    if (this.sys.game.device.os.desktop) {
+        console.log("desktop device")
+        g.isMobile = false;
+    }
+    else {
+        console.log("mobile device")
+        g.isMobile = true;
+    }
+
+    if (g.debugPretendToBeMobile) {
+        console.log("forced mobile device")
+        g.isMobile = true;
+    }
+
+    window.addEventListener('resize', event => {
+        resizeWindow()
+    })
+    // Do an initial resize so we are the correct shape.
+    resizeWindow();
 
     for (var assetTuple of g.spritesheetAssetList) {
         this.load.json(assetTuple[1], 'assets/' + assetTuple[2]);
@@ -108,6 +155,11 @@ function preload ()
     // World tileset
     this.load.image("static_floors", "assets/map/static_floors.png");
     this.load.tilemapTiledJSON("world-tiles-desc", "assets/map/first_level.json");
+
+    if (g.useJoystickPlugin) {
+        this.load.plugin('rexvirtualjoystickplugin', 
+                'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
+    }
 }
 
 function create ()
@@ -293,8 +345,18 @@ function create ()
     g.engine.physics.add.collider(g.named.player.gameObj, g.named.wallBlockers, null, null, g.engine);
     g.engine.physics.add.overlap(g.named.player.gameObj, g.named.roomTransitions, g.named.player.onCollideRoomTransition, null, g.named.player);
     g.engine.physics.add.overlap(g.named.fires, g.named.fires, Fire.onCollideFires, null, g.engine);
-    
+
     this.cameras.main.setBounds(0, 0, 5120, 5120);
+
+    // Boomie HUD on mobile
+    if (g.isMobile) {
+        g.named.boomieThrowHud = g.engine.physics.add.sprite(0, 0, g.fx.data.boomerang.id).setScale(4.0 * g.scale);
+        g.named.boomieThrowHud.alpha = 0.5
+        g.named.boomieThrowHud.depth = 8;
+        g.named.boomieThrowHud.setInteractive().on('pointerdown', function() {
+            g.named.player.pendingBoomieThrow = true;
+        });
+    }
 
     playLoop("music");
 
@@ -313,6 +375,10 @@ function create ()
 
     g.debugCycleLevelNext = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH));
     g.debugCycleLevelPrev = new KeyState(g.engine.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.PERIOD));
+
+    if (g.debugShowFps) {
+        g.named.fps = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
+    }
 }
 
 function update (time, delta)
@@ -337,26 +403,95 @@ function update (time, delta)
         }
     }
 
+    if (g.debugShowFps) {
+        let worldView = g.engine.cameras.main.worldView;
+        // NOTE: The positioning is such that boomie generally does not cover any part of any puzzle.
+        g.named.fps.x = worldView.centerX;
+        g.named.fps.y = worldView.centerY;
+        g.named.fps.setText([
+            'FPS:',
+            g.game.loop.actualFps
+        ]);
+    }
+
     g.named.player.update(time, delta);
+
+    if (g.named.boomieThrowHud) {
+        let worldView = g.engine.cameras.main.worldView;
+        // NOTE: The positioning is such that boomie generally does not cover any part of any puzzle.
+        g.named.boomieThrowHud.x = worldView.centerX + worldView.width/2.0 
+                - g.named.boomieThrowHud.displayWidth * 0.60;
+        g.named.boomieThrowHud.y = worldView.centerY + worldView.height/2.0 
+                - g.named.boomieThrowHud.displayHeight * 1.25;
+    }
 
     for (var entity of g.entities) {
         entity.update(time, delta);
     }
 }
 
+g.mouseDown = false;
+g.lastDownDelta = null;
+g.deltaLastMouseDown = null;
 function onMouseDown (pointer)
 {
     console.log("mouse down at " + pointer.x + " " + pointer.y);
+    g.lastPointer = MakeVec2(pointer.x, pointer.y);
+    g.mouseDownStart = g.lastPointer;
+    g.mouseDown = true;
+
+    if (g.useJoystickPlugin) {
+        g.named.player.joystick.base.alpha = 0.1;
+        g.named.player.joystick.thumb.alpha = 0.1;
+
+        // @TODO: This doesn't work right on mobile if the screen is not the perfect shape.
+        g.named.player.joystick.x = pointer.x;
+        g.named.player.joystick.y = pointer.y;
+    }
 }
 
 function onMouseUp (pointer)
 {
+    g.lastPointer = null;
+    g.mouseDown = false;
+    g.mouseDownStart = null;
 
+    if (!g.useJoystickPlugin) {
+        g.named.player.joystick.left  = false;
+        g.named.player.joystick.right = false;
+        g.named.player.joystick.up    = false;
+        g.named.player.joystick.down  = false;
+    }
+    else {
+        g.named.player.joystick.base.alpha = 0.0;
+        g.named.player.joystick.thumb.alpha = 0.0;
+    }
 }
 
 function onMouseMove (pointer)
 {
+    if (g.mouseDown && !g.useJoystickPlugin) {
+        if (!g.lastPointer) {
+            g.lastPointer = MakeVec2(pointer.x, pointer.y);
+        }
+        if (!g.lastDownDelta) {
+            g.lastDownDelta = MakeVec2(0, 0);
+        }
 
+        let delta = MakeVec2(pointer.x, pointer.y).subtract(g.mouseDownStart);
+        let deltaDelta = delta.clone().subtract(g.lastDownDelta);
+        if (!(delta.x == 0 && delta.y == 0) && deltaDelta.length() > 10.0) {
+            g.named.player.joystick.left  = delta.x < 0;
+            g.named.player.joystick.right = delta.x > 0;
+            g.named.player.joystick.up    = delta.y < 0;
+            g.named.player.joystick.down  = delta.y > 0;
+
+            g.mouseDownStart = MakeVec2(pointer.x, pointer.y);
+            g.lastDownDelta = delta;
+        }
+
+        g.lastPointer = MakeVec2(pointer.x, pointer.y);
+    }
 }
 
 function playSFX(sfxKey)
@@ -371,4 +506,42 @@ function playLoop(sfxKey)
 function stopLoop(sfxKey)
 {
     g.sfx[sfxKey].stop();
+}
+
+ // the custom resize function
+function resizeWindow() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    let width = DEFAULT_WIDTH;
+    let height = DEFAULT_HEIGHT;
+
+    //console.log("resize scalers: ", w / width, ", ", h / height);
+    let scale = Math.min(w / width, h / height);
+    var newWidth = Math.min(w / scale, width);
+    var newHeight = Math.min(h / scale, height);
+
+    // Round and make even
+    newWidth = Math.ceil(newWidth);
+    newWidth = newWidth - (newWidth % 2);
+
+    newHeight = Math.ceil(newHeight);
+    newHeight = newHeight - (newHeight % 2);
+
+    g.cachedWidth = newWidth;
+    g.cachedHeight = newHeight;
+
+    // resize the game
+    //console.log("resize scale: ", scale, ", [w,h] = {", newWidth, newHeight, "}");
+    g.game.scale.resize(newWidth, newHeight);
+
+    // // scale the width and height of the css
+    g.game.canvas.style.width = '100%'; // newWidth * scale + 'px'
+    g.game.canvas.style.height = '100%'; //newHeight * scale + 'px'
+
+    // center the game with css margin
+    if (!g.isMobile) {
+        g.game.canvas.style.marginTop = `${(h - newHeight * scale) / 2}px`
+        g.game.canvas.style.marginLeft = `${(w - newWidth * scale) / 2}px`
+    }
 }

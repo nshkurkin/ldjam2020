@@ -18,6 +18,9 @@ class StaticText {
 
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
         this.gameObj.depth = g.layers.interactables;
+        if (custData && custData.desktopOnly && g.isMobile) {
+            this.gameObj.visible = false;
+        }
         this.gameObj.setOrigin(0, 1);
         var thisRef = this;
         this.gameObj.getOwner = function() { return thisRef; };

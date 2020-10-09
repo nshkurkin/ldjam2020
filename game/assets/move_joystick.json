@@ -1,0 +1,10 @@
+{
+    "assetPath" : "assets/move_joystick.png",
+    "id": "move_joystick",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 50, "y": 50 },
+    "keyFrames" : [
+        { "key" : "static",  "start": 0, "len": 1, "rate": 5 },
+        { "key" : "animate", "start": 0, "len": 9, "rate": 5, "repeat": -1, "yoyo": true}
+    ]
+}

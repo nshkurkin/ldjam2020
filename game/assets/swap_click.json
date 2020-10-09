@@ -1,0 +1,10 @@
+{
+    "assetPath" : "assets/swap_click.png",
+    "id": "swap_click",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 25, "y": 25 },
+    "keyFrames" : [
+        { "key" : "static",  "start": 0, "len": 1, "rate": 5 },
+        { "key" : "animate", "start": 0, "len": 8, "rate": 2, "repeat": -1}
+    ]
+}

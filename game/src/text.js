@@ -21,6 +21,9 @@ class StaticText {
         if (custData && custData.desktopOnly && g.isMobile) {
             this.gameObj.visible = false;
         }
+        if (custData && custData.mobileOnly && !g.isMobile) {
+            this.gameObj.visible = false;
+        }
         this.gameObj.setOrigin(0, 1);
         var thisRef = this;
         this.gameObj.getOwner = function() { return thisRef; };

@@ -9779,6 +9779,52 @@
                  "width":10,
                  "x":680.180593437474,
                  "y":871.187288205637
+                }, 
+                {
+                 "gid":170,
+                 "height":50,
+                 "id":839,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"animate",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"mobileOnly",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":50,
+                 "x":15.3340802607456,
+                 "y":344.413322468935
+                }, 
+                {
+                 "gid":179,
+                 "height":25,
+                 "id":840,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"animate",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"mobileOnly",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":25,
+                 "x":66.2236708087187,
+                 "y":330.78366266042
                 }],
          "opacity":1,
          "properties":[
@@ -9798,7 +9844,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":839,
+ "nextobjectid":841,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.2",
@@ -11003,6 +11049,32 @@
          "tilecount":1,
          "tileheight":20,
          "tilewidth":34
+        }, 
+        {
+         "columns":9,
+         "firstgid":170,
+         "image":"..\/move_joystick.png",
+         "imageheight":50,
+         "imagewidth":450,
+         "margin":0,
+         "name":"move_joystick",
+         "spacing":0,
+         "tilecount":9,
+         "tileheight":50,
+         "tilewidth":50
+        }, 
+        {
+         "columns":8,
+         "firstgid":179,
+         "image":"..\/swap_click.png",
+         "imageheight":25,
+         "imagewidth":200,
+         "margin":0,
+         "name":"swap_click",
+         "spacing":0,
+         "tilecount":8,
+         "tileheight":25,
+         "tilewidth":25
         }],
  "tilewidth":10,
  "type":"map",

@@ -8,6 +8,8 @@
 //
 //    o [MOBILE] vertical screen scaling needs some work still (the game is chopped
 //          off on the bottom on iOS).
+//
+//    o [MOBILE] @FIXME: Putting into fullscreen does not appear to work yet.
 
 var g = new Object();
 g.debug = false;
@@ -81,6 +83,8 @@ g.spritesheetAssetList = [
     ["space", "space-desc", "space.json", "space.png", { frameWidth: 45, frameHeight: 30 }],
     ["swap", "swap-desc", "swap.json", "swap.png", { frameWidth: 34, frameHeight: 20 }],
     ["hit_stuff", "hit_stuff-desc", "hit_stuff.json", "hit_stuff.png", { frameWidth: 34, frameHeight: 20 }],
+    ["move_joystick", "move_joystick-desc", "move_joystick.json", "move_joystick.png", { frameWidth: 50, frameHeight: 50 }],
+    ["swap_click", "swap_click-desc", "swap_click.json", "swap_click.png", { frameWidth: 25, frameHeight: 25 }],
 
     ["boomerang", "boomerang-desc", "simple_boomerang.json", "simple_boomerang.png", { frameWidth: 10, frameHeight: 10 }],
 
@@ -175,7 +179,9 @@ function create ()
         "move" : StaticText,
         "space" : StaticText,
         "swap" : StaticText,
-        "hit_stuff": StaticText
+        "hit_stuff": StaticText,
+        "move_joystick": StaticText,
+        "swap_click": StaticText,
     };
 
     g.worldClock = new Phaser.Time.Clock(this);
@@ -378,6 +384,11 @@ function create ()
 
     if (g.debugShowFps) {
         g.named.fps = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
+    }
+
+    // @FIXME: This doesn't appear to work yet.
+    if (g.isMobile) {
+        Util.openFullscreen();
     }
 }
 

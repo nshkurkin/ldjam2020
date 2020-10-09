@@ -62,9 +62,9 @@ class Player
             };
         }
         else {
-            var radius = 100;
+            var radius = 75;
             if (g.isMobile) {
-                radius = 150;
+                radius = 125;
             }
             this.joystick = g.engine.plugins.get('rexvirtualjoystickplugin').add(g.engine, {
                 x: 0,

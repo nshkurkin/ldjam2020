@@ -20,7 +20,6 @@ class Player
         
         this.fxData = fxData;
         this.gameObj = g.engine.physics.add.sprite(pos.x, pos.y, fxData.id).setScale(g.scale);
-        //this.gameObj.setCollideWorldBounds(true);
         this.gameObj.body.offset.y = this.gameObj.body.height / 2.0;
         this.gameObj.body.setSize(
                 /* size */ this.gameObj.body.width, this.gameObj.body.height / 2.0, 
@@ -34,6 +33,8 @@ class Player
         this.velocity = 200;
         this.faceDirection = MakeVec2(1, 0);
         this.faceDirectionAnim = 'dir:dr';
+        this.lastPlayedAnim = null;
+        this.lastBoomieHelpAnim = null;
         this.altSkins = [fxData];
         this.altSkinIdx = 0;
 
@@ -85,7 +86,10 @@ class Player
 
     playAnim(keyframeId)
     {
-        this.gameObj.anims.play(this.fxData.id + ':' + keyframeId, true);
+        if (keyframeId != this.lastPlayedAnim) {
+            this.gameObj.anims.play(this.fxData.id + ':' + keyframeId, true);
+            this.lastPlayedAnim = keyframeId;
+        }
     }
 
     detachBoomie(animate=true)
@@ -314,12 +318,23 @@ class Player
         }
 
         let spaceNames = ["space", "space2"];
-        for (var spaceName of spaceNames) {
-            if (this.activeBoomie) {
-                g.byName[spaceName].gameObj.anims.play(g.byName[spaceName].fxData.id + ":static2", true);
-            }
-            else {
-                g.byName[spaceName].gameObj.anims.play(g.byName[spaceName].fxData.id + ":static", true);
+        var boomieHelpAnim = ":static"
+        if (this.activeBoomie) {
+            boomieHelpAnim = ":static2";
+        }
+
+        if (this.lastBoomieHelpAnim != boomieHelpAnim) {
+            this.lastBoomieHelpAnim = boomieHelpAnim;
+            for (var spaceName of spaceNames) {
+
+                if (this.activeBoomie) {
+                    g.byName[spaceName].gameObj.anims.play(
+                            g.byName[spaceName].fxData.id + this.lastBoomieHelpAnim, true);
+                }
+                else {
+                    g.byName[spaceName].gameObj.anims.play(
+                            g.byName[spaceName].fxData.id + this.lastBoomieHelpAnim, true);
+                }
             }
         }
 

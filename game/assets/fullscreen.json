@@ -1,0 +1,9 @@
+{
+    "assetPath" : "assets/fullscreen.png",
+    "id": "fullscreen",
+    "type" : "sprite-sheet",
+    "elementSize" : { "x": 15, "y": 15 },
+    "keyFrames" : [
+        { "key" : "static",  "start": 0, "len": 1, "rate": 5 }
+    ]
+}

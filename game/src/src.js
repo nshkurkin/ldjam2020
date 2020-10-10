@@ -5,16 +5,15 @@
 //          Our hunch is that we need to disable collisions between box fire sprites.
 //          For example, we can dynamically change the groups for colliders
 //          ("on fire" group and "no on fire" group).
+//          It looks like on safari that animations are constantly running for everything.
 //
-//    o [MOBILE] vertical screen scaling needs some work still (the game is chopped
-//          off on the bottom on iOS).
+//     o Tilemap needs to be redone due to pixel bleeding on mobile :( 
 //
-//    o [MOBILE] @FIXME: Putting into fullscreen does not appear to work yet.
 
 var g = new Object();
 g.debug = false;
 g.debugPretendToBeMobile = false;
-g.debugShowFps = false;
+g.debugShowFps = true;
 g.scale = 4.0;
 g.fx = new Object();
 g.fx.data = new Object();
@@ -35,8 +34,8 @@ var config = {
     type: Phaser.AUTO,
     backgroundColor: '#131314',
     scale: {
-        // The game will be scaled manually in the resizeWindow()
-        mode: Phaser.Scale.NONE,
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
         width: DEFAULT_WIDTH,
         height: DEFAULT_HEIGHT,
     },
@@ -87,6 +86,7 @@ g.spritesheetAssetList = [
     ["swap_click", "swap_click-desc", "swap_click.json", "swap_click.png", { frameWidth: 25, frameHeight: 25 }],
 
     ["boomerang", "boomerang-desc", "simple_boomerang.json", "simple_boomerang.png", { frameWidth: 10, frameHeight: 10 }],
+    ["fullscreen", "fullscreen-desc", "fullscreen.json", "fullscreen.png", { frameWidth: 15, frameHeight: 15 }],
 
     ["bob",    "bob-desc",    "bob.json",    "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
     ["autumn", "autumn-desc", "autumn.json", "pc_skins.png", { frameWidth: 10, frameHeight: 15 }],
@@ -125,6 +125,35 @@ function preload ()
     g.engine = this
     this.physics.world.setFPS(FPS_LIMIT);
 
+    // Loading bar.
+    let loadBarWidth = DEFAULT_WIDTH / 4.0;
+    let loadBarHeight = loadBarWidth / 8.0;
+    let loadBarPad = loadBarHeight / 8.0;
+    g.named.progressBar = this.add.graphics();
+    g.named.progressBox = this.add.graphics();
+
+    this.load.on('progress', function (value) {
+        let camera = g.engine.cameras.main;
+        g.named.progressBox.clear();
+        g.named.progressBox.fillStyle(0x222222, 0.8);
+        g.named.progressBox.fillRect(
+                camera.centerX - 0.5 * loadBarWidth, 
+                camera.centerY - 0.5 * loadBarHeight, 
+                loadBarWidth, loadBarHeight);
+
+        g.named.progressBar.clear();
+        g.named.progressBar.fillStyle(0xffffff, 1);
+        g.named.progressBar.fillRect(
+                camera.centerX - 0.5 * loadBarWidth + loadBarPad, 
+                camera.centerY - 0.5 * loadBarHeight + loadBarPad,
+                (loadBarWidth - 2.0 * loadBarPad) * value, loadBarHeight - 2.0 * loadBarPad);
+    });
+
+    this.load.on('complete', function (value) {
+        g.named.progressBar.destroy();
+        g.named.progressBox.destroy();
+    });
+
     if (this.sys.game.device.os.desktop) {
         console.log("desktop device")
         g.isMobile = false;
@@ -138,12 +167,6 @@ function preload ()
         console.log("forced mobile device")
         g.isMobile = true;
     }
-
-    window.addEventListener('resize', event => {
-        resizeWindow()
-    })
-    // Do an initial resize so we are the correct shape.
-    resizeWindow();
 
     for (var assetTuple of g.spritesheetAssetList) {
         this.load.json(assetTuple[1], 'assets/' + assetTuple[2]);
@@ -386,9 +409,21 @@ function create ()
         g.named.fps = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
     }
 
-    // @FIXME: This doesn't appear to work yet.
+    // Fullscreen button
     if (g.isMobile) {
-        Util.openFullscreen();
+        g.named.fullscreenBtn = this.physics.add.sprite(0, 0, g.fx.data.fullscreen.id).setScale(g.scale);
+        g.named.fullscreenBtn.alpha = 0.25;
+        g.named.fullscreenBtn.setInteractive().on('pointerdown', function() {
+            if (!g.engine.scale.isFullscreen) {
+                g.engine.scale.startFullscreen();
+                g.named.fullscreenBtn.alpha = 0.01;
+                g.game.canvas.parentElement.style.backgroundColor = "#131314";
+            }
+            else {
+                g.engine.scale.stopFullscreen();
+                g.named.fullscreenBtn.alpha = 0.25;
+            }
+        });
     }
 }
 
@@ -416,13 +451,20 @@ function update (time, delta)
 
     if (g.debugShowFps) {
         let worldView = g.engine.cameras.main.worldView;
-        // NOTE: The positioning is such that boomie generally does not cover any part of any puzzle.
         g.named.fps.x = worldView.centerX;
         g.named.fps.y = worldView.centerY;
         g.named.fps.setText([
             'FPS:',
-            g.game.loop.actualFps
+            g.game.loop.actualFps,
         ]);
+    }
+
+    if (g.named.fullscreenBtn) {
+        let worldView = g.engine.cameras.main.worldView;
+        g.named.fullscreenBtn.x = worldView.centerX - worldView.width/2.0 
+                + 0.5 * g.named.fullscreenBtn.displayWidth;
+        g.named.fullscreenBtn.y = worldView.centerY - worldView.height/2.0 
+                + 0.5 * g.named.fullscreenBtn.displayHeight;
     }
 
     g.named.player.update(time, delta);
@@ -517,42 +559,4 @@ function playLoop(sfxKey)
 function stopLoop(sfxKey)
 {
     g.sfx[sfxKey].stop();
-}
-
- // the custom resize function
-function resizeWindow() {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-
-    let width = DEFAULT_WIDTH;
-    let height = DEFAULT_HEIGHT;
-
-    //console.log("resize scalers: ", w / width, ", ", h / height);
-    let scale = Math.min(w / width, h / height);
-    var newWidth = Math.min(w / scale, width);
-    var newHeight = Math.min(h / scale, height);
-
-    // Round and make even
-    newWidth = Math.ceil(newWidth);
-    newWidth = newWidth - (newWidth % 2);
-
-    newHeight = Math.ceil(newHeight);
-    newHeight = newHeight - (newHeight % 2);
-
-    g.cachedWidth = newWidth;
-    g.cachedHeight = newHeight;
-
-    // resize the game
-    //console.log("resize scale: ", scale, ", [w,h] = {", newWidth, newHeight, "}");
-    g.game.scale.resize(newWidth, newHeight);
-
-    // // scale the width and height of the css
-    g.game.canvas.style.width = '100%'; // newWidth * scale + 'px'
-    g.game.canvas.style.height = '100%'; //newHeight * scale + 'px'
-
-    // center the game with css margin
-    if (!g.isMobile) {
-        g.game.canvas.style.marginTop = `${(h - newHeight * scale) / 2}px`
-        g.game.canvas.style.marginLeft = `${(w - newWidth * scale) / 2}px`
-    }
 }

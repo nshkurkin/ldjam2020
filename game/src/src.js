@@ -62,7 +62,6 @@ var config = {
     },
     audio : {
         disableWebAudio: g.disableWebAudio,
-        instances: 4,
     },
     fps: FPS_LIMIT,
 };
@@ -187,7 +186,9 @@ function preload ()
     for (var sfxKey of Object.keys(g.sfxAssetData))
     {
         let baseFileName =  g.sfxAssetData[sfxKey][0];
-        this.load.audio(sfxKey, [baseFileName + ".wav", baseFileName + ".ogg", baseFileName + ".mp3"]);
+        this.load.audio(sfxKey, [baseFileName + ".wav", baseFileName + ".ogg", baseFileName + ".mp3"], 
+            // NOTE: On mobile (with HTML 5 audio) we need to specify how many simultaneous instances can play
+            { instances: 5 });
     }
 
     // World tileset

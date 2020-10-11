@@ -1,12 +1,14 @@
 
 
-class FlammableBox {
+class FlammableBox extends GameEntity {
 
     constructor(
         /* FxObject */ fxData = null, 
         /* Phaser.Math.Vector2 */ pos = null,
         /* Object */ custData = null)
     {
+        super();
+
         if (pos == null) {
             pos = MakeVec2(0, 0);
         }
@@ -69,14 +71,14 @@ class FlammableBox {
 
     update(time, delta)
     {
-        // TODO
+        super.update(time, delta);
     }
 
     destroy()
     {
         this.fire.destroy();
-        this.gameObj.destroy();
         playSFX("box_break");
+        super.destroy();
     }
 }
 

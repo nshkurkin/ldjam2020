@@ -1,10 +1,12 @@
-class BasicSwitch {
+class BasicSwitch extends GameEntity {
 
     constructor(
         /* FxObject */ fxData = null, 
         /* Phaser.Math.Vector2 */ pos = null,
         /* Object */ custData = null)
     {
+        super();
+
         if (pos == null) {
             pos = MakeVec2(0, 0);
         }
@@ -42,8 +44,6 @@ class BasicSwitch {
         }
         
         this.setActive(false);
-
-        g.entities.push(this);
     }
 
     tryActivate(instigator)
@@ -129,6 +129,8 @@ class BasicSwitch {
 
     update(time, delta)
     {
+        super.update(time, delta);
+
         if (this.activationCooldown > 0)
         {
             this.activationCooldown -= delta;
@@ -137,6 +139,6 @@ class BasicSwitch {
 
     destroy()
     {
-        // TODO
+        super.destroy();
     }
 }

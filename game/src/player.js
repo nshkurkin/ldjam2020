@@ -86,7 +86,9 @@ class Player
 
     playAnim(keyframeId)
     {
-        if (keyframeId != this.lastPlayedAnim) {
+        if (keyframeId != this.lastPlayedAnim || 
+                // The run animation may have stopped playing
+                keyframeId.includes("run:")) {
             this.gameObj.anims.play(this.fxData.id + ':' + keyframeId, true);
             this.lastPlayedAnim = keyframeId;
         }

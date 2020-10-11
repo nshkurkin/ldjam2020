@@ -1,11 +1,13 @@
 
 
-class Torch {
+class Torch extends GameEntity {
     constructor(
         /* FxObject */ fxData = null, 
         /* Phaser.Math.Vector2 */ pos = null,
         /* Object */ custData = null)
     {
+        super();
+
         if (pos == null) {
             pos = MakeVec2(0, 0);
         }
@@ -34,8 +36,6 @@ class Torch {
         {
             this.setActive(this.active);
         }
-
-        g.entities.push(this);
     }
 
     _onFireStateChanged (value)
@@ -118,12 +118,13 @@ class Torch {
 
     update(time, delta)
     {
-        
+        super.update(time, delta);
     }
 
     destroy()
     {
         this.setActive(false);
         this.fire.destroy();
+        super.destroy();
     }
 }

@@ -1,4 +1,4 @@
-class Fire {
+class Fire extends GameEntity {
     constructor(
         /* FxObject */ fxData = null,
         /* Vector2 */ startPos = null,
@@ -6,6 +6,8 @@ class Fire {
         /* Vector2 */ followOffset = null,
         /* function(bool) */ changeStateCallback = null)
     {
+        super();
+
         if (fxData == null)
         {
             fxData = g.fx.data.fire;
@@ -36,7 +38,7 @@ class Fire {
         this.gameObj.depth = g.layers.effects;
         this.gameObj.anims.play(fxData.id + ':flicker', true)
 
-        g.named.fires.add(this.gameObj);
+        g.named.tinder.add(this.gameObj);
         // todo fire on top of most things?
         //this.gameObj.depth = g.layers.interactables;
         var thisRef = this;
@@ -48,12 +50,16 @@ class Fire {
         // hack to fix sound
         this.allowSound = false;
         this.setActive(false);
-
-        g.entities.push(this);
     }
 
     update (time, delta)
     {
+        super.update(time, delta);
+
+        if (!this.gameObj.visible) {
+            return;
+        }
+
         this.allowSound = true;
         // smooth follow
         if (null !== this.follow)
@@ -61,10 +67,14 @@ class Fire {
             this.currentPos = this._getFollowPos();
         }
 
-        var u = 0.7;
-        this.gameObj.setPosition(
+        let u = 0.7;
+        let newPos = MakeVec2(
                 (u) * this.gameObj.x + (1.0 - u) * this.currentPos.x, 
                 (u) * this.gameObj.y + (1.0 - u) * this.currentPos.y);
+
+        if (this.gameObj.x != newPos.x || this.gameObj.y != newPos.y) {
+            this.gameObj.setPosition(newPos.x, newPos.y);
+        }
     }
 
     _getFollowPos ()
@@ -74,17 +84,24 @@ class Fire {
 
     setActive (value)
     {
-        value = value || false; // There is an undefined coming from somewhere...clean up
+        value = value || false; // @FIXME: There is an undefined coming from somewhere...clean up
         if (this.isActive != value)
         {
             if (value)
             {
+                g.named.tinder.remove(this.gameObj);
+                g.named.fires.add(this.gameObj);
+
                 if (this.allowSound)
                 {
                     playSFX("set_fire");
                 }
                 this.allowPropagation = false;
                 setTimeout(Util.withContext(function () { this.allowPropagation = true; }, this), this.PROPAGATION_DELAY);
+            }
+            else {
+                g.named.fires.remove(this.gameObj);
+                g.named.tinder.add(this.gameObj);
             }
         }
         this.isActive = value;
@@ -102,8 +119,7 @@ class Fire {
 
     destroy ()
     {
-        g.entities.splice(g.entities.indexOf(this), 1);
-        this.gameObj.destroy();
+        super.destroy();
     }
 
     static onCollideFires (fireObj1, fireObj2)
